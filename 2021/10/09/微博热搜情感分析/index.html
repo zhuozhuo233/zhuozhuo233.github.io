@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhuozhuo233.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="写在最前爬虫相关内容的阶段性成果。爬虫技术应用广泛，但若只是爬取到数据而不加以分析那么数据终究只是一堆数据而已，本项目将微博热搜内容爬取后进行情感分析。旨在对于爬虫技术以及数据分析技术进行探索学习^_^ 总体流程(1)数据爬取和处理1.爬取“吴磊绝杀”对应的微博主要内容cont,对应函数get_weibo_list(url) 2.对爬取到的微博主要内容调用process（test）函数去噪和分词，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微博热搜情感分析">
+<meta property="og:url" content="https://zhuozhuo233.github.io/2021/10/09/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="倬倬吃三碗">
+<meta property="og:description" content="写在最前爬虫相关内容的阶段性成果。爬虫技术应用广泛，但若只是爬取到数据而不加以分析那么数据终究只是一堆数据而已，本项目将微博热搜内容爬取后进行情感分析。旨在对于爬虫技术以及数据分析技术进行探索学习^_^ 总体流程(1)数据爬取和处理1.爬取“吴磊绝杀”对应的微博主要内容cont,对应函数get_weibo_list(url) 2.对爬取到的微博主要内容调用process（test）函数去噪和分词，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/1.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/2.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/3.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/4.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/5.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/6.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/7.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/8.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/9.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/10.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/11.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/12.png">
+<meta property="article:published_time" content="2021-10-09T01:14:14.000Z">
+<meta property="article:modified_time" content="2021-10-09T03:33:34.362Z">
+<meta property="article:author" content="倬倬吃三碗">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhuozhuo233.github.io/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/1.png">
+
+<link rel="canonical" href="https://zhuozhuo233.github.io/2021/10/09/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>微博热搜情感分析 | 倬倬吃三碗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">倬倬吃三碗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2021/10/09/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zaomiao2.jpg">
+      <meta itemprop="name" content="倬倬吃三碗">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="倬倬吃三碗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微博热搜情感分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-10-09 09:14:14 / 修改时间：11:33:34" itemprop="dateCreated datePublished" datetime="2021-10-09T09:14:14+08:00">2021-10-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6%E4%B8%8E%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">数据科学与大数据技术</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="写在最前"><a href="#写在最前" class="headerlink" title="写在最前"></a>写在最前</h1><p>爬虫相关内容的阶段性成果。爬虫技术应用广泛，但若只是爬取到数据而不加以分析那么数据终究只是一堆数据而已，本项目将微博热搜内容爬取后进行情感分析。旨在对于爬虫技术以及数据分析技术进行探索学习^_^</p>
+<h1 id="总体流程"><a href="#总体流程" class="headerlink" title="总体流程"></a>总体流程</h1><h2 id="1-数据爬取和处理"><a href="#1-数据爬取和处理" class="headerlink" title="(1)数据爬取和处理"></a>(1)数据爬取和处理</h2><p>1.爬取“吴磊绝杀”对应的微博主要内容cont,对应函数get_weibo_list(url)</p>
+<p>2.对爬取到的微博主要内容调用process（test）函数去噪和分词，得到处理后的结果pro_cont</p>
+<p>3.将pro_cont转为DataFrame格式，为转为文本向量做准备</p>
+<p>4.加载停用词</p>
+<h2 id="2-构建分类模型"><a href="#2-构建分类模型" class="headerlink" title="(2)构建分类模型"></a>(2)构建分类模型</h2><p>1.加载训练集train.txt和测试集test.txt语料库</p>
+<p>2.定义训练样本数据</p>
+<p>3.构建朴素贝叶斯分类模型</p>
+<p>4.测试集数据集检验准确度</p>
+<p>5.保存模型</p>
+<h2 id="3-应用模型"><a href="#3-应用模型" class="headerlink" title="(3)应用模型"></a>(3)应用模型</h2><p>1.对指定标题的微博主要内容运用模型预测情绪</p>
+<p>项目源代码：<a target="_blank" rel="noopener" href="https://github.com/zhuozhuo233/weibotop-emotional-analysis/tree/main">https://github.com/zhuozhuo233/weibotop-emotional-analysis/tree/main</a></p>
+<span id="more"></span>
+
+<h1 id="一、数据爬取"><a href="#一、数据爬取" class="headerlink" title="一、数据爬取"></a>一、数据爬取</h1><p>先观察一下页面结构</p>
+<p><img src="/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/1.png"></p>
+<p>爬取内容函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"></span><br><span class="line">headers=&#123;</span><br><span class="line">    <span class="string">&#x27;Cookie&#x27;</span>:<span class="string">&#x27;SINAGLOBAL=5067277944781.756.1539012379187; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WFXAgGhhYE-bL1UlBNsI6xh5JpX5KMhUgL.Foqce0eN1h2cehB2dJLoIEXLxK-L1h5LB-eLxK-L1h5LB-eLxK-L1K5L1heLxKBLBonL1h.LxKMLBKzL1KMt; UOR=jx3.xoyo.com,widget.weibo.com,login.sina.com.cn; ALF=1665190926; SSOLoginState=1633654926; SCF=AjnY75MXDIg2Sev-TVKQBdyuwLa-mrIYwFgLkjivnwGqe4HMR8MVkSqyfw315Fic7gc1c38G1W-RUtxrwPqe0qY.; SUB=_2A25MW-jeDeRhGeBI6FEW-C_KyziIHXVvEV0WrDV8PUNbmtAKLUzhkW9NRppHJg76K77LtSOxPlpC13YygxcK3EKM; _s_tentry=login.sina.com.cn; Apache=441836365226.03375.1633654927612; ULV=1633654927618:48:1:1:441836365226.03375.1633654927612:1632876696485&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;User-Agent&#x27;</span>:<span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_weibo_list</span>(<span class="params">url</span>):</span><br><span class="line">    r = requests.get(url,headers=headers)</span><br><span class="line">    </span><br><span class="line">    bs = BeautifulSoup(r.text)</span><br><span class="line">    body = bs.body</span><br><span class="line">    div_m_main = body.find(<span class="string">&#x27;div&#x27;</span>,attrs=&#123;<span class="string">&#x27;class&#x27;</span>:<span class="string">&#x27;m-main&#x27;</span>&#125;)</span><br><span class="line">    div_m_wrap = div_m_main.find(<span class="string">&#x27;div&#x27;</span>,attrs=&#123;<span class="string">&#x27;class&#x27;</span>:<span class="string">&#x27;m-wrap&#x27;</span>&#125;)</span><br><span class="line">    div_m_con_l = div_m_wrap.find(<span class="string">&#x27;div&#x27;</span>,attrs=&#123;<span class="string">&#x27;class&#x27;</span>:<span class="string">&#x27;m-con-l&#x27;</span>&#125;)</span><br><span class="line">    data_div = div_m_con_l.findAll(<span class="string">&#x27;div&#x27;</span>,attrs=&#123;<span class="string">&#x27;class&#x27;</span>:<span class="string">&#x27;card-wrap&#x27;</span>,<span class="string">&#x27;action-type&#x27;</span>:<span class="string">&#x27;feed_list_item&#x27;</span>&#125;)</span><br><span class="line">    </span><br><span class="line">    weibo_list = []</span><br><span class="line">    <span class="keyword">for</span> each_div <span class="keyword">in</span> data_div:</span><br><span class="line">        div_card = each_div.find(<span class="string">&#x27;div&#x27;</span>,attrs=&#123;<span class="string">&#x27;class&#x27;</span>:<span class="string">&#x27;card&#x27;</span>&#125;)</span><br><span class="line">        div_card_feed = div_card.find(<span class="string">&#x27;div&#x27;</span>,attrs=&#123;<span class="string">&#x27;class&#x27;</span>:<span class="string">&#x27;card-feed&#x27;</span>&#125;)</span><br><span class="line">        div_content = div_card_feed.find(<span class="string">&#x27;div&#x27;</span>,attrs=&#123;<span class="string">&#x27;class&#x27;</span>:<span class="string">&#x27;content&#x27;</span>&#125;)</span><br><span class="line">        </span><br><span class="line">        p_feed_list_content = div_content.find(<span class="string">&#x27;p&#x27;</span>,attrs=&#123;<span class="string">&#x27;class&#x27;</span>:<span class="string">&#x27;txt&#x27;</span>,<span class="string">&#x27;node-type&#x27;</span>:<span class="string">&#x27;feed_list_content&#x27;</span>&#125;)</span><br><span class="line">        content_text = p_feed_list_content.get_text()</span><br><span class="line">        </span><br><span class="line">        p_feed_list_content_full = div_content.find(<span class="string">&#x27;p&#x27;</span>,attrs=&#123;<span class="string">&#x27;class&#x27;</span>:<span class="string">&#x27;txt&#x27;</span>,<span class="string">&#x27;node-type&#x27;</span>:<span class="string">&#x27;feed_list_content_full&#x27;</span>&#125;)</span><br><span class="line">        <span class="keyword">if</span> p_feed_list_content_full:</span><br><span class="line">            content_text = p_feed_list_content_full.get_text()</span><br><span class="line">            </span><br><span class="line">        weibo_list.append(content_text.strip())</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> weibo_list</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>爬取“吴磊绝杀”标题的主要内容</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cont = get_weibo_list(<span class="string">&#x27;https://s.weibo.com/weibo?q=%23%E6%AD%A6%E7%A3%8A%E7%BB%9D%E6%9D%80%23&amp;Refer=top&#x27;</span>)</span><br><span class="line">cont</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/2.png"></p>
+<p>去噪函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="comment">#去除噪声函数，去除微博内容中的特殊符号，语气助词等噪声、</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process</span>(<span class="params">text</span>):</span><br><span class="line">    <span class="comment">#去除url</span></span><br><span class="line">    text = re.sub(<span class="string">&quot;(https?|ftp|file)://[-A-Za-z0-9+&amp;@#/%=~_|]&quot;</span>,<span class="string">&quot; &quot;</span>,text)</span><br><span class="line">    <span class="comment">#去除@xxx(用户名)</span></span><br><span class="line">    text = re.sub(<span class="string">&quot;@.+?( |$)&quot;</span>, <span class="string">&quot; &quot;</span>, text)</span><br><span class="line">    <span class="comment">#去除&#123;%xxx%&#125;（地理定位，微博话题等）</span></span><br><span class="line">    text = re.sub(<span class="string">&quot;\&#123;%.+?%\&#125;&quot;</span>, <span class="string">&quot; &quot;</span>,text)</span><br><span class="line">    <span class="comment">#去除#xx#（标题引用）</span></span><br><span class="line">    text = re.sub(<span class="string">&quot;\&#123;#.+?#\&#125;&quot;</span>, <span class="string">&quot; &quot;</span>, text)</span><br><span class="line">    <span class="comment">#去除【xx】(里面的内容通常都不是用户自己写的)</span></span><br><span class="line">    text = re.sub(<span class="string">&quot;【.+?】&quot;</span>, <span class="string">&quot; &quot;</span>, text)</span><br><span class="line">    <span class="comment">#数据集中的噪声</span></span><br><span class="line">    text = re.sub(<span class="string">&#x27;\u200b&#x27;</span>,<span class="string">&quot; &quot;</span>,text)</span><br><span class="line">                  </span><br><span class="line">    <span class="comment">#分词</span></span><br><span class="line">    words = [w <span class="keyword">for</span> w <span class="keyword">in</span> jieba.lcut(text) <span class="keyword">if</span> w.isalpha()]</span><br><span class="line">                </span><br><span class="line">    result = <span class="string">&quot; &quot;</span>.join(words)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">                  </span><br></pre></td></tr></table></figure>
+
+<p>调用去噪函数处理数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#调用去噪函数处理爬取下来的内容</span></span><br><span class="line">pro_cont = []</span><br><span class="line"><span class="keyword">for</span> each <span class="keyword">in</span> cont:</span><br><span class="line">    pro_cont.append(process(each))</span><br><span class="line">pro_cont</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/3.png"></p>
+<p>将去噪后的数据转换为DataFrame格式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#为构建文本向量做准备，先转换成pd的DataFrame格式</span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">df_title = pd.DataFrame(pro_cont,columns=[<span class="string">&#x27;words&#x27;</span>])</span><br><span class="line">df_title.head(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/4.png"></p>
+<p>加载停用词</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#加载停用词</span></span><br><span class="line">stopwords = []</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;stopwords.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> w <span class="keyword">in</span> f:</span><br><span class="line">        stopwords.append(w.strip())  <span class="comment">#去除多余空格</span></span><br><span class="line">stopwords  <span class="comment">#查看停用词</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/5.png"></p>
+<h1 id="二、构建分类模型"><a href="#二、构建分类模型" class="headerlink" title="二、构建分类模型"></a>二、构建分类模型</h1><p>定义训练样本数据，训练样本数据为用逗号隔开的，字段含义为：id，情绪值，微博内容<br>train.txt为训练数据，test.txt为测试数据<br>加载训练文本数据集、测试文本数据集的函数<br>训练文本数据集和测试文本数据集都为已打好标签的数据 1为正面情绪，0为负面情绪</p>
+<p>朴素贝叶斯基础思想：对于给出的待分类项，求解在此项出现的条件下各个类别出现的概率，哪个最大，就认为此待分类项属于哪个类别</p>
+<p>通俗理解便是用到DataFrame形式，将我们的内容进行结构化拆分来对分词进行判断</p>
+<p>加载数据函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#加载数据，提取情绪分类和内容，进行处理</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_corpus</span>(<span class="params">path</span>):</span><br><span class="line">    data = []</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(path,<span class="string">&#x27;r&#x27;</span>,encoding=<span class="string">&#x27;utf8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">            [_,sentiment,content] = line.split(<span class="string">&#x27;,&#x27;</span>,<span class="number">2</span>) <span class="comment">#分隔三次</span></span><br><span class="line">            <span class="comment">#对微博内容调用process函数进行去噪处理</span></span><br><span class="line">            content = process(content)</span><br><span class="line">            data.append((content,<span class="built_in">int</span>(sentiment)))</span><br><span class="line">    <span class="keyword">return</span> data</span><br></pre></td></tr></table></figure>
+
+<p>以DataFrame形式呈现训练集与测试集</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#调用加载数据函数，用DataFrame的形式呈现</span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">train_data = load_corpus(<span class="string">&#x27;train.txt&#x27;</span>)</span><br><span class="line">test_data = load_corpus(<span class="string">&#x27;test.txt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">df_train = pd.DataFrame(train_data,columns=[<span class="string">&quot;words&quot;</span>,<span class="string">&quot;label&quot;</span>])</span><br><span class="line">df_test = pd.DataFrame(test_data,columns=[<span class="string">&quot;words&quot;</span>,<span class="string">&quot;label&quot;</span>])</span><br><span class="line">df_train.head(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/6.png"></p>
+<p>用词袋模型构建训练数据的文本向量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#用BOW 构建训练数据的文本向量</span></span><br><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> CountVectorizer</span><br><span class="line">vectorizer = CountVectorizer(token_pattern=<span class="string">&#x27;\[?\w+\]?&#x27;</span>,stop_words=stopwords)</span><br><span class="line">X_train = vectorizer.fit_transform(df_train[<span class="string">&quot;words&quot;</span>])</span><br><span class="line">y_train = df_train[<span class="string">&quot;label&quot;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(X_train),X_train.shape)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/7.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#用BOW构建测试数据的文本向量</span></span><br><span class="line">X_test = vectorizer.transform(df_test[<span class="string">&quot;words&quot;</span>])</span><br><span class="line">y_test = df_test[<span class="string">&quot;label&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>导入多项式朴素贝叶斯</p>
+<p>MultinomialNB实现对多项式分布数据的朴素贝叶斯算法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#导入多项式朴素贝叶斯</span></span><br><span class="line"><span class="keyword">from</span> sklearn.naive_bayes <span class="keyword">import</span> MultinomialNB</span><br><span class="line"><span class="comment">#实例化</span></span><br><span class="line">clf = MultinomialNB()</span><br><span class="line"><span class="comment">#用训练模型训练数据</span></span><br><span class="line">clf.fit(X_train,y_train)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/8.png"></p>
+<p>在测试集上用模型预测结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在测试集上用模型预测结果</span></span><br><span class="line">y_pred = clf.predict(X_test)</span><br><span class="line"><span class="built_in">print</span>(y_pred)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/9.png"></p>
+<p>准确度检验</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#测试集效果检验</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(metrics.classification_report(y_test,y_pred))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;准确率:&quot;</span>,metrics.accuracy_score(y_test,y_pred))</span><br><span class="line">auc_score = metrics.roc_auc_score(y_test,y_pred)  <span class="comment">#先计算AUC</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;AUC:&quot;</span>,auc_score)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/10.png"></p>
+<p>保存模型</p>
+<h1 id="三、应用模型"><a href="#三、应用模型" class="headerlink" title="三、应用模型"></a>三、应用模型</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#对标题“吴磊绝杀”的微博主要内容运用模型预测情绪</span></span><br><span class="line"><span class="comment">#用BOW方式准备文本向量</span></span><br><span class="line">x = vectorizer.transform(df_title[<span class="string">&#x27;words&#x27;</span>])</span><br><span class="line"><span class="comment">#预测</span></span><br><span class="line">y_title = clf.predict(x)</span><br><span class="line"><span class="comment">#print(y_pred)</span></span><br><span class="line"><span class="comment">#导入numpy方便计算平均得分</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">title = <span class="string">&quot;吴磊绝杀&quot;</span></span><br><span class="line"><span class="built_in">print</span>(title,<span class="string">&#x27;情感平均得分为：&#x27;</span>,np.mean(y_title))</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/11.png"></p>
+<p>平均得分0.8，算是很趋近于1了。中国队这次不用退钱了,看来大家都蛮高兴的: )</p>
+<p>用pickle模块保存MultinomiaNB模型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#保存模型</span></span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./mnb_model.pkl&#x27;</span>,<span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    pickle.dump(clf,f)</span><br></pre></td></tr></table></figure>
+
+<p>用保存的模型再测试一下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#读取模型，预测结果</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./mnb_model.pkl&#x27;</span>,<span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    save_clf = pickle.load(f)</span><br><span class="line">    </span><br><span class="line"><span class="comment">#读取的模型,预测结果</span></span><br><span class="line">save_clf.predict(x)</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">title = <span class="string">&quot;吴磊绝杀&quot;</span></span><br><span class="line"><span class="built_in">print</span>(title,<span class="string">&#x27;情感平均得分为:&#x27;</span>,np.mean(y_title))</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/12.png"></p>
+<p>没有问题，爬虫技术的初步探索阶段性成功^_^</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/26/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E7%88%AC%E5%8F%96%E5%88%86%E6%9E%90%E9%A1%B9%E7%9B%AE/" rel="prev" title="微博热搜爬取分析项目">
+      <i class="fa fa-chevron-left"></i> 微博热搜爬取分析项目
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/05/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/" rel="next" title="基于kafka的微博情感分析与可视化实现">
+      基于kafka的微博情感分析与可视化实现 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%89%8D"><span class="nav-number">1.</span> <span class="nav-text">写在最前</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">总体流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E7%88%AC%E5%8F%96%E5%92%8C%E5%A4%84%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">(1)数据爬取和处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%9E%84%E5%BB%BA%E5%88%86%E7%B1%BB%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">(2)构建分类模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%BA%94%E7%94%A8%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.3.</span> <span class="nav-text">(3)应用模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%95%B0%E6%8D%AE%E7%88%AC%E5%8F%96"><span class="nav-number">3.</span> <span class="nav-text">一、数据爬取</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%9E%84%E5%BB%BA%E5%88%86%E7%B1%BB%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">二、构建分类模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%BA%94%E7%94%A8%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text">三、应用模型</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="倬倬吃三碗"
+      src="/images/zaomiao2.jpg">
+  <p class="site-author-name" itemprop="name">倬倬吃三碗</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhuozhuo233" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhuozhuo233" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">倬倬吃三碗</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":300,"height":600,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

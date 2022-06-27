@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhuozhuo233.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一、虚拟机环境准备1.创建虚拟机，并安装CentOS6.5。虚拟机与系统的兼容性问题需要具体问题具体分析，采用命令行系统用远程连接工具进行操作比较方便。   2.修改虚拟机的静态IP 1vi &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-eth0  配置内容 1234567891011DEVICE&#x3D;eth0TYPE&#x3D;EthernetONBOOT&#x3D;yesBOOTPROTO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop伪分布式搭建与配置备忘">
+<meta property="og:url" content="https://zhuozhuo233.github.io/2021/09/12/Hadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E6%90%AD%E5%BB%BA%E4%B8%8E%E9%85%8D%E7%BD%AE%E5%A4%87%E5%BF%98/index.html">
+<meta property="og:site_name" content="倬倬吃三碗">
+<meta property="og:description" content="一、虚拟机环境准备1.创建虚拟机，并安装CentOS6.5。虚拟机与系统的兼容性问题需要具体问题具体分析，采用命令行系统用远程连接工具进行操作比较方便。   2.修改虚拟机的静态IP 1vi &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-eth0  配置内容 1234567891011DEVICE&#x3D;eth0TYPE&#x3D;EthernetONBOOT&#x3D;yesBOOTPROTO">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-11T18:03:22.000Z">
+<meta property="article:modified_time" content="2021-09-25T13:34:10.559Z">
+<meta property="article:author" content="倬倬吃三碗">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://zhuozhuo233.github.io/2021/09/12/Hadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E6%90%AD%E5%BB%BA%E4%B8%8E%E9%85%8D%E7%BD%AE%E5%A4%87%E5%BF%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Hadoop伪分布式搭建与配置备忘 | 倬倬吃三碗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">倬倬吃三碗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2021/09/12/Hadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E6%90%AD%E5%BB%BA%E4%B8%8E%E9%85%8D%E7%BD%AE%E5%A4%87%E5%BF%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zaomiao2.jpg">
+      <meta itemprop="name" content="倬倬吃三碗">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="倬倬吃三碗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hadoop伪分布式搭建与配置备忘
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-12 02:03:22" itemprop="dateCreated datePublished" datetime="2021-09-12T02:03:22+08:00">2021-09-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-25 21:34:10" itemprop="dateModified" datetime="2021-09-25T21:34:10+08:00">2021-09-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6%E4%B8%8E%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">数据科学与大数据技术</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="一、虚拟机环境准备"><a href="#一、虚拟机环境准备" class="headerlink" title="一、虚拟机环境准备"></a>一、虚拟机环境准备</h1><p>1.创建虚拟机，并安装CentOS6.5。虚拟机与系统的兼容性问题需要具体问题具体分析，采用命令行系统用远程连接工具进行操作比较方便。  </p>
+<p>2.修改虚拟机的静态IP</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/sysconfig/network-scripts/ifcfg-eth0</span><br></pre></td></tr></table></figure>
+
+<p>配置内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">DEVICE=eth0</span><br><span class="line">TYPE=Ethernet</span><br><span class="line">ONBOOT=yes</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">IPADDR=192.168.1.100</span><br><span class="line">PREFIX=24</span><br><span class="line">GATEWAY=192.168.1.2</span><br><span class="line">DNS1=192.168.1.2</span><br><span class="line">DNS2=8.8.8.8</span><br><span class="line">NAME=&quot;System eth0&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>3.修改主机名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysconfig/network</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HOSTNAME=node0</span><br></pre></td></tr></table></figure>
+
+<p>4.关闭防火墙</p>
+<p>关闭防火墙的命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service iptables stop</span><br></pre></td></tr></table></figure>
+
+<p>关闭防火墙的开机自启</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig iptables off</span><br></pre></td></tr></table></figure>
+
+<p> 查看防火墙的状态</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkcofnig iptables --list</span><br></pre></td></tr></table></figure>
+
+<p>5.创建一个普通用户</p>
+<p>创建用户</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd zhuo</span><br></pre></td></tr></table></figure>
+
+<p>更改密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd 123456</span><br></pre></td></tr></table></figure>
+
+<p>6.配置yitong用户具有root权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sudoers</span><br></pre></td></tr></table></figure>
+
+<p>找到<strong>Allow root to run any commands anywhere</strong>那一行，在root那一行的下面添加我们的信息，如下面所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">## Allow root to run any commands anywhere</span><br><span class="line">root    ALL=(ALL)       ALL</span><br><span class="line">zhuo  ALL=(ALL)       NOPASSWD:ALL</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>7．在&#x2F;opt目录下创建文件夹</p>
+<p>（1）在&#x2F;opt目录下创建apps(用来安装jdk和hadoop)、soft(用来存放临时上传的安装包文件)文件夹</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /opt/apps /opt/soft</span><br></pre></td></tr></table></figure>
+
+<p>（2）修改module、software文件夹的所有者，将文件的所有者改为新建的用户zhuo</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown yitong:yitong /opt/apps /opt/soft</span><br></pre></td></tr></table></figure>
+
+<p>8.修改hosts文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>在hosts文件的最后添加:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">192.168.1.100 node0</span><br><span class="line">192.168.1.101 node1</span><br><span class="line">192.168.1.102 node2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h1 id="二、安装jdk"><a href="#二、安装jdk" class="headerlink" title="二、安装jdk"></a>二、安装jdk</h1><p>1.检查机器上是否装有openjdk，如果有就要将它卸载掉。</p>
+<p>​     查询是否安装Java软件：</p>
+<p>​     rpm -qa | grep java</p>
+<p>​     卸载java </p>
+<p>​     rpm -e java –nodeps</p>
+<p>2.使用secureCRT等传输工具将jdk的压缩包上传到&#x2F;opt&#x2F;soft目录下</p>
+<p>3.解压jdk到&#x2F;opt&#x2F;apps目录下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf jdk-8u241-linux-x64.tar.gz -C /opt/apps/</span><br></pre></td></tr></table></figure>
+
+<p>5.配置jdk环境变量</p>
+<p>（1）选获取jdk的路径</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[zhuo@node1 apps]$ cd jdk1.8.0_241/</span><br><span class="line"></span><br><span class="line">[zhuo@node1 jdk1.8.0_241]$ pwd</span><br><span class="line"></span><br><span class="line">/opt/apps/jdk1.8.0_241</span><br></pre></td></tr></table></figure>
+
+<p>（2）打开&#x2F;etc&#x2F;profile文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[zhuo@node1 jdk1.8.0_241]$ sudo vim /etc/profile</span><br></pre></td></tr></table></figure>
+
+<p>在文件的末尾添加</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/opt/apps/jdk1.8.0_241</span><br><span class="line"></span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br></pre></td></tr></table></figure>
+
+<p>（3）保存后退出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">：wq</span><br></pre></td></tr></table></figure>
+
+<p>（4）刷新让修改后的文件生效</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[zhuo@node1 jdk1.8.0_241]$ source /etc/profile</span><br></pre></td></tr></table></figure>
+
+<p>6.测试安装jdk是否成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[zhuo@node1 jdk1.8.0_241]$ java -version </span><br><span class="line"></span><br><span class="line">java version &quot;1.8.0_241&quot;</span><br><span class="line"></span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_241-b07)</span><br><span class="line"></span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.241-b07, mixed mode)</span><br></pre></td></tr></table></figure>
+
+<h1 id="三、安装Hadoop"><a href="#三、安装Hadoop" class="headerlink" title="三、安装Hadoop"></a>三、安装Hadoop</h1><p>1.进入到&#x2F;opt&#x2F;soft目录下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[zhuo@node1 apps]$ cd /opt/soft</span><br><span class="line"></span><br><span class="line">[zhuo@node1 soft]$ ll</span><br><span class="line"></span><br><span class="line">总用量 547848</span><br><span class="line"></span><br><span class="line">-rw-rw-r--. 1 yitong yitong 366447449 8月 30 13:48 hadoop-2.9.2.tar.gz</span><br><span class="line"></span><br><span class="line">-rw-rw-r--. 1 yitong yitong 194545143 5月 25 22:39 jdk-8u241-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>2.将Hadoop压缩包解压到&#x2F;opt&#x2F;apps目录下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[zhuo@node1 soft]$ tar -zxvf hadoop-2.9.2.tar.gz -C /opt/apps/</span><br></pre></td></tr></table></figure>
+
+<p>3.查看解压是否成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[zhuo@node1 soft]$ cd /opt/apps</span><br><span class="line"></span><br><span class="line">[zhuo@node1 apps]$ ll</span><br><span class="line"></span><br><span class="line">总用量 8</span><br><span class="line"></span><br><span class="line">drwxr-xr-x. 9 yitong yitong 4096 11月 13 2018 hadoop-2.9.2</span><br><span class="line"></span><br><span class="line">drwxr-xr-x. 7 yitong yitong 4096 12月 11 2019 jdk1.8.0_241</span><br></pre></td></tr></table></figure>
+
+<p>4．将Hadoop添加到环境变量</p>
+<p>（1）获取Hadoop的安装路径</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[zhuo@node1 apps]$ cd hadoop-2.9.2/</span><br><span class="line"></span><br><span class="line">[zhuo@node1 hadoop-2.9.2]$ pwd</span><br><span class="line"></span><br><span class="line">/opt/apps/hadoop-2.9.2</span><br></pre></td></tr></table></figure>
+
+<p>（2）打开&#x2F;etc&#x2F;profile文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[zhuo@node1 hadoop-2.9.2]$ vim /etc/profile</span><br></pre></td></tr></table></figure>
+
+<p>在profile文件后面添加</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/opt/apps/jdk1.8.0_241</span><br><span class="line"></span><br><span class="line">export HADOOP_HOME=/opt/apps/hadoop-2.9.2</span><br><span class="line"></span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME:/sbin</span><br></pre></td></tr></table></figure>
+
+<p>（3）保存并退出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shift+ZZ</span><br></pre></td></tr></table></figure>
+
+
+
+<p>（4）刷新让修改后的文件生效</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[yitong@node1 hadoop-2.9.2]$ source /etc/profile</span><br></pre></td></tr></table></figure>
+
+<p>5.测试是否安装成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[zhuo@node1 hadoop-2.9.2]$ hadoop version</span><br><span class="line"></span><br><span class="line">Hadoop 2.9.2</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="四、配置Hadoop"><a href="#四、配置Hadoop" class="headerlink" title="四、配置Hadoop"></a>四、配置Hadoop</h1><ol>
+<li>配置hadoop-env.sh文件</li>
+</ol>
+<p>（1）获取到jdk的安装路径</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[zhuo@node1 hadoop]$ echo $JAVA_HOME</span><br><span class="line"></span><br><span class="line">/opt/apps/jdk1.8.0_241</span><br></pre></td></tr></table></figure>
+
+<p>（2）修改hadoop-env.sh文件中的jdk安装路径</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[zhuo@node1 hadoop]$ vim hadoop-env.sh</span><br><span class="line"># The java implementation to use.</span><br><span class="line">export JAVA_HOME=/opt/apps/jdk1.8.0_241</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>配置core-site.xml</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[zhuo@node1 hadoop]$ vim core-site.xml</span><br></pre></td></tr></table></figure>
+
+<p>在**<configuration></configuration>**标签里添加以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 指定HDFS中NameNode的地址 --&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line"></span><br><span class="line">&lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line"></span><br><span class="line">  &lt;value&gt;hdfs://node0:9000&lt;/value&gt;</span><br><span class="line"></span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">&lt;!-- 指定Hadoop运行时产生文件的存储目录 --&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line"></span><br><span class="line">	&lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line"></span><br><span class="line">	&lt;value&gt;/opt/apps/hadoop-2.9.2/data/tmp&lt;/value&gt;</span><br><span class="line"></span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>3.配置hdfs-site.xml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[yitong@node1 hadoop]$ vi hdfs-site.xml</span><br></pre></td></tr></table></figure>
+
+<p>在**<configuration></configuration>**标签里添加以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 指定HDFS副本的数量 --&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line"></span><br><span class="line">	&lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line"></span><br><span class="line">	&lt;value&gt;1&lt;/value&gt;</span><br><span class="line"></span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 设置HDFS的元数据存放的位置 --&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line"></span><br><span class="line">	&lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</span><br><span class="line"></span><br><span class="line">	&lt;value&gt;/opt/apps/hadoop-2.9.2/data/tmp/dfs/name&lt;/value&gt;</span><br><span class="line"></span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 设置HDFS的元数据存放的位置 --&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line"></span><br><span class="line">	&lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</span><br><span class="line"></span><br><span class="line">	&lt;value&gt;/opt/apps/hadoop-2.9.2/data/tmp/dfs/name&lt;/value&gt;</span><br><span class="line"></span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
+<p>4．格式化HDFS系统</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs namenode –format </span><br></pre></td></tr></table></figure>
+
+<p>5.启动hadoop</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start-dfs.sh</span><br></pre></td></tr></table></figure>
+
+<p>6.检查启动的效果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[zhuo@node0 ~]$ jps</span><br><span class="line"></span><br><span class="line">2219 Jps</span><br><span class="line"></span><br><span class="line">2108 SecondaryNameNode</span><br><span class="line"></span><br><span class="line">1820 NameNode</span><br></pre></td></tr></table></figure>
+
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/12/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="prev" title="基于Spark的智能餐饮推荐系统">
+      <i class="fa fa-chevron-left"></i> 基于Spark的智能餐饮推荐系统
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/13/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/" rel="next" title="基于Spark的心脏病分析">
+      基于Spark的心脏病分析 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text">一、虚拟机环境准备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%AE%89%E8%A3%85jdk"><span class="nav-number">2.</span> <span class="nav-text">二、安装jdk</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%AE%89%E8%A3%85Hadoop"><span class="nav-number">3.</span> <span class="nav-text">三、安装Hadoop</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E9%85%8D%E7%BD%AEHadoop"><span class="nav-number">4.</span> <span class="nav-text">四、配置Hadoop</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="倬倬吃三碗"
+      src="/images/zaomiao2.jpg">
+  <p class="site-author-name" itemprop="name">倬倬吃三碗</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhuozhuo233" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhuozhuo233" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">倬倬吃三碗</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":300,"height":600,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

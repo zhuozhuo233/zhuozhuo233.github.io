@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhuozhuo233.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一、项目开发目的随着科技的高速发展，人们的生活节奏也越来越快。忙碌的都市生活让许多年轻一族习惯于在餐饮外卖平台上进行订餐。“今天吃是什么”这个问题在生活中也越来越普遍。为了解决人们对于外卖餐饮的选择问题，本项目随之诞生。本项目的开发目的就在于为人们提供个性化的菜品推荐系统，解决人们选择困难的问题。 二、项目开发环境1.项目设计组件及语言1.hadoop 2.spark 3.Hive 4.spark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于Spark的智能餐饮推荐系统">
+<meta property="og:url" content="https://zhuozhuo233.github.io/2021/09/12/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="倬倬吃三碗">
+<meta property="og:description" content="一、项目开发目的随着科技的高速发展，人们的生活节奏也越来越快。忙碌的都市生活让许多年轻一族习惯于在餐饮外卖平台上进行订餐。“今天吃是什么”这个问题在生活中也越来越普遍。为了解决人们对于外卖餐饮的选择问题，本项目随之诞生。本项目的开发目的就在于为人们提供个性化的菜品推荐系统，解决人们选择困难的问题。 二、项目开发环境1.项目设计组件及语言1.hadoop 2.spark 3.Hive 4.spark">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/%E6%95%B0%E6%8D%AE%E6%9D%A5%E6%BA%90.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/%E4%B8%8A%E4%BC%A0.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/3.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/4.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/5.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/6.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/7.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/8.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/9.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/10.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/11.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/12.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/13.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/14.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/15.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/16.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/17.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/18.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/19.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/20.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/21.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/22.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/23.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/24.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/25.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/26.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/27.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/28.png">
+<meta property="article:published_time" content="2021-09-11T17:15:17.000Z">
+<meta property="article:modified_time" content="2021-09-11T17:55:14.134Z">
+<meta property="article:author" content="倬倬吃三碗">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/%E6%95%B0%E6%8D%AE%E6%9D%A5%E6%BA%90.png">
+
+<link rel="canonical" href="https://zhuozhuo233.github.io/2021/09/12/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>基于Spark的智能餐饮推荐系统 | 倬倬吃三碗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">倬倬吃三碗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2021/09/12/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zaomiao2.jpg">
+      <meta itemprop="name" content="倬倬吃三碗">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="倬倬吃三碗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于Spark的智能餐饮推荐系统
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-09-12 01:15:17 / 修改时间：01:55:14" itemprop="dateCreated datePublished" datetime="2021-09-12T01:15:17+08:00">2021-09-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6%E4%B8%8E%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">数据科学与大数据技术</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="一、项目开发目的"><a href="#一、项目开发目的" class="headerlink" title="一、项目开发目的"></a>一、项目开发目的</h1><p>随着科技的高速发展，人们的生活节奏也越来越快。忙碌的都市生活让许多年轻一族习惯于在餐饮外卖平台上进行订餐。“今天吃是什么”这个问题在生活中也越来越普遍。为了解决人们对于外卖餐饮的选择问题，本项目随之诞生。本项目的开发目的就在于为人们提供个性化的菜品推荐系统，解决人们选择困难的问题。</p>
+<h1 id="二、项目开发环境"><a href="#二、项目开发环境" class="headerlink" title="二、项目开发环境"></a>二、项目开发环境</h1><h2 id="1-项目设计组件及语言"><a href="#1-项目设计组件及语言" class="headerlink" title="1.项目设计组件及语言"></a>1.项目设计组件及语言</h2><p>1.hadoop</p>
+<p>2.spark</p>
+<p>3.Hive</p>
+<p>4.spark</p>
+<p>5.mysql</p>
+<p>6.java</p>
+<h2 id="2-环境搭建流程"><a href="#2-环境搭建流程" class="headerlink" title="2.环境搭建流程"></a>2.环境搭建流程</h2><p>1.搭建Hadoop分布式集群</p>
+<p>2.spark安装配置</p>
+<p>3.mysql安装配置</p>
+<p>4.hive安装配置</p>
+<p>5.scala安装配置</p>
+<p>6.idea配置maven仓库、scalasdk </p>
+<h2 id="3-数据来源及构成"><a href="#3-数据来源及构成" class="headerlink" title="3.数据来源及构成"></a>3.数据来源及构成</h2><p>数据来源是网站的数据库（MySQL）中保存着的菜品数据集</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/%E6%95%B0%E6%8D%AE%E6%9D%A5%E6%BA%90.png" alt="总体"></p>
+<p>数据集用JSON格式存储，数据结构固定。每条记录由如下属性组成：UserID、Rating、ReviewTime、Review、MealID。其中，UserID为用户ID、Rating为用户评分、ReviewTime为评论时间戳、Review为用户评论、MealID为菜品ID。</p>
+<p>本数据源包含38384条总记录数、总用户数为5130、总菜品数为1685，最高评分为5.0，最低评分为1.0。</p>
+<p>工程文件:<a target="_blank" rel="noopener" href="https://github.com/zhuozhuo233/Catering-recommendation">https://github.com/zhuozhuo233/Catering-recommendation</a></p>
+<span id="more"></span>
+
+<h1 id="三、项目功能实现"><a href="#三、项目功能实现" class="headerlink" title="三、项目功能实现"></a>三、项目功能实现</h1><h2 id="1-数据获取"><a href="#1-数据获取" class="headerlink" title="1.数据获取"></a>1.数据获取</h2><p>餐饮外卖平台对于用户的订单、评论等信息进行收集，以JSON文件格式存放于网站的数据库（MySQL）中。将JSON文件下载到本地以进行进一步分析。</p>
+<h2 id="2-数据预处理"><a href="#2-数据预处理" class="headerlink" title="2.数据预处理"></a>2.数据预处理</h2><p>1.将存储于本地的JSON数据上传到HDFS</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/%E4%B8%8A%E4%BC%A0.png" alt="上传"></p>
+<p>2.运用Spark加载原始评分数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">val path=&quot;/user/Meal.json&quot;</span><br><span class="line">val df = spark.read.json(path)</span><br><span class="line">df.printSchema()</span><br><span class="line">df.createOrReplaceTempView(&quot;data&quot;)</span><br><span class="line">spark.sql(&quot;select userid,mealid,rating,review from data&quot;).show(5)</span><br><span class="line">···</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>3.对于评分数据进行探索与统计</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">spark.sql(&quot;select count(*) as records from data&quot;).show(）</span><br><span class="line">spark.sql(&quot;select count(distinct userid) as users from data&quot;).show()</span><br><span class="line">···</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>4.按日期分组统计数据分布</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val dataWithDate = spark.sql(&quot;select * ,(From_Unixtime(reviewtime,&#x27;yyyy-MM-dd&#x27;)) as reviewdate from data&quot;)</span><br><span class="line">···</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>5.查询重复评分记录，最新的评分认定为菜品的最终评价。同一用户与菜品的评分只以最新的评分记录为准。通过Spark SQL对原始数据进行处理，只抽取用户对菜品的最新评分记录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">val lastRating = spark.sql(&quot;select userid,mealid,MAX(reviewtime) as lastdate from data group by userid,mealid&quot;)</span><br><span class="line">lastRating.registerTempTable(&quot;lastRatingPair&quot;)</span><br><span class="line">val lastRatingRecord = spark.sql(&quot;select a.userid,a.mealid,a.rating,a.reviewtime from data a join lastRatingPair b where a.userid=b.userid and a.mealid = b.mealid and a.reviewtime=b.lastdate&quot;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>6.数据变化处理。对用户数据与菜品进行去重，在进行排序。使用排序后的原使用户与菜品的下标志来替代用户或菜品。使用编码后的值替换原始数据中的值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mealzipcode=ratingrdd.map(_._2).distinct.sortBy(x=&gt;x).zipWithIndex.map(a=&gt;(a._1,a._2.toInt))</span><br><span class="line">val userzipcodemap=userzipcode.collect.toMap</span><br><span class="line">val mealzipcodemap=mealzipcode.collect.toMap</span><br><span class="line">val ratingcodelist=ratingrdd.map(x=&gt;(userzipcodemap(x._1),mealzipcodemap(x._2),x._3,x._4)).sortBy(x=&gt;x._4)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>7.数据集分割。将原始数据按规则分为训练集、验证集、测试机。并让他们的占比分别为80%、10%、10%</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">val totalnum=ratingcodelist.count()</span><br><span class="line">val splitpoint1=totalnum*0.8 toInt</span><br><span class="line">val splitpoint2=totalnum*0.9 toInt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-算法模型"><a href="#3-算法模型" class="headerlink" title="3.算法模型"></a>3.算法模型</h2><p>1.基于用户的协同过滤算法建模并评测</p>
+<p>加载训练数据集，根据用户对菜品的评分向量获得用户相似度。之后匹配训练集数据生成推荐模型。将推荐结果存储在HDFS上以供后续进行模型评价。</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/3.png" alt="基于用户的协同过滤算法建模并评测"></p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/4.png" alt="基于用户的协同过滤算法建模并评测"></p>
+<p>2.基于菜品的协同过滤算法建模并评测</p>
+<p>根据用户对于某一菜品相似度最高的K个邻居物品的评分进行加权平均计算，通过评分向量获得用户相似度。匹配训练集数据生成推荐模型。将推荐结果集存储在HDFS上以供后续进行模型评价。</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/5.png" alt="基于用户的协同过滤算法建模并评测"></p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/6.png" alt="基于用户的协同过滤算法建模并评测"></p>
+<p>3.以基于Spak ALS算法建模并评测</p>
+<p>Spark的Mllib包中包含ALS算法包。直接调用Spark ALS算法的train方法进行建模。Spark ALS建模需要多个参数，在参数范围中寻找一组最优的参数。使用训练集数据，输入不同组建模参数进行建模，再利用模型计算验证集中模型预测评分及实际评分的均方根差RMSE，取RMSE值最小的一组参数作为最优参数。之后使用最优参数来建模，执行Spark ALS中的train方法。</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/7.png" alt="基于用户的协同过滤算法建模并评测"></p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/8.png" alt="基于用户的协同过滤算法建模并评测"></p>
+<h2 id="4-模型推荐"><a href="#4-模型推荐" class="headerlink" title="4.模型推荐"></a>4.模型推荐</h2><p>以基于菜品的推荐模型实现单用户菜品推荐</p>
+<p>1.加载用户与菜品编码的数据集</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">val userzipcodepath = &quot;/user/userzipcode&quot;</span><br><span class="line">val mealzipcodepath = &quot;/user/mealzipcode&quot;</span><br><span class="line">val userzipcode = sc.textFile(userzipcodepath).map&#123;x=&gt;val f = x.slice(1,x.size-1).split(&quot;,&quot;);(f(0),f(1).toInt)&#125;</span><br><span class="line">val mealzipcode = sc.textFile(mealzipcodepath).map&#123;x=&gt;val f = x.slice(1,x.size-1).split(&quot;,&quot;);(f(0),f(1).toInt)&#125;</span><br><span class="line">val reverseuserzipcode = userzipcode.map(x=&gt;(x._2,x._1)).collect.toMap</span><br><span class="line">val reversemealzipcode = mealzipcode.map(x=&gt;(x._2,x._1)).collect.toMap</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>2.读取菜品名称表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">val filepath = &quot;/user/meal_list.csv&quot;</span><br><span class="line">val mealrdd = spark.read.csv(filepath)</span><br><span class="line">val mealsmap = mealrdd.map(a=&gt;(a.getString(1),a.getString(2))).collect.toMap</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>3.加载训练数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">val traindata = sc.textFile(&quot;/user/trainratings&quot;).map&#123;x=&gt;val fi = x.slice(1,x.size-1).split(&quot;,&quot;);(fi(0).toInt,fi(1).toInt)&#125;</span><br><span class="line">val trainuserrated = traindata.combineByKey((x:Int)=&gt;List(x),(c:List[Int],x:Int)=&gt;x::c,(c1:List[Int],c2:List[Int])=&gt;c1:::c2).cache()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>4.加载推荐模型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import org.apache.spark.rdd.RDD</span><br><span class="line">val datamodel:RDD[(Int,List[(Int)])]=sc.objectFile[(Int,List[(Int)])](&quot;/user/mealmodel1&quot;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>5.过滤训练数据中已有的菜品，生成可推荐的新菜品集合</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val datamodelnew = datamodel.join(trainuserrated).map(x=&gt;(x._1,(x._2._1.diff(x._2._2))))</span><br></pre></td></tr></table></figure>
+
+<p>6.为用户推荐菜品</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">val recommendation = datamodelnew.map(x=&gt;(x._1,x._2.take(10))).filter(x=&gt;(x._1==1000)).flatMap(x=&gt;x._2.map(y=&gt;(x._1,y)))</span><br><span class="line"></span><br><span class="line">//6.</span><br><span class="line">val recommendationrecords=recommendation.map&#123;case (user,meal)=&gt;(reverseuserzipcode.get(user).get,reversemealzipcode.get(meal).get)&#125;</span><br><span class="line">val realrecommend=recommendationrecords.map&#123;case (user,meal)=&gt;(user,meal,mealsmap.get(meal).get)&#125;</span><br><span class="line">realrecommend.collect.foreach(println)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="四、项目实施情况参照"><a href="#四、项目实施情况参照" class="headerlink" title="四、项目实施情况参照"></a>四、项目实施情况参照</h1><p>数据预处理</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/9.png" alt="数据预处理1"></p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/10.png" alt="数据预处理2"></p>
+<p>本地测试基于ALS模型</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/11.png" alt="数据预处理1"></p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/12.png" alt="数据预处理1"></p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/13.png" alt="数据预处理1"></p>
+<p>本地测试基于用户的协同过滤模型</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/14.png" alt="数据预处理1"></p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/15.png" alt="数据预处理1"></p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/16.png" alt="数据预处理1"></p>
+<p>本地测试基于菜品的协同过滤模型</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/17.png" alt="数据预处理1"></p>
+<p>基于用户的协同过滤模型</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/18.png" alt="数据预处理1"></p>
+<p>基于用户的模型评估</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/19.png" alt="数据预处理1"></p>
+<p>基于菜品的协同过滤模型</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/20.png" alt="数据预处理1"></p>
+<p>基于菜品的模型评估</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/21.png" alt="数据预处理1"></p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/22.png" alt="数据预处理1"></p>
+<p>加载数据</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/23.png" alt="数据预处理1"></p>
+<p>读取菜品名称表</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/24.png" alt="数据预处理1"></p>
+<p>加载训练数据</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/25.png" alt="数据预处理1"></p>
+<p>加载推荐模型</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/26.png" alt="数据预处理1"></p>
+<p>过滤训练集中的菜品，生成可推荐的新菜品集合</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/27.png" alt="数据预处理1"></p>
+<p>为用户（编码为1000）推荐菜品（userno，mealno）</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/28.png" alt="数据预处理1"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/06/%5Bleetcode%5D1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" rel="prev" title="leetcode 1.两数之和">
+      <i class="fa fa-chevron-left"></i> leetcode 1.两数之和
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/12/Hadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E6%90%AD%E5%BB%BA%E4%B8%8E%E9%85%8D%E7%BD%AE%E5%A4%87%E5%BF%98/" rel="next" title="Hadoop伪分布式搭建与配置备忘">
+      Hadoop伪分布式搭建与配置备忘 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E7%9B%AE%E7%9A%84"><span class="nav-number">1.</span> <span class="nav-text">一、项目开发目的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">二、项目开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%A1%B9%E7%9B%AE%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%E5%8F%8A%E8%AF%AD%E8%A8%80"><span class="nav-number">2.1.</span> <span class="nav-text">1.项目设计组件及语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">2.环境搭建流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%95%B0%E6%8D%AE%E6%9D%A5%E6%BA%90%E5%8F%8A%E6%9E%84%E6%88%90"><span class="nav-number">2.3.</span> <span class="nav-text">3.数据来源及构成</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%A1%B9%E7%9B%AE%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">三、项目功能实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96"><span class="nav-number">3.1.</span> <span class="nav-text">1.数据获取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">3.2.</span> <span class="nav-text">2.数据预处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%AE%97%E6%B3%95%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.3.</span> <span class="nav-text">3.算法模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%A8%A1%E5%9E%8B%E6%8E%A8%E8%8D%90"><span class="nav-number">3.4.</span> <span class="nav-text">4.模型推荐</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%96%BD%E6%83%85%E5%86%B5%E5%8F%82%E7%85%A7"><span class="nav-number">4.</span> <span class="nav-text">四、项目实施情况参照</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="倬倬吃三碗"
+      src="/images/zaomiao2.jpg">
+  <p class="site-author-name" itemprop="name">倬倬吃三碗</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhuozhuo233" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhuozhuo233" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">倬倬吃三碗</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":300,"height":600,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

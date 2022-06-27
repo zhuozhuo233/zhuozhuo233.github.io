@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhuozhuo233.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Gensim核心概念文档(Document)Gensim中的文档（document）是文本序列（就像python3中的str）类型的对象。 1document &#x3D; &quot;Human machine interface for lab abc computer applications&quot;  语料库（Corpus）一个语料库是许多文档对象的集合。语料库在Gensim中起到两种作用：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gensim核心思想">
+<meta property="og:url" content="https://zhuozhuo233.github.io/2021/12/27/Gensim%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3/index.html">
+<meta property="og:site_name" content="倬倬吃三碗">
+<meta property="og:description" content="Gensim核心概念文档(Document)Gensim中的文档（document）是文本序列（就像python3中的str）类型的对象。 1document &#x3D; &quot;Human machine interface for lab abc computer applications&quot;  语料库（Corpus）一个语料库是许多文档对象的集合。语料库在Gensim中起到两种作用：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:/Users/倬倬/AppData/Roaming/Typora/typora-user-images/image-20211223105809234.png">
+<meta property="article:published_time" content="2021-12-26T16:01:32.000Z">
+<meta property="article:modified_time" content="2021-12-26T16:40:51.646Z">
+<meta property="article:author" content="倬倬吃三碗">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/倬倬/AppData/Roaming/Typora/typora-user-images/image-20211223105809234.png">
+
+<link rel="canonical" href="https://zhuozhuo233.github.io/2021/12/27/Gensim%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Gensim核心思想 | 倬倬吃三碗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">倬倬吃三碗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2021/12/27/Gensim%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zaomiao2.jpg">
+      <meta itemprop="name" content="倬倬吃三碗">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="倬倬吃三碗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Gensim核心思想
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-12-27 00:01:32 / 修改时间：00:40:51" itemprop="dateCreated datePublished" datetime="2021-12-27T00:01:32+08:00">2021-12-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Gensim核心概念"><a href="#Gensim核心概念" class="headerlink" title="Gensim核心概念"></a>Gensim核心概念</h1><h2 id="文档-Document"><a href="#文档-Document" class="headerlink" title="文档(Document)"></a>文档(Document)</h2><p>Gensim中的文档（document）是文本序列（就像python3中的str）类型的对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">document = <span class="string">&quot;Human machine interface for lab abc computer applications&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="语料库（Corpus）"><a href="#语料库（Corpus）" class="headerlink" title="语料库（Corpus）"></a>语料库（Corpus）</h2><p>一个语料库是许多文档对象的集合。语料库在Gensim中起到两种作用：</p>
+<ol>
+<li>训练模型。模型使用训练语料库来寻找数据中的共同主题（themes and topics）,初始化模型的内部参数。</li>
+<li>组织文档。模型训练完后，主题模型可以从新的文档中抽取之前训练语料库中没有的主题。这样的语料库可以为相似性查询（Similarity Queries）建立索引，进行相似性判断，聚类等操作。</li>
+</ol>
+<p>实例语料库，由9个文档组成，每个文档都是一个由单个句子组成的字符串。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">text_corpus = [</span><br><span class="line">    <span class="string">&quot;Human machine interface for lab abc computer applications&quot;</span>,</span><br><span class="line">    <span class="string">&quot;A survey of user opinion of computer system response time&quot;</span>,</span><br><span class="line">    <span class="string">&quot;The EPS user interface management system&quot;</span>,</span><br><span class="line">    <span class="string">&quot;System and human system engineering testing of EPS&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Relation of user perceived response time to error measurement&quot;</span>,</span><br><span class="line">    <span class="string">&quot;The generation of random binary unordered trees&quot;</span>,</span><br><span class="line">    <span class="string">&quot;The intersection graph of paths in trees&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Graph minors IV Widths of trees and well quasi ordering&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Graph minors A survey&quot;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>代码托管：<a target="_blank" rel="noopener" href="https://github.com/zhuozhuo233/Gensim-Core-Notes">https://github.com/zhuozhuo233/Gensim-Core-Notes</a></p>
+<span id="more"></span>
+
+<p>对语料库设置停用词以及仅出现过一次的单词，将文档分词：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># set停用词</span></span><br><span class="line">stoplist = <span class="built_in">set</span>(<span class="string">&#x27;for a of the and to in&#x27;</span>.split(<span class="string">&#x27; &#x27;</span>))</span><br><span class="line"><span class="comment"># 原文档处理（小写化，空格分隔，去除停用词）</span></span><br><span class="line">texts = [[word <span class="keyword">for</span> word <span class="keyword">in</span> document.lower().split() <span class="keyword">if</span> word <span class="keyword">not</span> <span class="keyword">in</span> stoplist]</span><br><span class="line">         <span class="keyword">for</span> document <span class="keyword">in</span> text_corpus]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 统计词频</span></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line">frequency = defaultdict(<span class="built_in">int</span>)</span><br><span class="line"><span class="keyword">for</span> text <span class="keyword">in</span> texts:</span><br><span class="line">    <span class="keyword">for</span> token <span class="keyword">in</span> text:</span><br><span class="line">        frequency[token] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 仅保留出现过一次以上的词</span></span><br><span class="line">processed_corpus = [[token <span class="keyword">for</span> token <span class="keyword">in</span> text <span class="keyword">if</span> frequency[token] &gt; <span class="number">1</span>] <span class="keyword">for</span> text <span class="keyword">in</span> texts]</span><br><span class="line"><span class="built_in">print</span>(processed_corpus)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[&#x27;human&#x27;, &#x27;interface&#x27;, &#x27;computer&#x27;], [&#x27;survey&#x27;, &#x27;user&#x27;, &#x27;computer&#x27;, &#x27;system&#x27;, &#x27;response&#x27;, &#x27;time&#x27;], [&#x27;eps&#x27;, &#x27;user&#x27;, &#x27;interface&#x27;, &#x27;system&#x27;], [&#x27;system&#x27;, &#x27;human&#x27;, &#x27;system&#x27;, &#x27;eps&#x27;], [&#x27;user&#x27;, &#x27;response&#x27;, &#x27;time&#x27;], [&#x27;trees&#x27;], [&#x27;graph&#x27;, &#x27;trees&#x27;], [&#x27;graph&#x27;, &#x27;minors&#x27;, &#x27;trees&#x27;], [&#x27;graph&#x27;, &#x27;minors&#x27;, &#x27;survey&#x27;]]</span><br></pre></td></tr></table></figure>
+
+<p>希望把每个单词与一个唯一的数字id联系起来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gensim <span class="keyword">import</span> corpora</span><br><span class="line"></span><br><span class="line">dictionary = corpora.Dictionary(processed_corpus)</span><br><span class="line"><span class="built_in">print</span>(dictionary)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Dictionary(12 unique tokens: [&#x27;computer&#x27;, &#x27;human&#x27;, &#x27;interface&#x27;, &#x27;response&#x27;, &#x27;survey&#x27;]...)</span><br></pre></td></tr></table></figure>
+
+<p>因为我们的实验语料库小，所以只有12个不同的标记。对于更大的语料库，字典中包含成百上千个标记是很常见的。</p>
+<h2 id="向量（Vector）"><a href="#向量（Vector）" class="headerlink" title="向量（Vector）"></a>向量（Vector）</h2><p>为了推测我们语料库中的隐含结构，我们需要一种将文档转化为数学操作的方法——将文本转化为特征向量。</p>
+<p>检查语料库中12个独特的id：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(dictionary.token2id)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#x27;computer&#x27;: 0, &#x27;human&#x27;: 1, &#x27;interface&#x27;: 2, &#x27;response&#x27;: 3, &#x27;survey&#x27;: 4, &#x27;system&#x27;: 5, &#x27;time&#x27;: 6, &#x27;user&#x27;: 7, &#x27;eps&#x27;: 8, &#x27;trees&#x27;: 9, &#x27;graph&#x27;: 10, &#x27;minors&#x27;: 11&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实验对不在原始语料库中的短语进行向量化处理。使用doc2bow字典的方法为该短语创建次代表是，该方法返回单词计数的稀疏表示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">new_doc = <span class="string">&quot;Human computer interaction&quot;</span></span><br><span class="line">new_vec = dictionary.doc2bow(new_doc.lower().split())</span><br><span class="line"><span class="built_in">print</span>(new_vec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[(0, 1), (1, 1)]</span><br><span class="line">#(字典中的id，出现次数)</span><br></pre></td></tr></table></figure>
+
+<p><strong>独热向量与稀疏向量：</strong></p>
+<p><img src="C:\Users\倬倬\AppData\Roaming\Typora\typora-user-images\image-20211223105809234.png" alt="image-20211223105809234"></p>
+<p>将整个原始语料库转为向量列表</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bow_corpus = [dictionary.doc2bow(text) <span class="keyword">for</span> text <span class="keyword">in</span> processed_corpus]</span><br><span class="line"><span class="built_in">print</span>(bow_corpus)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[(0, 1), (1, 1), (2, 1)], [(0, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1)], [(2, 1), (5, 1), (7, 1), (8, 1)], [(1, 1), (5, 2), (8, 1)], [(3, 1), (6, 1), (7, 1)], [(9, 1)], [(9, 1), (10, 1)], [(9, 1), (10, 1), (11, 1)], [(4, 1), (10, 1), (11, 1)]]</span><br></pre></td></tr></table></figure>
+
+<h2 id="模型（Model）"><a href="#模型（Model）" class="headerlink" title="模型（Model）"></a>模型（Model）</h2><p>现在我们已经向量化了我们的语料库，可以开始使用模型来对其进行转换。当我们的文档向量化后，模型可以视为两个向量空间之间的转换。当模型读取训练语料库时，它会在训练的过程中学习这种转换的细节。</p>
+<p>tf-idf简单例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gensim <span class="keyword">import</span> models</span><br><span class="line"><span class="comment">#训练模型</span></span><br><span class="line">tfidf = models.TfidfModel(bow_corpus)</span><br><span class="line"></span><br><span class="line"><span class="comment">#转换 &quot;system minors&quot; 字符串</span></span><br><span class="line">words = <span class="string">&quot;system minors&quot;</span>.lower().split()</span><br><span class="line"><span class="built_in">print</span>(tfidf[dictionary.doc2bow(words)])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[(5, 0.5898341626740045), (11, 0.8075244024440723)]</span><br><span class="line">#（标识id，tfidf权重）</span><br></pre></td></tr></table></figure>
+
+<p>创建了模型就可以来做各种很酷的事。如，通过Tfidf转换整个语料库并对其进行索引，为相似性查询做准备：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gensim <span class="keyword">import</span> similarities</span><br><span class="line">index = similarities.SparseMatrixSimilarity(tfidf[bow_corpus],num_features = <span class="number">12</span>)</span><br></pre></td></tr></table></figure>
+
+<p>将新的query document与语料库中的每一个文档进行相似性比较：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">query_document = <span class="string">&#x27;system engineering&#x27;</span>.split()</span><br><span class="line">query_bow = dictionary.doc2bow(query_document)</span><br><span class="line">sims = index[tfidf[query_bow]]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>(<span class="built_in">enumerate</span>(sims)))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(0, 0.0), (1, 0.32448703), (2, 0.41707572), (3, 0.7184812), (4, 0.0), (5, 0.0), (6, 0.0), (7, 0.0), (8, 0.0)]</span><br></pre></td></tr></table></figure>
+
+<p>简简单单排个序，看一下相似度得分</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> document_number,score <span class="keyword">in</span> <span class="built_in">sorted</span>(<span class="built_in">enumerate</span>(sims),key = <span class="keyword">lambda</span> x:x[<span class="number">1</span>],reverse = <span class="literal">True</span>):</span><br><span class="line">    <span class="built_in">print</span>(document_number,score)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">3 0.7184812</span><br><span class="line">2 0.41707572</span><br><span class="line">1 0.32448703</span><br><span class="line">0 0.0</span><br><span class="line">4 0.0</span><br><span class="line">5 0.0</span><br><span class="line">6 0.0</span><br><span class="line">7 0.0</span><br><span class="line">8 0.0</span><br></pre></td></tr></table></figure>
+
+<p>文档3的得分最高，直观对比一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">query document：</span><br><span class="line"><span class="string">&#x27;system engineering&#x27;</span></span><br><span class="line"></span><br><span class="line">文档<span class="number">3</span>：</span><br><span class="line"><span class="string">&quot;System and human system engineering testing of EPS&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="语料库与向量空间"><a href="#语料库与向量空间" class="headerlink" title="语料库与向量空间"></a>语料库与向量空间</h1><h2 id="从字符串到向量"><a href="#从字符串到向量" class="headerlink" title="从字符串到向量"></a>从字符串到向量</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">documents = [</span><br><span class="line">    <span class="string">&quot;Human machine interface for lab abc computer applications&quot;</span>,</span><br><span class="line">    <span class="string">&quot;A survey of user opinion of computer system response time&quot;</span>,</span><br><span class="line">    <span class="string">&quot;The EPS user interface management system&quot;</span>,</span><br><span class="line">    <span class="string">&quot;System and human system engineering testing of EPS&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Relation of user perceived response time to error measurement&quot;</span>,</span><br><span class="line">    <span class="string">&quot;The generation of random binary unordered trees&quot;</span>,</span><br><span class="line">    <span class="string">&quot;The intersection graph of paths in trees&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Graph minors IV Widths of trees and well quasi ordering&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Graph minors A survey&quot;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>处理原语料库，设置停用词，移除只出现过一次的单词</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pprint <span class="keyword">import</span> pprint <span class="comment">#pretty-printer</span></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"></span><br><span class="line"><span class="comment">#去除常见词与标记</span></span><br><span class="line">stoplist = <span class="built_in">set</span>(<span class="string">&#x27;for a of the and to in&#x27;</span>,split())</span><br><span class="line">texts = &#123;</span><br><span class="line">    [word <span class="keyword">for</span> word <span class="keyword">in</span> document,lower().split() <span class="keyword">if</span> word <span class="keyword">not</span> <span class="keyword">in</span> stoplist]</span><br><span class="line">    <span class="keyword">for</span> document <span class="keyword">in</span> documents</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#移除只出现过一次的词</span></span><br><span class="line">frequency = defaultdict(<span class="built_in">int</span>)</span><br><span class="line"><span class="keyword">for</span> text <span class="keyword">in</span> texts:</span><br><span class="line">    <span class="keyword">for</span> token <span class="keyword">in</span> text:</span><br><span class="line">        frequency[token] +=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">texts = [</span><br><span class="line">    [token <span class="keyword">for</span> token <span class="keyword">in</span> text <span class="keyword">if</span> frequency[token] &gt; <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">for</span> text <span class="keyword">in</span> texts</span><br><span class="line">]</span><br><span class="line">pprint(texts)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[[&#x27;human&#x27;, &#x27;interface&#x27;, &#x27;computer&#x27;],</span><br><span class="line"> [&#x27;survey&#x27;, &#x27;user&#x27;, &#x27;computer&#x27;, &#x27;system&#x27;, &#x27;response&#x27;, &#x27;time&#x27;],</span><br><span class="line"> [&#x27;eps&#x27;, &#x27;user&#x27;, &#x27;interface&#x27;, &#x27;system&#x27;],</span><br><span class="line"> [&#x27;system&#x27;, &#x27;human&#x27;, &#x27;system&#x27;, &#x27;eps&#x27;],</span><br><span class="line"> [&#x27;user&#x27;, &#x27;response&#x27;, &#x27;time&#x27;],</span><br><span class="line"> [&#x27;trees&#x27;],</span><br><span class="line"> [&#x27;graph&#x27;, &#x27;trees&#x27;],</span><br><span class="line"> [&#x27;graph&#x27;, &#x27;minors&#x27;, &#x27;trees&#x27;],</span><br><span class="line"> [&#x27;graph&#x27;, &#x27;minors&#x27;, &#x27;survey&#x27;]]</span><br></pre></td></tr></table></figure>
+
+<p>将文档转换为向量的方式很多，这里使用词袋模型。在这种表示下，每个文档由一个向量表示，每个香料表示为一个问答对，样式如下：</p>
+<ul>
+<li>Question：system这个词在文档中出现了几次？</li>
+<li>Answer：1次</li>
+</ul>
+<p>仅仅通过他们的id来表示问题。问题与id之间的映射称为字典（dictionary）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gensim <span class="keyword">import</span> corpora</span><br><span class="line">dictionary = corpora.Dictionary(texts)</span><br><span class="line">dictionary.save(<span class="string">&#x27;./deerwester.dict&#x27;</span>) <span class="comment">#存储字典以供后续使用</span></span><br><span class="line"><span class="built_in">print</span>(dictionary)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Dictionary(12 unique tokens: [&#x27;computer&#x27;, &#x27;human&#x27;, &#x27;interface&#x27;, &#x27;response&#x27;, &#x27;survey&#x27;]...)</span><br></pre></td></tr></table></figure>
+
+<p>利用gensim,corpora.dictionary.Dictionary类为语料库中的每个词都分配一个数字id。这会扫描文本，收集相关统计数据。最后，处理后的语料库中会有12个不同的词，同时意味着每个文档将由12个数字表示（即一个12维向量）。</p>
+<p>查看单词与id之间的映射：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(dictionary.token2id)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#x27;computer&#x27;: 0, &#x27;human&#x27;: 1, &#x27;interface&#x27;: 2, &#x27;response&#x27;: 3, &#x27;survey&#x27;: 4, &#x27;system&#x27;: 5, &#x27;time&#x27;: 6, &#x27;user&#x27;: 7, &#x27;eps&#x27;: 8, &#x27;trees&#x27;: 9, &#x27;graph&#x27;: 10, &#x27;minors&#x27;: 11&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将标记好的文档转换为向量：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">new_doc = <span class="string">&quot;Human computer interaction&quot;</span></span><br><span class="line">new_vec = dictionary.doc2bow(new_doc.lower().split())</span><br><span class="line"><span class="built_in">print</span>(new_vec) <span class="comment">#单词&quot;interaction&quot;没有出现在字典里，所以被忽略</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[(0, 1), (1, 1)]</span><br><span class="line">#（字典中的id,出现的次数）</span><br></pre></td></tr></table></figure>
+
+<p>doc2bow()简单地计算每个单词的出现次数，将单词转换为其整数id，并将结果以稀疏向量的形式返回。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">corpus = [dictionary.doc2bow(text) <span class="keyword">for</span> text <span class="keyword">in</span> texts]</span><br><span class="line">corpora.MmCorpus.serialize(<span class="string">&#x27;./deerwester.mm&#x27;</span>,corpus) <span class="comment">#store the disk,for later use</span></span><br><span class="line"><span class="built_in">print</span>(corpus)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[(0, 1), (1, 1), (2, 1)], [(0, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1)], [(2, 1), (5, 1), (7, 1), (8, 1)], [(1, 1), (5, 2), (8, 1)], [(3, 1), (6, 1), (7, 1)], [(9, 1)], [(9, 1), (10, 1)], [(9, 1), (10, 1), (11, 1)], [(4, 1), (10, 1), (11, 1)]]</span><br></pre></td></tr></table></figure>
+
+<p>直观对比一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[[(0, 1), (1, 1), (2, 1)], </span><br><span class="line">[(0, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1)],</span><br><span class="line">[(2, 1), (5, 1), (7, 1), (8, 1)], </span><br><span class="line">[(1, 1), (5, 2), (8, 1)], </span><br><span class="line">[(3, 1), (6, 1), (7, 1)],</span><br><span class="line">[(9, 1)], [(9, 1), (10, 1)], </span><br><span class="line">[(9, 1), (10, 1), (11, 1)], </span><br><span class="line">[(4, 1), (10, 1), (11, 1)]]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[[&#x27;human&#x27;, &#x27;interface&#x27;, &#x27;computer&#x27;],</span><br><span class="line"> [&#x27;survey&#x27;, &#x27;user&#x27;, &#x27;computer&#x27;, &#x27;system&#x27;, &#x27;response&#x27;, &#x27;time&#x27;],</span><br><span class="line"> [&#x27;eps&#x27;, &#x27;user&#x27;, &#x27;interface&#x27;, &#x27;system&#x27;],</span><br><span class="line"> [&#x27;system&#x27;, &#x27;human&#x27;, &#x27;system&#x27;, &#x27;eps&#x27;],</span><br><span class="line"> [&#x27;user&#x27;, &#x27;response&#x27;, &#x27;time&#x27;],</span><br><span class="line"> [&#x27;trees&#x27;],</span><br><span class="line"> [&#x27;graph&#x27;, &#x27;trees&#x27;],</span><br><span class="line"> [&#x27;graph&#x27;, &#x27;minors&#x27;, &#x27;trees&#x27;],</span><br><span class="line"> [&#x27;graph&#x27;, &#x27;minors&#x27;, &#x27;survey&#x27;]]</span><br></pre></td></tr></table></figure>
+
+<h2 id="语料库格式"><a href="#语料库格式" class="headerlink" title="语料库格式"></a>语料库格式</h2><p>向量空间序列化到硬盘有很多种格式。Gensim使用的流式语料库接口是惰性的，它是对文档一个一个地操作而不是对整个语料库。</p>
+<p>矩阵市场格式（Market Matrix format）是一种重要的文件格式，以这种格式存储语料库：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">corpus = [[<span class="number">1</span>,<span class="number">0.5</span>],[]]</span><br><span class="line">corpora.MmCorpus.serialize(<span class="string">&#x27;./corpus.mm&#x27;</span>,corpus)</span><br></pre></td></tr></table></figure>
+
+<p>打开mm文件看一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">%%MatrixMarket matrix coordinate real general</span><br><span class="line">2 2 1                                             </span><br><span class="line">1 2 0.5</span><br></pre></td></tr></table></figure>
+
+<p>存储为其他格式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">corpora.SvmLightCorpus.serialize(<span class="string">&#x27;/tmp/corpus.svmlight&#x27;</span>, corpus)</span><br><span class="line">corpora.BleiCorpus.serialize(<span class="string">&#x27;/tmp/corpus.lda-c&#x27;</span>, corpus)</span><br><span class="line">corpora.LowCorpus.serialize(<span class="string">&#x27;/tmp/corpus.low&#x27;</span>, corpus)</span><br></pre></td></tr></table></figure>
+
+<p>从市场矩阵格式加载语料库迭代器：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">corpus = corpora.MmCorpus(<span class="string">&#x27;/tmp/corpus.mm&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>语料库对象是流，所以通常不能直接打印：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(corpus)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MmCorpus(2 documents, 2 features, 1 non-zero entries)</span><br></pre></td></tr></table></figure>
+
+<p>打印语料库的方法：将语料库全部加载到内存中进行打印</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>(corpus)) <span class="comment">#list()将任何序列转换为python的list</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[(1, 0.5)], []]</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="主题和转换"><a href="#主题和转换" class="headerlink" title="主题和转换"></a>主题和转换</h1><h2 id="创建语料库"><a href="#创建语料库" class="headerlink" title="创建语料库"></a>创建语料库</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"><span class="keyword">from</span> gensim <span class="keyword">import</span> corpora</span><br><span class="line"></span><br><span class="line">documents = [</span><br><span class="line">    <span class="string">&quot;Human machine interface for lab abc computer applications&quot;</span>,</span><br><span class="line">    <span class="string">&quot;A survey of user opinion of computer system response time&quot;</span>,</span><br><span class="line">    <span class="string">&quot;The EPS user interface management system&quot;</span>,</span><br><span class="line">    <span class="string">&quot;System and human system engineering testing of EPS&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Relation of user perceived response time to error measurement&quot;</span>,</span><br><span class="line">    <span class="string">&quot;The generation of random binary unordered trees&quot;</span>,</span><br><span class="line">    <span class="string">&quot;The intersection graph of paths in trees&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Graph minors IV Widths of trees and well quasi ordering&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Graph minors A survey&quot;</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># remove common words and tokenize</span></span><br><span class="line">stoplist = <span class="built_in">set</span>(<span class="string">&#x27;for a of the and to in&#x27;</span>.split())</span><br><span class="line">texts = [</span><br><span class="line">    [word <span class="keyword">for</span> word <span class="keyword">in</span> document.lower().split() <span class="keyword">if</span> word <span class="keyword">not</span> <span class="keyword">in</span> stoplist]</span><br><span class="line">    <span class="keyword">for</span> document <span class="keyword">in</span> documents</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># remove words that appear only once</span></span><br><span class="line">frequency = defaultdict(<span class="built_in">int</span>)</span><br><span class="line"><span class="keyword">for</span> text <span class="keyword">in</span> texts:</span><br><span class="line">    <span class="keyword">for</span> token <span class="keyword">in</span> text:</span><br><span class="line">        frequency[token] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">texts = [</span><br><span class="line">    [token <span class="keyword">for</span> token <span class="keyword">in</span> text <span class="keyword">if</span> frequency[token] &gt; <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">for</span> text <span class="keyword">in</span> texts</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">dictionary = corpora.Dictionary(texts)</span><br><span class="line">corpus = [dictionary.doc2bow(text) <span class="keyword">for</span> text <span class="keyword">in</span> texts]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(corpus)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[(0, 1), (1, 1), (2, 1)], [(0, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1)], [(2, 1), (5, 1), (7, 1), (8, 1)], [(1, 1), (5, 2), (8, 1)], [(3, 1), (6, 1), (7, 1)], [(9, 1)], [(9, 1), (10, 1)], [(9, 1), (10, 1), (11, 1)], [(4, 1), (10, 1), (11, 1)]]</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="创建转换"><a href="#创建转换" class="headerlink" title="创建转换"></a>创建转换</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gensim <span class="keyword">import</span> models</span><br><span class="line">tfidf = model.TfidfModel(corpus) <span class="comment">#step 1 --初始化模型</span></span><br></pre></td></tr></table></figure>
+
+<p>不同的转换可能需要不同的初始化参数；在Tfidf下，训练是计算语料库中所有文档特征的频率。潜在语义分析（LSA）或隐狄利克雷（LDA）可能会需要更多的操作，也需要更多的时间。</p>
+<h2 id="转换向量"><a href="#转换向量" class="headerlink" title="转换向量"></a>转换向量</h2><p>从现在开始，tfidf被视为只读对象，可以用任何向量从旧表示（词袋整数计数）转换为新表示（Tfidf实值权重）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">doc_bow = [(<span class="number">0</span>,<span class="number">1</span>),(<span class="number">1</span>,<span class="number">1</span>)]</span><br><span class="line"><span class="built_in">print</span>(tfidf[doc_bow]) <span class="comment">#step 2 --使用模型转化向量</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(0, 0.7071067811865476), (1, 0.7071067811865476)]</span><br></pre></td></tr></table></figure>
+
+<p>将转换应用到整个语料库：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">corpus_tfidf = tfidf[corpus]</span><br><span class="line"><span class="keyword">for</span> doc <span class="keyword">in</span> corpus_tfidf:</span><br><span class="line">    <span class="built_in">print</span>(doc)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[(0, 0.5773502691896257), (1, 0.5773502691896257), (2, 0.5773502691896257)]</span><br><span class="line">[(0, 0.44424552527467476), (3, 0.44424552527467476), (4, 0.44424552527467476), (5, 0.3244870206138555), (6, 0.44424552527467476), (7, 0.3244870206138555)]</span><br><span class="line">[(2, 0.5710059809418182), (5, 0.4170757362022777), (7, 0.4170757362022777), (8, 0.5710059809418182)]</span><br><span class="line">[(1, 0.49182558987264147), (5, 0.7184811607083769), (8, 0.49182558987264147)]</span><br><span class="line">[(3, 0.6282580468670046), (6, 0.6282580468670046), (7, 0.45889394536615247)]</span><br><span class="line">[(9, 1.0)]</span><br><span class="line">[(9, 0.7071067811865475), (10, 0.7071067811865475)]</span><br><span class="line">[(9, 0.5080429008916749), (10, 0.5080429008916749), (11, 0.695546419520037)]</span><br><span class="line">[(4, 0.6282580468670046), (10, 0.45889394536615247), (11, 0.6282580468670046)]</span><br></pre></td></tr></table></figure>
+
+<p>转换也可以序列化:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lsi_model = models.LsiModel(corpus_tfidf,id2word = dictionary,num_topics=<span class="number">2</span>) <span class="comment">#初始化一个LSI转换。</span></span><br><span class="line">corpus_lsi = lsi_model[corpus_tfidf] <span class="comment">#在原语料库上创建一个双重装饰器：bow-&gt;tfidf-&gt;fold-in-lsi</span></span><br></pre></td></tr></table></figure>
+
+<p>现在，我们通过潜在语义索引将我们的Tfidf语料库转换为潜在的二维空间。检查一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsi_model.print_topics(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[(0,</span><br><span class="line">  &#x27;0.703*&quot;trees&quot; + 0.538*&quot;graph&quot; + 0.402*&quot;minors&quot; + 0.187*&quot;survey&quot; + 0.061*&quot;system&quot; + 0.060*&quot;time&quot; + 0.060*&quot;response&quot; + 0.058*&quot;user&quot; + 0.049*&quot;computer&quot; + 0.035*&quot;interface&quot;&#x27;),</span><br><span class="line"> (1,</span><br><span class="line">  &#x27;-0.460*&quot;system&quot; + -0.373*&quot;user&quot; + -0.332*&quot;eps&quot; + -0.328*&quot;interface&quot; + -0.320*&quot;time&quot; + -0.320*&quot;response&quot; + -0.293*&quot;computer&quot; + -0.280*&quot;human&quot; + -0.171*&quot;survey&quot; + 0.161*&quot;trees&quot;&#x27;)]</span><br></pre></td></tr></table></figure>
+
+<p>根据LSI:前五个文档与第二个主题的相关性更强，其余四个文档与第一个主题的相关性更强：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> doc,as_text <span class="keyword">in</span> <span class="built_in">zip</span>(corpus_lsi,documents):</span><br><span class="line">    <span class="built_in">print</span>(doc,as_text)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[(0, 0.06600783396090243), (1, -0.5200703306361859)] Human machine interface for lab abc computer applications</span><br><span class="line">[(0, 0.19667592859142288), (1, -0.7609563167700061)] A survey of user opinion of computer system response time</span><br><span class="line">[(0, 0.08992639972446298), (1, -0.724186062675251)] The EPS user interface management system</span><br><span class="line">[(0, 0.07585847652178054), (1, -0.6320551586003424)] System and human system engineering testing of EPS</span><br><span class="line">[(0, 0.1015029918497996), (1, -0.5737308483002966)] Relation of user perceived response time to error measurement</span><br><span class="line">[(0, 0.7032108939378314), (1, 0.16115180214025712)] The generation of random binary unordered trees</span><br><span class="line">[(0, 0.8774787673119835), (1, 0.16758906864659295)] The intersection graph of paths in trees</span><br><span class="line">[(0, 0.9098624686818582), (1, 0.14086553628718873)] Graph minors IV Widths of trees and well quasi ordering</span><br><span class="line">[(0, 0.6165825350569278), (1, -0.05392907566389511)] Graph minors A survey</span><br></pre></td></tr></table></figure>
+
+<h2 id="模型持久化"><a href="#模型持久化" class="headerlink" title="模型持久化"></a>模型持久化</h2><p>通过save（）和load（）实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> tempfile</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tempfile.NamedTemporaryFile(prefix=<span class="string">&#x27;model-&#x27;</span>, suffix=<span class="string">&#x27;.lsi&#x27;</span>, delete=<span class="literal">False</span>) <span class="keyword">as</span> tmp:</span><br><span class="line">    lsi_model.save(tmp.name) </span><br><span class="line"></span><br><span class="line">loaded_lsi_model = models.LsiModel.load(tmp.name)</span><br><span class="line"></span><br><span class="line">os.unlink(tmp.name)</span><br></pre></td></tr></table></figure>
+
+<h2 id="可用替换"><a href="#可用替换" class="headerlink" title="可用替换"></a>可用替换</h2><p>Gensim实现了集中流行的向量空间模型算法：</p>
+<ul>
+<li><p>Term Frequency * Inverse Document Frequency,Tf-Idf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model = models.TfidfModel(corpus, normalize=True)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>潜在语义索引（Latent Semantic Indexing,LSI(or sometimes LSA)）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model = models.LsiModel(tfidf_corpus, id2word=dictionary, num_topics=<span class="number">300</span>)</span><br></pre></td></tr></table></figure>
+
+<p>LSI的独特之处在于只要提供更多的培训文档就可以继续培训。这是通过对底层模型增量更新来完成的。过程称为在线训练（online training）。由于这个特性，输入文档流甚至可能是无限的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">model.add_documents(another_tfidf_corpus)  <span class="comment"># LSI基于tfidf_corpus + another_tfidf_corpus进行训练</span></span><br><span class="line">lsi_vec = model[tfidf_vec]  <span class="comment">#在不影响模型的情况下添加新文档进入LSI空间</span></span><br><span class="line"></span><br><span class="line">model.add_documents(more_documents)  <span class="comment"># tfidf_corpus + another_tfidf_corpus + more_documents</span></span><br><span class="line">lsi_vec = model[tfidf_vec]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>随机投影（Random Projections，RP）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model = models.RpModel(tfidf_corpus, num_topics=<span class="number">500</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>隐狄利克雷分布（Latent Dirichlet Allocation，LDA）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model = models.LdaModel(corpus, id2word=dictionary, num_topics=<span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>层次狄利克雷过程（Hierarchical Dirichlet Process, HDP）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model = models.HdpModel(corpus, id2word=dictionary)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="相似性查询"><a href="#相似性查询" class="headerlink" title="相似性查询"></a>相似性查询</h1><h2 id="创建语料库-1"><a href="#创建语料库-1" class="headerlink" title="创建语料库"></a>创建语料库</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"><span class="keyword">from</span> gensim <span class="keyword">import</span> corpora</span><br><span class="line"></span><br><span class="line">documents = [</span><br><span class="line">    <span class="string">&quot;Human machine interface for lab abc computer applications&quot;</span>,</span><br><span class="line">    <span class="string">&quot;A survey of user opinion of computer system response time&quot;</span>,</span><br><span class="line">    <span class="string">&quot;The EPS user interface management system&quot;</span>,</span><br><span class="line">    <span class="string">&quot;System and human system engineering testing of EPS&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Relation of user perceived response time to error measurement&quot;</span>,</span><br><span class="line">    <span class="string">&quot;The generation of random binary unordered trees&quot;</span>,</span><br><span class="line">    <span class="string">&quot;The intersection graph of paths in trees&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Graph minors IV Widths of trees and well quasi ordering&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Graph minors A survey&quot;</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># remove common words and tokenize</span></span><br><span class="line">stoplist = <span class="built_in">set</span>(<span class="string">&#x27;for a of the and to in&#x27;</span>.split())</span><br><span class="line">texts = [</span><br><span class="line">    [word <span class="keyword">for</span> word <span class="keyword">in</span> document.lower().split() <span class="keyword">if</span> word <span class="keyword">not</span> <span class="keyword">in</span> stoplist]</span><br><span class="line">    <span class="keyword">for</span> document <span class="keyword">in</span> documents</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># remove words that appear only once</span></span><br><span class="line">frequency = defaultdict(<span class="built_in">int</span>)</span><br><span class="line"><span class="keyword">for</span> text <span class="keyword">in</span> texts:</span><br><span class="line">    <span class="keyword">for</span> token <span class="keyword">in</span> text:</span><br><span class="line">        frequency[token] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">texts = [</span><br><span class="line">    [token <span class="keyword">for</span> token <span class="keyword">in</span> text <span class="keyword">if</span> frequency[token] &gt; <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">for</span> text <span class="keyword">in</span> texts</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">dictionary = corpora.Dictionary(texts)</span><br><span class="line">corpus = [dictionary.doc2bow(text) <span class="keyword">for</span> text <span class="keyword">in</span> texts]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(corpus)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[(0, 1), (1, 1), (2, 1)], [(0, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1)], [(2, 1), (5, 1), (7, 1), (8, 1)], [(1, 1), (5, 2), (8, 1)], [(3, 1), (6, 1), (7, 1)], [(9, 1)], [(9, 1), (10, 1)], [(9, 1), (10, 1), (11, 1)], [(4, 1), (10, 1), (11, 1)]]</span><br></pre></td></tr></table></figure>
+
+<h2 id="相似性接口"><a href="#相似性接口" class="headerlink" title="相似性接口"></a>相似性接口</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">doc = <span class="string">&quot;Human computer interaction&quot;</span></span><br><span class="line">vec_bow = dictionary.doc2bow(doc.lower().split())</span><br><span class="line">vec_lsi = lsi[vec_bow]  <span class="comment"># 转换</span></span><br><span class="line"><span class="built_in">print</span>(vec_lsi)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(0, 0.46182100453271546), (1, -0.0700276652789991)]</span><br></pre></td></tr></table></figure>
+
+<p>使用余弦相似度来确定两个向量的相似度。余弦相似度是向量空间建模中的标准度量，但在向量表示概率分布的地方，不同的相似度度量可能会更合适。</p>
+<h2 id="初始化查询结构"><a href="#初始化查询结构" class="headerlink" title="初始化查询结构"></a>初始化查询结构</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gensim <span class="keyword">import</span> similarities</span><br><span class="line">index = similarities.MatrixSimilarity(lsi[corpus])  <span class="comment"># 将语料库转换到LSI空间并对其进行索引</span></span><br></pre></td></tr></table></figure>
+
+<p>索引持久性通过标准save（）和load（）函数处理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">index.save(&#x27;/tmp/deerwester.index&#x27;)</span><br><span class="line">index = similarities.MatrixSimilarity.load(&#x27;/tmp/deerwester.index&#x27;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="执行查询"><a href="#执行查询" class="headerlink" title="执行查询"></a>执行查询</h2><p>查询我们新文档与九个索引文档的相似性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sims = index[vec_lsi] <span class="comment">#对语料库进行相似性查询</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>(<span class="built_in">enumerate</span>(sims)))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(0, 0.998093), (1, 0.93748635), (2, 0.9984453), (3, 0.9865886), (4, 0.90755945), (5, -0.12416792), (6, -0.10639259), (7, -0.09879464), (8, 0.050041765)]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(sims)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(0, (2, 0.9984453)), (1, (0, 0.998093)), (2, (3, 0.9865886)), (3, (1, 0.93748635)), (4, (4, 0.90755945)), (5, (8, 0.050041765)), (6, (7, -0.09879464)), (7, (6, -0.10639259)), (8, (5, -0.12416792))]</span><br></pre></td></tr></table></figure>
+
+<p>使用python magic包操作一下，将相似度按降序排列,查询“Human computer interaction”的最终结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sims = <span class="built_in">sorted</span>(<span class="built_in">enumerate</span>(sims), key=<span class="keyword">lambda</span> item: -item[<span class="number">1</span>])</span><br><span class="line"><span class="keyword">for</span> i, s <span class="keyword">in</span> <span class="built_in">enumerate</span>(sims):</span><br><span class="line">    <span class="built_in">print</span>(s, documents[i])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(2, 0.9984453) Human machine interface for lab abc computer applications</span><br><span class="line">(0, 0.998093) A survey of user opinion of computer system response time</span><br><span class="line">(3, 0.9865886) The EPS user interface management system</span><br><span class="line">(1, 0.93748635) System and human system engineering testing of EPS</span><br><span class="line">(4, 0.90755945) Relation of user perceived response time to error measurement</span><br><span class="line">(8, 0.050041765) The generation of random binary unordered trees</span><br><span class="line">(7, -0.09879464) The intersection graph of paths in trees</span><br><span class="line">(6, -0.10639259) Graph minors IV Widths of trees and well quasi ordering</span><br><span class="line">(5, -0.12416792) Graph minors A survey</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/05/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/" rel="prev" title="基于kafka的微博情感分析与可视化实现">
+      <i class="fa fa-chevron-left"></i> 基于kafka的微博情感分析与可视化实现
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/01/04/FastText%E6%A8%A1%E5%9E%8B/" rel="next" title="FastText模型">
+      FastText模型 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Gensim%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">Gensim核心概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%A1%A3-Document"><span class="nav-number">1.1.</span> <span class="nav-text">文档(Document)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E6%96%99%E5%BA%93%EF%BC%88Corpus%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">语料库（Corpus）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%EF%BC%88Vector%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">向量（Vector）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%EF%BC%88Model%EF%BC%89"><span class="nav-number">1.4.</span> <span class="nav-text">模型（Model）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E6%96%99%E5%BA%93%E4%B8%8E%E5%90%91%E9%87%8F%E7%A9%BA%E9%97%B4"><span class="nav-number">2.</span> <span class="nav-text">语料库与向量空间</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%B0%E5%90%91%E9%87%8F"><span class="nav-number">2.1.</span> <span class="nav-text">从字符串到向量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E6%96%99%E5%BA%93%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.2.</span> <span class="nav-text">语料库格式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BB%E9%A2%98%E5%92%8C%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.</span> <span class="nav-text">主题和转换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%AF%AD%E6%96%99%E5%BA%93"><span class="nav-number">3.1.</span> <span class="nav-text">创建语料库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.2.</span> <span class="nav-text">创建转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E6%8D%A2%E5%90%91%E9%87%8F"><span class="nav-number">3.3.</span> <span class="nav-text">转换向量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">3.4.</span> <span class="nav-text">模型持久化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E7%94%A8%E6%9B%BF%E6%8D%A2"><span class="nav-number">3.5.</span> <span class="nav-text">可用替换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B8%E4%BC%BC%E6%80%A7%E6%9F%A5%E8%AF%A2"><span class="nav-number">4.</span> <span class="nav-text">相似性查询</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%AF%AD%E6%96%99%E5%BA%93-1"><span class="nav-number">4.1.</span> <span class="nav-text">创建语料库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E4%BC%BC%E6%80%A7%E6%8E%A5%E5%8F%A3"><span class="nav-number">4.2.</span> <span class="nav-text">相似性接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%84"><span class="nav-number">4.3.</span> <span class="nav-text">初始化查询结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E6%9F%A5%E8%AF%A2"><span class="nav-number">4.4.</span> <span class="nav-text">执行查询</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="倬倬吃三碗"
+      src="/images/zaomiao2.jpg">
+  <p class="site-author-name" itemprop="name">倬倬吃三碗</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhuozhuo233" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhuozhuo233" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">倬倬吃三碗</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":300,"height":600,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

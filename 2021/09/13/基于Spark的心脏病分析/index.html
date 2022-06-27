@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhuozhuo233.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一、项目开发目的当今社会发展迅速，生活节奏也随着经济的发展越来越快，不少年轻人由于工作繁重同时缺少锻炼、饮食作息不规律，生活步入范亚健康化。腰腿疼痛、胃不舒服等症状我们平时都能明显地感受到并加以治疗。而心脏疾病却是难以捕捉，如果没有定期体检的习惯，很难直观地感受到心脏的潜在风险。心脏类疾病的发作迅速，后果严重。Framingham Heart Study（FHS）针对心脏疾病开展了长达70多年的跟">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于Spark的心脏病分析">
+<meta property="og:url" content="https://zhuozhuo233.github.io/2021/09/13/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="倬倬吃三碗">
+<meta property="og:description" content="一、项目开发目的当今社会发展迅速，生活节奏也随着经济的发展越来越快，不少年轻人由于工作繁重同时缺少锻炼、饮食作息不规律，生活步入范亚健康化。腰腿疼痛、胃不舒服等症状我们平时都能明显地感受到并加以治疗。而心脏疾病却是难以捕捉，如果没有定期体检的习惯，很难直观地感受到心脏的潜在风险。心脏类疾病的发作迅速，后果严重。Framingham Heart Study（FHS）针对心脏疾病开展了长达70多年的跟">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/1.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/2.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/3.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/4.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/7.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/8.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/9.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/10.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/5.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/6.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/11.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/12.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/13.png">
+<meta property="article:published_time" content="2021-09-13T02:37:32.000Z">
+<meta property="article:modified_time" content="2021-09-22T07:24:42.864Z">
+<meta property="article:author" content="倬倬吃三碗">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/1.png">
+
+<link rel="canonical" href="https://zhuozhuo233.github.io/2021/09/13/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>基于Spark的心脏病分析 | 倬倬吃三碗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">倬倬吃三碗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2021/09/13/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zaomiao2.jpg">
+      <meta itemprop="name" content="倬倬吃三碗">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="倬倬吃三碗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于Spark的心脏病分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-13 10:37:32" itemprop="dateCreated datePublished" datetime="2021-09-13T10:37:32+08:00">2021-09-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-22 15:24:42" itemprop="dateModified" datetime="2021-09-22T15:24:42+08:00">2021-09-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6%E4%B8%8E%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">数据科学与大数据技术</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="一、项目开发目的"><a href="#一、项目开发目的" class="headerlink" title="一、项目开发目的"></a>一、项目开发目的</h1><p>当今社会发展迅速，生活节奏也随着经济的发展越来越快，不少年轻人由于工作繁重同时缺少锻炼、饮食作息不规律，生活步入范亚健康化。腰腿疼痛、胃不舒服等症状我们平时都能明显地感受到并加以治疗。而心脏疾病却是难以捕捉，如果没有定期体检的习惯，很难直观地感受到心脏的潜在风险。心脏类疾病的发作迅速，后果严重。Framingham Heart Study（FHS）针对心脏疾病开展了长达70多年的跟踪研究。其中有一项长达26年的大规模研究显示，在全猝死患者中，心源性猝死高达75%。在现实中，我们也经常能看到关于年轻人猝死的新闻。所以本项目旨在对心脏病相关数据进行分析、建模，让大家对于心脏疾病更为了解、更加关注自身的身体健康。主要目的如下：1、对于心脏病相关数据集进行数据清洗、处理、特征筛选。2、使用分析得到的数据进行建模。3、通过网页将心脏病相关数据可视化呈现，并且支持通过输入个人信息查询心脏病患病风险。其中，我主要负责的是数据处理与清洗部分，本文对其他部分仅进行大致阐述。</p>
+<p>工程文件:<a target="_blank" rel="noopener" href="https://github.com/zhuozhuo233/Heart-disease-analysis">https://github.com/zhuozhuo233/Heart-disease-analysis</a></p>
+<span id="more"></span>
+
+<h1 id="二、数据来源及相关解释"><a href="#二、数据来源及相关解释" class="headerlink" title="二、数据来源及相关解释"></a>二、数据来源及相关解释</h1><p>本次项目的数据集来自UCI开放数据集以及来自于Kaggle平台的公开数据集。</p>
+<p>原始数据集解释如下：</p>
+<h2 id="Heart数据集"><a href="#Heart数据集" class="headerlink" title="Heart数据集"></a>Heart数据集</h2><p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/1.png"></p>
+<p><strong>名词解释：</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>解释</th>
+<th>注释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>age</td>
+<td>年龄</td>
+<td>29-77</td>
+</tr>
+<tr>
+<td>sex</td>
+<td>性别</td>
+<td>1男、0女</td>
+</tr>
+<tr>
+<td>cp</td>
+<td>胸痛类型</td>
+<td>0无症状、1典型心绞痛、2非典型心绞痛、3非心绞痛</td>
+</tr>
+<tr>
+<td>trestbps</td>
+<td>静息血压</td>
+<td>94-200</td>
+</tr>
+<tr>
+<td>chol</td>
+<td>胆固醇（mg&#x2F;dl）</td>
+<td>126-564</td>
+</tr>
+<tr>
+<td>fbs</td>
+<td>空腹血糖&gt;120mg&#x2F;dl</td>
+<td>0否、1是</td>
+</tr>
+<tr>
+<td>restecg</td>
+<td>静息心电图结果</td>
+<td>0正常、1有异常、2左心室肥大</td>
+</tr>
+<tr>
+<td>thalach</td>
+<td>最大心率</td>
+<td>71-202</td>
+</tr>
+<tr>
+<td>exang</td>
+<td>运动引起的心绞痛</td>
+<td>0没有、1有过</td>
+</tr>
+<tr>
+<td>oldpeak</td>
+<td>运动相对于休息时引起的ST段下降</td>
+<td>0-0.62</td>
+</tr>
+<tr>
+<td>slope</td>
+<td>最高运动ST段的斜率</td>
+<td>0平、1升、2降</td>
+</tr>
+<tr>
+<td>ca</td>
+<td>使用荧光染色法测定的主血管数</td>
+<td></td>
+</tr>
+<tr>
+<td>thal</td>
+<td>地中海贫血症状</td>
+<td>1正常、2固定缺陷、3可逆缺陷</td>
+</tr>
+<tr>
+<td>target</td>
+<td>是否患有心脏病</td>
+<td>0否、1是</td>
+</tr>
+</tbody></table>
+<h2 id="Cardio数据集"><a href="#Cardio数据集" class="headerlink" title="Cardio数据集"></a>Cardio数据集</h2><p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/2.png"></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>解释</th>
+<th>注释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>编号</td>
+<td></td>
+</tr>
+<tr>
+<td>age</td>
+<td>年龄</td>
+<td></td>
+</tr>
+<tr>
+<td>gender</td>
+<td>性别</td>
+<td>1女、2男</td>
+</tr>
+<tr>
+<td>height</td>
+<td>身高（cm）</td>
+<td></td>
+</tr>
+<tr>
+<td>weight</td>
+<td>体重（kg）</td>
+<td></td>
+</tr>
+<tr>
+<td>ap_hi</td>
+<td>收缩压</td>
+<td></td>
+</tr>
+<tr>
+<td>ap_lo</td>
+<td>舒张压</td>
+<td></td>
+</tr>
+<tr>
+<td>cholesterol</td>
+<td>胆固醇</td>
+<td>1正常、2高于正常、3远高于正常</td>
+</tr>
+<tr>
+<td>gluc</td>
+<td>血糖</td>
+<td>1正常、2高于正常、3远高于正常</td>
+</tr>
+<tr>
+<td>smoke</td>
+<td>是否有吸烟习惯</td>
+<td>0没有、1有</td>
+</tr>
+<tr>
+<td>alco</td>
+<td>是否有饮酒习惯</td>
+<td>0没有、1有</td>
+</tr>
+<tr>
+<td>active</td>
+<td>是否有锻炼习惯</td>
+<td>0没有、1有</td>
+</tr>
+<tr>
+<td>cardio</td>
+<td>是否存在心血管疾病</td>
+<td>0没有、1有</td>
+</tr>
+</tbody></table>
+<h1 id="三、工程文件解释"><a href="#三、工程文件解释" class="headerlink" title="三、工程文件解释"></a>三、工程文件解释</h1><h2 id="1-数据处理部分"><a href="#1-数据处理部分" class="headerlink" title="1.数据处理部分"></a>1.数据处理部分</h2><h3 id="Cardio工程"><a href="#Cardio工程" class="headerlink" title="Cardio工程"></a>Cardio工程</h3><p>Partition：</p>
+<p>将表中的数据按列分别存为json文件以供后续使用</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.sql.<span class="type">SparkSession</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">partition</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> spark = <span class="type">SparkSession</span>.builder().enableHiveSupport().getOrCreate()</span><br><span class="line">    spark.sparkContext.setLogLevel(<span class="string">&quot;WARN&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> cardio = spark.read.table(<span class="string">&quot;cardio.cardio&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> id = cardio.select(<span class="string">&quot;id&quot;</span>)</span><br><span class="line">    id.write.mode(<span class="string">&quot;overwrite&quot;</span>).json(<span class="string">&quot;/user/root/cardio/id&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> age = cardio.select(<span class="string">&quot;age&quot;</span>)</span><br><span class="line">    age.write.mode(<span class="string">&quot;overwrite&quot;</span>).json(<span class="string">&quot;/user/root/cardio/age&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> gender = cardio.select(<span class="string">&quot;gender&quot;</span>)</span><br><span class="line">    gender.write.mode(<span class="string">&quot;overwrite&quot;</span>).json(<span class="string">&quot;/user/root/cardio/gender&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_hi = cardio.select(<span class="string">&quot;ap_hi&quot;</span>)</span><br><span class="line">    ap_hi.write.mode(<span class="string">&quot;overwrite&quot;</span>).json(<span class="string">&quot;/user/root/cardio/ap_hi&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_lo = cardio.select(<span class="string">&quot;ap_lo&quot;</span>)</span><br><span class="line">    ap_lo.write.mode(<span class="string">&quot;overwrite&quot;</span>).json(<span class="string">&quot;/user/root/cardio/ap_lo&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> cholesterol = cardio.select(<span class="string">&quot;cholesterol&quot;</span>)</span><br><span class="line">    cholesterol.write.mode(<span class="string">&quot;overwrite&quot;</span>).json(<span class="string">&quot;/user/root/cardio/cholesterol&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> gluc = cardio.select(<span class="string">&quot;gluc&quot;</span>)</span><br><span class="line">    gluc.write.mode(<span class="string">&quot;overwrite&quot;</span>).json(<span class="string">&quot;/user/root/cardio/gluc&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> smoke = cardio.select(<span class="string">&quot;smoke&quot;</span>)</span><br><span class="line">    smoke.write.mode(<span class="string">&quot;overwrite&quot;</span>).json(<span class="string">&quot;/user/root/cardio/smoke&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> alco = cardio.select(<span class="string">&quot;alco&quot;</span>)</span><br><span class="line">    alco.write.mode(<span class="string">&quot;overwrite&quot;</span>).json(<span class="string">&quot;/user/root/cardio/alco&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> active = cardio.select(<span class="string">&quot;active&quot;</span>)</span><br><span class="line">    active.write.mode(<span class="string">&quot;overwrite&quot;</span>).json(<span class="string">&quot;/user/root/cardio/active&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> cardio1 = cardio.select(<span class="string">&quot;cardio&quot;</span>)</span><br><span class="line">    cardio1.write.mode(<span class="string">&quot;overwrite&quot;</span>).json(<span class="string">&quot;/user/root/cardio/cardio1&quot;</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Ap:</p>
+<p>​    分析出心脏病患者中收缩压、舒张压正常的比例与心脏病患者收缩压与舒张压的数值分布情况</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.sql.<span class="type">SparkSession</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">ap</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> spark = <span class="type">SparkSession</span>.builder().enableHiveSupport().getOrCreate()</span><br><span class="line">    spark.sparkContext.setLogLevel(<span class="string">&quot;WARN&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> cardio = spark.read.table(<span class="string">&quot;cardio.cardio&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_hi = cardio.select(<span class="string">&quot;ap_hi&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> ap_hi_1 = cardio.select(<span class="string">&quot;ap_hi&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_hi &gt;= &#x27;90&#x27; and ap_hi &lt;= &#x27;140&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> ap_hiresult = (ap_hi_1.toFloat/ap_hi).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;心脏病患者中收缩压正常的比率:&quot;</span>)</span><br><span class="line">    rate(ap_hiresult)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_lo = cardio.select(<span class="string">&quot;ap_lo&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> ap_lo_1 = cardio.select(<span class="string">&quot;ap_lo&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_lo &gt;= &#x27;60&#x27; and ap_hi &lt;= &#x27;90&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> ap_loresult = (ap_lo_1.toFloat/ap_lo).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;心脏病患者中舒张压正常的比率:&quot;</span>)</span><br><span class="line">    rate(ap_loresult)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_hi100_110 = cardio.filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_hi &gt;= &#x27;100&#x27; and ap_hi &lt;=&#x27;110&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result100_110 = (ap_hi100_110.toFloat/ap_hi).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;收缩压在100~110mmHg：&quot;</span>)</span><br><span class="line">    rate(result100_110)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_hi110_120 = cardio.filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_hi &gt;= &#x27;111&#x27; and ap_hi &lt;=&#x27;120&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result110_120 = (ap_hi110_120.toFloat/ap_hi).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;收缩压在110~120mmHg：&quot;</span>)</span><br><span class="line">    rate(result110_120)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_hi120_130 = cardio.filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_hi &gt;= &#x27;121&#x27; and ap_hi &lt;=&#x27;130&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result120_130 = (ap_hi120_130.toFloat/ap_hi).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;收缩压在120~130mmHg：&quot;</span>)</span><br><span class="line">    rate(result120_130)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_hi130_140 = cardio.filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_hi &gt;= &#x27;131&#x27; and ap_hi &lt;=&#x27;140&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result130_140 = (ap_hi130_140.toFloat/ap_hi).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;收缩压在130~140mmHg：&quot;</span>)</span><br><span class="line">    rate(result130_140)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_hi140_150 = cardio.filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_hi &gt;= &#x27;141&#x27; and ap_hi &lt;=&#x27;150&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result140_150 = (ap_hi140_150.toFloat/ap_hi).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;收缩压在140~150mmHg：&quot;</span>)</span><br><span class="line">    rate(result140_150)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_hi150_160 = cardio.filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_hi &gt;= &#x27;151&#x27; and ap_hi &lt;=&#x27;160&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result150_160 = (ap_hi150_160.toFloat/ap_hi).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;收缩压在150~160mmHg：&quot;</span>)</span><br><span class="line">    rate(result150_160)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_hi160_170 = cardio.filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_hi &gt;= &#x27;161&#x27; and ap_hi &lt;=&#x27;170&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result160_170 = (ap_hi160_170.toFloat/ap_hi).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;收缩压在160~170mmHg：&quot;</span>)</span><br><span class="line">    rate(result160_170)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_hi170_180 = cardio.filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_hi &gt;= &#x27;171&#x27; and ap_hi &lt;=&#x27;180&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result170_180 = (ap_hi170_180.toFloat/ap_hi).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;收缩压在170~180mmHg：&quot;</span>)</span><br><span class="line">    rate(result170_180)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_hi180_190 = cardio.filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_hi &gt;= &#x27;181&#x27; and ap_hi &lt;=&#x27;190&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result180_190 = (ap_hi180_190.toFloat/ap_hi).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;收缩压在180~190mmHg：&quot;</span>)</span><br><span class="line">    rate(result180_190)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_hi190_200 = cardio.filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_hi &gt;= &#x27;191&#x27; and ap_hi &lt;=&#x27;200&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result190_200 = (ap_hi190_200.toFloat/ap_hi).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;收缩压在190~200mmHg：&quot;</span>)</span><br><span class="line">    rate(result190_200)</span><br><span class="line"><span class="comment">//   ----------------舒张压-------------------------------</span></span><br><span class="line">    <span class="keyword">val</span> ap_lo60_70 = cardio.filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_lo &gt;= &#x27;60&#x27; and ap_lo &lt;=&#x27;70&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result60_70 = (ap_lo60_70.toFloat/ap_lo).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;舒张压在60~70mmHg：&quot;</span>)</span><br><span class="line">    rate(result60_70)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_lo70_80 = cardio.filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_lo &gt;= &#x27;71&#x27; and ap_lo &lt;=&#x27;80&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result70_80 = (ap_lo70_80.toFloat/ap_lo).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;舒张压在70~80mmHg：&quot;</span>)</span><br><span class="line">    rate(result70_80)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_lo80_90 = cardio.filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_lo &gt;= &#x27;81&#x27; and ap_lo &lt;=&#x27;90&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result80_90 = (ap_lo80_90.toFloat/ap_lo).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;舒张压在80~90mmHg：&quot;</span>)</span><br><span class="line">    rate(result80_90)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_lo90_100 = cardio.filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_lo &gt;= &#x27;91&#x27; and ap_lo &lt;=&#x27;100&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result90_100 = (ap_lo90_100.toFloat/ap_lo).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;舒张压在90~100mmHg：&quot;</span>)</span><br><span class="line">    rate(result90_100)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_lo100_110 = cardio.filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_lo &gt;= &#x27;101&#x27; and ap_lo &lt;=&#x27;110&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> resultlo100_110 = (ap_lo100_110.toFloat/ap_lo).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;舒张压在100~110mmHg：&quot;</span>)</span><br><span class="line">    rate(resultlo100_110)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> ap_lo110_120 = cardio.filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;ap_lo &gt;= &#x27;111&#x27; and ap_lo &lt;=&#x27;120&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> resultlo110_120 = (ap_lo110_120.toFloat/ap_lo).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;舒张压在110~120mmHg：&quot;</span>)</span><br><span class="line">    rate(resultlo110_120)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">rate</span></span>(x:<span class="type">Float</span>):<span class="type">Unit</span> =&#123;</span><br><span class="line">    <span class="keyword">var</span> per = (x * <span class="number">100</span>).toInt</span><br><span class="line">    println(per)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>Bmi:</p>
+<p>​    找出性别与相对的bmi数据，生成为json文件以供后续使用</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.sql.<span class="type">SparkSession</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">bmi</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> spark = <span class="type">SparkSession</span>.builder().enableHiveSupport().getOrCreate()</span><br><span class="line">    spark.sparkContext.setLogLevel(<span class="string">&quot;WARN&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> cardio = spark.read.table(<span class="string">&quot;cardio.cardio3&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> bmi = cardio.select(<span class="string">&quot;gender&quot;</span>,<span class="string">&quot;bmi&quot;</span>)</span><br><span class="line">    bmi.write.mode(<span class="string">&quot;overwrite&quot;</span>).json(<span class="string">&quot;/user/root/cardio/age_bmi&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>ageprocess:</p>
+<p>​    从年龄入手，寻找年龄的最值，并且分析出不同年龄段患病的比例并生成为json文件</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.sql.<span class="type">SparkSession</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">ageprocess</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> spark = <span class="type">SparkSession</span>.builder().enableHiveSupport().getOrCreate()</span><br><span class="line">    spark.sparkContext.setLogLevel(<span class="string">&quot;WARN&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> cardio = spark.read.table(<span class="string">&quot;cardio.cardio&quot;</span>)</span><br><span class="line"></span><br><span class="line">    cardio.selectExpr(<span class="string">&quot;max(age) as max_age&quot;</span>).show()</span><br><span class="line">    cardio.selectExpr(<span class="string">&quot;min(age) as min&quot;</span>).show()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> agetotal = cardio.select(<span class="string">&quot;age&quot;</span>).count()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> age30_35 = cardio.filter(<span class="string">&quot;age &gt;= &#x27;30&#x27; and age &lt;=&#x27;35&#x27;&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result30_35 = (age30_35.toFloat/agetotal).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;30到35岁比率：&quot;</span>)</span><br><span class="line">    rate(result30_35)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> age36_40 = cardio.filter(<span class="string">&quot;age &gt;= &#x27;36&#x27; and age &lt;=&#x27;40&#x27;&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result30_40 = (age36_40.toFloat/agetotal).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;36到40岁比率：&quot;</span>)</span><br><span class="line">    rate(result30_40)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> age41_45 = cardio.filter(<span class="string">&quot;age &gt;= &#x27;41&#x27; and age &lt;=&#x27;45&#x27;&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result41_45 = (age41_45.toFloat/agetotal).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;41到45岁比率：&quot;</span>)</span><br><span class="line">    rate(result41_45)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> age46_50 = cardio.filter(<span class="string">&quot;age &gt;= &#x27;46&#x27; and age &lt;=&#x27;50&#x27;&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result46_50 = (age46_50.toFloat/agetotal).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;46到50岁比率：&quot;</span>)</span><br><span class="line">    rate(result46_50)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> age51_55 = cardio.filter(<span class="string">&quot;age &gt;= &#x27;51&#x27; and age &lt;=&#x27;55&#x27;&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result51_55 = (age51_55.toFloat/agetotal).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;51到55岁比率：&quot;</span>)</span><br><span class="line">    rate(result51_55)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> age56_60 = cardio.filter(<span class="string">&quot;age &gt;= &#x27;56&#x27; and age &lt;=&#x27;60&#x27;&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result56_60 = (age56_60.toFloat/agetotal).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;56到60岁比率：&quot;</span>)</span><br><span class="line">    rate(result56_60)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> age61_65 = cardio.filter(<span class="string">&quot;age &gt;= &#x27;61&#x27; and age &lt;=&#x27;65&#x27;&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result61_65 = (age61_65.toFloat/agetotal).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;60到65岁比率：&quot;</span>)</span><br><span class="line">    rate(result61_65)</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">rate</span></span>(x:<span class="type">Float</span>):<span class="type">Unit</span> =&#123;</span><br><span class="line">    <span class="keyword">var</span> per = (x * <span class="number">100</span>).toInt</span><br><span class="line">    println(per)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>Exam:</p>
+<p>​    找出数据集中心脏病患者胆固醇与正常值的比较情况并打印</p>
+<p>​    找出数据集中心脏病患者血糖与正常值的比较情况并打印</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.sql.<span class="type">SparkSession</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">exam</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> spark = <span class="type">SparkSession</span>.builder().enableHiveSupport().getOrCreate()</span><br><span class="line">    spark.sparkContext.setLogLevel(<span class="string">&quot;WARN&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> cardio = spark.read.table(<span class="string">&quot;cardio.cardio&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> cho = cardio.select(<span class="string">&quot;cholesterol&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> cho1 = cardio.select(<span class="string">&quot;cholesterol&quot;</span>).filter(<span class="string">&quot;cholesterol = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> cho2 = cardio.select(<span class="string">&quot;cholesterol&quot;</span>).filter(<span class="string">&quot;cholesterol = &#x27;2&#x27;&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> cho3 = cardio.select(<span class="string">&quot;cholesterol&quot;</span>).filter(<span class="string">&quot;cholesterol = &#x27;3&#x27;&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> smokeresult1 = (cho1.toFloat/cho).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;心脏病患者中胆固醇数值等于正常的比例:&quot;</span>)</span><br><span class="line">    rate(smokeresult1)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> smokeresult2 = (cho2.toFloat/cho).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;心脏病患者中胆固醇数值高于正常的比例:&quot;</span>)</span><br><span class="line">    rate(smokeresult2)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> smokeresult3 = (cho3.toFloat/cho).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;心脏病患者中胆固醇数值远高于正常的比例:&quot;</span>)</span><br><span class="line">    rate(smokeresult3)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> gluc = cardio.select(<span class="string">&quot;gluc&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> gluc1 = cardio.select(<span class="string">&quot;gluc&quot;</span>).filter(<span class="string">&quot;gluc = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> gluc2 = cardio.select(<span class="string">&quot;gluc&quot;</span>).filter(<span class="string">&quot;gluc = &#x27;2&#x27;&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> gluc3 = cardio.select(<span class="string">&quot;gluc&quot;</span>).filter(<span class="string">&quot;gluc = &#x27;3&#x27;&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> glucresult1 = (gluc1.toFloat/gluc).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;心脏病患者中血糖数值等于正常的比例:&quot;</span>)</span><br><span class="line">    rate(glucresult1)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> glucresult2 = (gluc2.toFloat/gluc).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;心脏病患者中血糖数值高于正常的比例:&quot;</span>)</span><br><span class="line">    rate(glucresult2)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> glucresult3 = (gluc3.toFloat/gluc).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;心脏病患者中血糖数值远高于正常的比例:&quot;</span>)</span><br><span class="line">    rate(glucresult3)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">rate</span></span>(x:<span class="type">Float</span>):<span class="type">Unit</span> =&#123;</span><br><span class="line">    <span class="keyword">var</span> per = (x * <span class="number">100</span>).toInt</span><br><span class="line">    println(per)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>Hobbys:</p>
+<p>​    计算出心脏病患者中有吸烟、饮酒、锻炼习惯的比例</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.sql.<span class="type">SparkSession</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">hobbys</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> spark = <span class="type">SparkSession</span>.builder().enableHiveSupport().getOrCreate()</span><br><span class="line">    spark.sparkContext.setLogLevel(<span class="string">&quot;WARN&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> cardio = spark.read.table(<span class="string">&quot;cardio.cardio&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> smoke = cardio.select(<span class="string">&quot;smoke&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> issmoke = cardio.select(<span class="string">&quot;smoke&quot;</span>).filter(<span class="string">&quot;smoke = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> smokeresult = (issmoke.toFloat/smoke).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;心脏病患者中有吸烟习惯的比例:&quot;</span>)</span><br><span class="line">    rate(smokeresult)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> alco = cardio.select(<span class="string">&quot;alco&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> isalco = cardio.select(<span class="string">&quot;alco&quot;</span>).filter(<span class="string">&quot;alco = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> alcoresult = (isalco.toFloat/alco).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;心脏病患者中有饮酒习惯的比例:&quot;</span>)</span><br><span class="line">    rate(alcoresult)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> active = cardio.select(<span class="string">&quot;active&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> isactive = cardio.select(<span class="string">&quot;active&quot;</span>).filter(<span class="string">&quot;active = &#x27;1&#x27;&quot;</span>).filter(<span class="string">&quot;cardio = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> activeresult = (isactive.toFloat/active).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;心脏病患者中有锻炼习惯的比例:&quot;</span>)</span><br><span class="line">    rate(activeresult)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">rate</span></span>(x:<span class="type">Float</span>):<span class="type">Unit</span> =&#123;</span><br><span class="line">    <span class="keyword">var</span> per = (x * <span class="number">100</span>).toInt</span><br><span class="line">    println(per)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>Ifcardio：</p>
+<p>​    找出数据集中年龄与是否患病的信息，生成为json文件以供后续使用</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.sql.<span class="type">SparkSession</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">ifcardio</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> spark = <span class="type">SparkSession</span>.builder().enableHiveSupport().getOrCreate()</span><br><span class="line">    spark.sparkContext.setLogLevel(<span class="string">&quot;WARN&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> cardio = spark.read.table(<span class="string">&quot;cardio.cardio3&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> cardio1 = cardio.select(<span class="string">&quot;age&quot;</span>, <span class="string">&quot;cardio&quot;</span>)</span><br><span class="line">    cardio1.write.mode(<span class="string">&quot;overwrite&quot;</span>).json(<span class="string">&quot;/user/root/cardio/age_cardio&quot;</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Heart工程"><a href="#Heart工程" class="headerlink" title="Heart工程"></a>Heart工程</h3><p>Ageprocess:</p>
+<p>​    根据数据集分析并计算出不同年龄段的患病风险并打印</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.sql.<span class="type">SparkSession</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">ageprocess</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> spark = <span class="type">SparkSession</span>.builder().enableHiveSupport().getOrCreate()</span><br><span class="line">    spark.sparkContext.setLogLevel(<span class="string">&quot;WARN&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> heart = spark.read.table(<span class="string">&quot;heart.heart&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//    val age29_40 = heart.filter(&quot;age &gt;= &#x27;29&#x27; and age &lt;= &#x27;40&#x27;&quot;).show()</span></span><br><span class="line">    <span class="keyword">val</span> age29_40_1 = heart.filter(<span class="string">&quot;age &gt;= &#x27;29&#x27; and age &lt;= &#x27;40&#x27;&quot;</span>).filter(<span class="string">&quot;target = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> age29_40_2 = heart.filter(<span class="string">&quot;age &gt;= &#x27;29&#x27; and age &lt;= &#x27;40&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result29_40 = (age29_40_1.toFloat/age29_40_2).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;29到40岁患病风险:&quot;</span>)</span><br><span class="line">    baifenshu(result29_40)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> age41_50_1 = heart.filter(<span class="string">&quot;age &gt;= &#x27;41&#x27; and age &lt;= &#x27;50&#x27;&quot;</span>).filter(<span class="string">&quot;target = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> age41_50_2 = heart.filter(<span class="string">&quot;age &gt;= &#x27;41&#x27; and age &lt;= &#x27;50&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result41_50 = (age41_50_1.toFloat/age41_50_2).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;41到50岁患病风险:&quot;</span>)</span><br><span class="line">    baifenshu(result41_50)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> age51_60_1 = heart.filter(<span class="string">&quot;age &gt;= &#x27;51&#x27; and age &lt;= &#x27;60&#x27;&quot;</span>).filter(<span class="string">&quot;target = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> age51_60_2 = heart.filter(<span class="string">&quot;age &gt;= &#x27;51&#x27; and age &lt;= &#x27;60&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result51_60 = (age51_60_1.toFloat/age51_60_2).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;51到60岁患病风险:&quot;</span>)</span><br><span class="line">    baifenshu(result51_60)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> age61_70_1 = heart.filter(<span class="string">&quot;age &gt;= &#x27;61&#x27; and age &lt;= &#x27;70&#x27;&quot;</span>).filter(<span class="string">&quot;target = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> age61_70_2 = heart.filter(<span class="string">&quot;age &gt;= &#x27;61&#x27; and age &lt;= &#x27;70&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result61_70 = (age61_70_1.toFloat/age61_70_2).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;61到70岁患病风险:&quot;</span>)</span><br><span class="line">    baifenshu(result61_70)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> age71_77_1 = heart.filter(<span class="string">&quot;age &gt;= &#x27;71&#x27; and age &lt;= &#x27;77&#x27;&quot;</span>).filter(<span class="string">&quot;target = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> age71_77_2 = heart.filter(<span class="string">&quot;age &gt;= &#x27;71&#x27; and age &lt;= &#x27;77&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> result71_77 = (age71_77_1.toFloat/age71_77_2).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;70到71岁患病风险:&quot;</span>)</span><br><span class="line">    baifenshu(result71_77)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">baifenshu</span></span>(x: <span class="type">Float</span> ): <span class="type">Unit</span> =&#123;</span><br><span class="line">    <span class="keyword">var</span> per = (x * <span class="number">100</span>).toInt</span><br><span class="line">    println(per + <span class="string">&quot;%&quot;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Cpprocess:</p>
+<p>​    选取出数据集中年龄，胸痛类型、是否患病标签写入新的json文件以供后续分析其关联</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.sql.<span class="type">SparkSession</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">cpprocess</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> spark = <span class="type">SparkSession</span>.builder().enableHiveSupport().getOrCreate()</span><br><span class="line">    spark.sparkContext.setLogLevel(<span class="string">&quot;WARN&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> heart = spark.read.table(<span class="string">&quot;heart.heart&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> cp = heart.select(<span class="string">&quot;age&quot;</span>,<span class="string">&quot;cp&quot;</span>,<span class="string">&quot;target&quot;</span>)</span><br><span class="line">    cp.write.mode(<span class="string">&quot;overwrite&quot;</span>).json(<span class="string">&quot;/user/root/heart/age_cp_target&quot;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Exangprocess：</p>
+<p>​    选取出数据集中是否有过运动引起的心绞痛与是否患病特征，写入新的json文件以供后续分析其关联使用。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.sql.<span class="type">SparkSession</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">exangprocess</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> spark = <span class="type">SparkSession</span>.builder().enableHiveSupport().getOrCreate()</span><br><span class="line">    spark.sparkContext.setLogLevel(<span class="string">&quot;WARN&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> heart = spark.read.table(<span class="string">&quot;heart.heart&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> exang = heart.select(<span class="string">&quot;exang&quot;</span>,<span class="string">&quot;target&quot;</span>)</span><br><span class="line">    exang.write.mode(<span class="string">&quot;overwrite&quot;</span>).json(<span class="string">&quot;/user/root/heart/exang_target&quot;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>Thalach_target:</p>
+<p>​    选取出数据集中最大心率与是否患病数据，写入新的文件以供后续分析其关联使用</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.sql.<span class="type">SparkSession</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">thalach_target</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> spark = <span class="type">SparkSession</span>.builder().enableHiveSupport().getOrCreate()</span><br><span class="line">    spark.sparkContext.setLogLevel(<span class="string">&quot;WARN&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> heart = spark.read.table(<span class="string">&quot;heart.heart&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> thalach = heart.select(<span class="string">&quot;thalach&quot;</span>,<span class="string">&quot;target&quot;</span>)</span><br><span class="line">    thalach.write.mode(<span class="string">&quot;overwrite&quot;</span>).json(<span class="string">&quot;/user/root/heart/thalach_target&quot;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>Thalachprocess:</p>
+<p>​    将最高心率进行分段统计分析，打印出在分段内的统计人数与患病概率</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.sql.<span class="type">SparkSession</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">thalachprocess</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> spark = <span class="type">SparkSession</span>.builder().enableHiveSupport().getOrCreate()</span><br><span class="line">    spark.sparkContext.setLogLevel(<span class="string">&quot;WARN&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> heart = spark.read.table(<span class="string">&quot;heart.heart&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//    val age29_40 = heart.filter(&quot;age &gt;= &#x27;29&#x27; and age &lt;= &#x27;40&#x27;&quot;).show()</span></span><br><span class="line">    <span class="keyword">val</span> thalach71_90_1 = heart.filter(<span class="string">&quot;thalach &gt;= &#x27;71&#x27; and thalach &lt;= &#x27;90&#x27;&quot;</span>).filter(<span class="string">&quot;target = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> thalach71_90_2 = heart.filter(<span class="string">&quot;thalach &gt;= &#x27;71&#x27; and thalach &lt;= &#x27;90&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> thalach71_90 = (thalach71_90_1.toFloat/thalach71_90_2).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;最高心率在71到90每分钟的患病概率:&quot;</span>)</span><br><span class="line">    baifenshu(thalach71_90)</span><br><span class="line">    println(<span class="string">&quot;最高心率在71到90每分钟的统计人数：&quot;</span>)</span><br><span class="line">    println(thalach71_90_2)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> thalach91_110_1 = heart.filter(<span class="string">&quot;thalach &gt;= &#x27;91&#x27; and thalach &lt;= &#x27;110&#x27;&quot;</span>).filter(<span class="string">&quot;target = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> thalach91_110_2 = heart.filter(<span class="string">&quot;thalach &gt;= &#x27;91&#x27; and thalach &lt;= &#x27;110&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> thalach91_110 = (thalach91_110_1.toFloat/thalach91_110_2).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;最高心率在91到110每分钟的患病概率:&quot;</span>)</span><br><span class="line">    baifenshu(thalach91_110)</span><br><span class="line">    println(<span class="string">&quot;最高心率在91到110每分钟的统计人数：&quot;</span>)</span><br><span class="line">    println(thalach91_110_2)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> thalach111_130_1 = heart.filter(<span class="string">&quot;thalach &gt;= &#x27;111&#x27; and thalach &lt;= &#x27;130&#x27;&quot;</span>).filter(<span class="string">&quot;target = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> thalach111_130_2 = heart.filter(<span class="string">&quot;thalach &gt;= &#x27;111&#x27; and thalach &lt;= &#x27;130&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> thalach111_130 = (thalach111_130_1.toFloat/thalach111_130_2).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;最高心率在111到130每分钟的患病概率:&quot;</span>)</span><br><span class="line">    baifenshu(thalach111_130)</span><br><span class="line">    println(<span class="string">&quot;最高心率在111到130每分钟的统计人数：&quot;</span>)</span><br><span class="line">    println(thalach111_130_2)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> thalach131_150_1 = heart.filter(<span class="string">&quot;thalach &gt;= &#x27;131&#x27; and thalach &lt;= &#x27;150&#x27;&quot;</span>).filter(<span class="string">&quot;target = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> thalach131_150_2 = heart.filter(<span class="string">&quot;thalach &gt;= &#x27;131&#x27; and thalach &lt;= &#x27;150&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> thalach131_150 = (thalach131_150_1.toFloat/thalach131_150_2).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;最高心率在131到150每分钟的患病概率:&quot;</span>)</span><br><span class="line">    baifenshu(thalach131_150)</span><br><span class="line">    println(<span class="string">&quot;最高心率在131到150每分钟的统计人数：&quot;</span>)</span><br><span class="line">    println(thalach131_150_2)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> thalach151_170_1 = heart.filter(<span class="string">&quot;thalach &gt;= &#x27;151&#x27; and thalach &lt;= &#x27;170&#x27;&quot;</span>).filter(<span class="string">&quot;target = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> thalach151_170_2 = heart.filter(<span class="string">&quot;thalach &gt;= &#x27;151&#x27; and thalach &lt;= &#x27;170&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> thalach151_170 = (thalach151_170_1.toFloat/thalach151_170_2).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;最高心率在151到170每分钟的患病概率:&quot;</span>)</span><br><span class="line">    baifenshu(thalach151_170)</span><br><span class="line">    println(<span class="string">&quot;最高心率在151到170每分钟的统计人数：&quot;</span>)</span><br><span class="line">    println(thalach151_170_2)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> thalach171_190_1 = heart.filter(<span class="string">&quot;thalach &gt;= &#x27;171&#x27; and thalach &lt;= &#x27;190&#x27;&quot;</span>).filter(<span class="string">&quot;target = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> thalach171_190_2 = heart.filter(<span class="string">&quot;thalach &gt;= &#x27;171&#x27; and thalach &lt;= &#x27;190&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> thalach171_190 = (thalach171_190_1.toFloat/thalach171_190_2).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;最高心率在171到190每分钟的患病概率:&quot;</span>)</span><br><span class="line">    baifenshu(thalach171_190)</span><br><span class="line">    println(<span class="string">&quot;最高心率在171到190每分钟的统计人数：&quot;</span>)</span><br><span class="line">    println(thalach171_190_2)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> thalach191_202_1 = heart.filter(<span class="string">&quot;thalach &gt;= &#x27;191&#x27; and thalach &lt;= &#x27;202&#x27;&quot;</span>).filter(<span class="string">&quot;target = &#x27;1&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> thalach191_202_2 = heart.filter(<span class="string">&quot;thalach &gt;= &#x27;191&#x27; and thalach &lt;= &#x27;202&#x27;&quot;</span>).count()</span><br><span class="line">    <span class="keyword">val</span> thalach191_202 = (thalach191_202_1.toFloat/thalach171_190_2).formatted(<span class="string">&quot;%.2f&quot;</span>).toFloat</span><br><span class="line">    println(<span class="string">&quot;最高心率在191到202每分钟的患病概率:&quot;</span>)</span><br><span class="line">    baifenshu(thalach191_202)</span><br><span class="line">    println(<span class="string">&quot;最高心率在191到202每分钟的统计人数：&quot;</span>)</span><br><span class="line">    println(thalach191_202_2)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">baifenshu</span></span>(x: <span class="type">Float</span> ): <span class="type">Unit</span> =&#123;</span><br><span class="line">    <span class="keyword">var</span> per = (x * <span class="number">100</span>).toInt</span><br><span class="line">    println(per + <span class="string">&quot;%&quot;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="四、数据预处理及基本分析部分"><a href="#四、数据预处理及基本分析部分" class="headerlink" title="四、数据预处理及基本分析部分"></a>四、数据预处理及基本分析部分</h1><p>HDFS数据库一览</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/3.png"></p>
+<p>HDFS文件存储一览</p>
+<p>&#x2F;user&#x2F;root</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/4.png"></p>
+<h2 id="部分项目提交集群运行结果展示"><a href="#部分项目提交集群运行结果展示" class="headerlink" title="部分项目提交集群运行结果展示"></a>部分项目提交集群运行结果展示</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spark-submit --master spark://master:7077 --class test.ageprocess /opt/cardio.jar</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/7.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spark-submit --master spark://master:7077 --class test.hobbys /opt/cardio.jar</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/8.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spark-submit --master spark://master:7077 --class test.exam /opt/cardio.jar</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/9.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spark-submit --master spark://master:7077 --class test.ap /opt/cardio.jar</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/10.png"></p>
+<h2 id="部分生成的json文件展示"><a href="#部分生成的json文件展示" class="headerlink" title="部分生成的json文件展示"></a>部分生成的json文件展示</h2><p>&#x2F;user&#x2F;root&#x2F;cardio</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/5.png"></p>
+<p>&#x2F;user&#x2F;root&#x2F;heart</p>
+<p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/6.png"></p>
+<h1 id="五、关于数据建模的解释以及思考"><a href="#五、关于数据建模的解释以及思考" class="headerlink" title="五、关于数据建模的解释以及思考"></a>五、关于数据建模的解释以及思考</h1><p>原本希望通过数据建模完成心脏病预测系统：输入数据——&gt;模型比对分析——&gt;输出患心血管疾病的概率</p>
+<p>经过数周的思考与对于技术的深入了解，我们认为我们的模型训练仅仅从数字入手，按照目前的知识技术进行是不具备足够的科学性的。真正的心血管疾病预测需要更大量的数据参与训练以及更严格、准确的指标标准。想要完成真正的疾病预测，少不了医疗专业领域的专家参与。遂将我们的目标改为心血管分析可视化，预测系统暂时搁置、希望将来有机会能把这个项目完善。</p>
+<h1 id="六、数据可视化展示"><a href="#六、数据可视化展示" class="headerlink" title="六、数据可视化展示"></a>六、数据可视化展示</h1><h2 id="组件支持"><a href="#组件支持" class="headerlink" title="组件支持"></a>组件支持</h2><ul>
+<li><p>HTML</p>
+</li>
+<li><p>CSS</p>
+</li>
+<li><p>JavaScript</p>
+</li>
+<li><p>JQuery</p>
+</li>
+<li><p>Ajax</p>
+</li>
+<li><p>Echarts</p>
+</li>
+</ul>
+<h2 id="主显界面"><a href="#主显界面" class="headerlink" title="主显界面"></a>主显界面</h2><p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/11.png"></p>
+<h2 id="预测交互界面（demo）"><a href="#预测交互界面（demo）" class="headerlink" title="预测交互界面（demo）"></a>预测交互界面（demo）</h2><p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/12.png"></p>
+<h2 id="附加的bmi计算小功能（demo）"><a href="#附加的bmi计算小功能（demo）" class="headerlink" title="附加的bmi计算小功能（demo）"></a>附加的bmi计算小功能（demo）</h2><p><img src="/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E5%BF%83%E8%84%8F%E7%97%85%E5%88%86%E6%9E%90/13.png"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/12/Hadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E6%90%AD%E5%BB%BA%E4%B8%8E%E9%85%8D%E7%BD%AE%E5%A4%87%E5%BF%98/" rel="prev" title="Hadoop伪分布式搭建与配置备忘">
+      <i class="fa fa-chevron-left"></i> Hadoop伪分布式搭建与配置备忘
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/25/Hadoop%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E6%90%AD%E5%BB%BA%E4%B8%8E%E9%85%8D%E7%BD%AE%E5%A4%87%E5%BF%98/" rel="next" title="Hadoop完全分布式搭建与配置备忘">
+      Hadoop完全分布式搭建与配置备忘 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E7%9B%AE%E7%9A%84"><span class="nav-number">1.</span> <span class="nav-text">一、项目开发目的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%95%B0%E6%8D%AE%E6%9D%A5%E6%BA%90%E5%8F%8A%E7%9B%B8%E5%85%B3%E8%A7%A3%E9%87%8A"><span class="nav-number">2.</span> <span class="nav-text">二、数据来源及相关解释</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Heart%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-number">2.1.</span> <span class="nav-text">Heart数据集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cardio%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-number">2.2.</span> <span class="nav-text">Cardio数据集</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%B7%A5%E7%A8%8B%E6%96%87%E4%BB%B6%E8%A7%A3%E9%87%8A"><span class="nav-number">3.</span> <span class="nav-text">三、工程文件解释</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E9%83%A8%E5%88%86"><span class="nav-number">3.1.</span> <span class="nav-text">1.数据处理部分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cardio%E5%B7%A5%E7%A8%8B"><span class="nav-number">3.1.1.</span> <span class="nav-text">Cardio工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Heart%E5%B7%A5%E7%A8%8B"><span class="nav-number">3.1.2.</span> <span class="nav-text">Heart工程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86%E5%8F%8A%E5%9F%BA%E6%9C%AC%E5%88%86%E6%9E%90%E9%83%A8%E5%88%86"><span class="nav-number">4.</span> <span class="nav-text">四、数据预处理及基本分析部分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E5%88%86%E9%A1%B9%E7%9B%AE%E6%8F%90%E4%BA%A4%E9%9B%86%E7%BE%A4%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C%E5%B1%95%E7%A4%BA"><span class="nav-number">4.1.</span> <span class="nav-text">部分项目提交集群运行结果展示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E5%88%86%E7%94%9F%E6%88%90%E7%9A%84json%E6%96%87%E4%BB%B6%E5%B1%95%E7%A4%BA"><span class="nav-number">4.2.</span> <span class="nav-text">部分生成的json文件展示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E7%9A%84%E8%A7%A3%E9%87%8A%E4%BB%A5%E5%8F%8A%E6%80%9D%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">五、关于数据建模的解释以及思考</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B1%95%E7%A4%BA"><span class="nav-number">6.</span> <span class="nav-text">六、数据可视化展示</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E6%94%AF%E6%8C%81"><span class="nav-number">6.1.</span> <span class="nav-text">组件支持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E6%98%BE%E7%95%8C%E9%9D%A2"><span class="nav-number">6.2.</span> <span class="nav-text">主显界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E6%B5%8B%E4%BA%A4%E4%BA%92%E7%95%8C%E9%9D%A2%EF%BC%88demo%EF%BC%89"><span class="nav-number">6.3.</span> <span class="nav-text">预测交互界面（demo）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%84%E5%8A%A0%E7%9A%84bmi%E8%AE%A1%E7%AE%97%E5%B0%8F%E5%8A%9F%E8%83%BD%EF%BC%88demo%EF%BC%89"><span class="nav-number">6.4.</span> <span class="nav-text">附加的bmi计算小功能（demo）</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="倬倬吃三碗"
+      src="/images/zaomiao2.jpg">
+  <p class="site-author-name" itemprop="name">倬倬吃三碗</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhuozhuo233" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhuozhuo233" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">倬倬吃三碗</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":300,"height":600,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

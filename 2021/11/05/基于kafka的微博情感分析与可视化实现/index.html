@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhuozhuo233.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一、项目开发目的​	随着互联网信息技术高速发展，近年来网络上的数据可以说是爆炸式增长。如果这这些数据能够被科学地收集起来进行分析，那么对于政府、企业都可以以网络舆情为参考制定自己下一步的战略规划。具体而言，对于政府来说，通过对微博内容进行分析可以进一步了解大众，把握社会舆情风向。针对各种社会风气进行或提倡或批评的指导。对于企业来说，通过对微博内容进行分析可以快速进行用户调研，比起传统的问卷调研来说">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于kafka的微博情感分析与可视化实现">
+<meta property="og:url" content="https://zhuozhuo233.github.io/2021/11/05/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="倬倬吃三碗">
+<meta property="og:description" content="一、项目开发目的​	随着互联网信息技术高速发展，近年来网络上的数据可以说是爆炸式增长。如果这这些数据能够被科学地收集起来进行分析，那么对于政府、企业都可以以网络舆情为参考制定自己下一步的战略规划。具体而言，对于政府来说，通过对微博内容进行分析可以进一步了解大众，把握社会舆情风向。针对各种社会风气进行或提倡或批评的指导。对于企业来说，通过对微博内容进行分析可以快速进行用户调研，比起传统的问卷调研来说">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/1.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/2.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/3.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/4.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/5.png">
+<meta property="article:published_time" content="2021-11-05T00:42:51.000Z">
+<meta property="article:modified_time" content="2021-11-05T02:14:39.438Z">
+<meta property="article:author" content="倬倬吃三碗">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhuozhuo233.github.io/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/1.png">
+
+<link rel="canonical" href="https://zhuozhuo233.github.io/2021/11/05/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>基于kafka的微博情感分析与可视化实现 | 倬倬吃三碗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">倬倬吃三碗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2021/11/05/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zaomiao2.jpg">
+      <meta itemprop="name" content="倬倬吃三碗">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="倬倬吃三碗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于kafka的微博情感分析与可视化实现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-05 08:42:51 / 修改时间：10:14:39" itemprop="dateCreated datePublished" datetime="2021-11-05T08:42:51+08:00">2021-11-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6%E4%B8%8E%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">数据科学与大数据技术</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="一、项目开发目的"><a href="#一、项目开发目的" class="headerlink" title="一、项目开发目的"></a>一、项目开发目的</h1><p>​	随着互联网信息技术高速发展，近年来网络上的数据可以说是爆炸式增长。如果这这些数据能够被科学地收集起来进行分析，那么对于政府、企业都可以以网络舆情为参考制定自己下一步的战略规划。具体而言，对于政府来说，通过对微博内容进行分析可以进一步了解大众，把握社会舆情风向。针对各种社会风气进行或提倡或批评的指导。对于企业来说，通过对微博内容进行分析可以快速进行用户调研，比起传统的问卷调研来说有着无与伦比的优势，并且还可以监控竞品公司舆情，以此做出全方位的分析并改善自己的产品。</p>
+<p>​	新浪微博上涵盖的信息大到国家战略层面的指示，小到生活中人们的鸡毛琐事。面对这海量数据，针对微博热搜榜进行分析就可以极大程度上缩小数据量，提高对于舆论热点把握的精确性。本项目旨在爬取微博热搜正文及内容，利用贝叶斯算法对于每一条评论文本进行情绪分析，最后可视化呈现情绪评分。实现了对于微博热搜条目的可视化情感分析，以供快速理解舆情。同时，本项目也可以扩展到专门针对特定商品或政策进行情感分析，助力政企直观了解舆情，为下一步的发展提供重要参考。</p>
+<p>​	基于此社会背景及需求，本项目在舆情分析方面做出一小步探索。将爬虫、数据处理、kafka架构、贝叶斯算法建模、pyecharts可视化、flask框架整合运用。作为阶段性总结在此将项目流程以此笔记记录下来。</p>
+<p>工程文件：<a target="_blank" rel="noopener" href="https://github.com/zhuozhuo233/weibotop_sentiment_analysis">https://github.com/zhuozhuo233/weibotop_sentiment_analysis</a></p>
+<span id="more"></span>
+
+<h1 id="二、项目开发环境"><a href="#二、项目开发环境" class="headerlink" title="二、项目开发环境"></a>二、项目开发环境</h1><h2 id="1-总体环境"><a href="#1-总体环境" class="headerlink" title="1.总体环境"></a>1.总体环境</h2><p>​	项目的总体环境依托于linux系统虚拟机，虚拟机的网络IP地址为192.168.91.30，关闭防火墙避免网络无法访问与远程连接不受阻碍。Jdk版本为jdk1.8.0_212。Kafka版本为kafka_2.12-2.70。spark版本为spark-3.0.2。hadoop版本为hadoop3.2。语言为Python3.</p>
+<p>Kafka的特性为高吞吐量、低延迟、可扩展性、持久性、可靠性、容错性、高并发。Zookeeper是分布式程序协调服务，为分布式应用提供一致性服务，其功能包括：分布式同步、组服务、域名服务、配置维护等。整个Kafka架构对应一个zookeeper集群，zookeeper用于协调不同Broker之间的关系，通过zookeeper管理集群配置，选举leader，以及在consumer group发生变化时进行rebalance。本项目设置的topic为weibotop，Producer消息生产者往Broker消息代理中所指定的topic中写消息，Consumer消息消费者从Broker消息代理中指定的topic中读取消息，Broker就是在Producer和Consumer中间起到代理保存消息的中转站作用，一个Kafka服务器节点就是一个Broker，一个或多个Broker可以组成一个Kafka集群。</p>
+<h2 id="2-数据获取模块"><a href="#2-数据获取模块" class="headerlink" title="2.数据获取模块"></a>2.数据获取模块</h2><p>组件：python urllib包、python re包、python bs4包。</p>
+<p>urllib包使用了request模块用于模拟HTTP发送请求，error模块进行一场处理，parse工具模块进行url处理解析，robotparser协议识别网站的robot.txt，判断是否可爬。</p>
+<p>  re包主要通过正则表达式匹配处理字符串。</p>
+<p>  bs4包主要是用了其Beautiful Soup。它除了支持python标准库中的HTML解析器外还支持lxml HTML解析器、lxml XML解析器、html5lib解析器。</p>
+<h2 id="3-数据预处理模块"><a href="#3-数据预处理模块" class="headerlink" title="3.数据预处理模块"></a>3.数据预处理模块</h2><p>组件：python re包、jieba分词、bag of words词袋模型。</p>
+<p>  微博内容常常带有许多噪声数据，包括对于其他用户的引用，URL链接等数据。这些噪声对训练模型无益并且可能会产生干扰，需要将其去除使模型的预测更加精确。</p>
+<p>Jieba分词是一款Github上的开源中文分词工具，提供了多种语言接口，能够识别繁简汉字。</p>
+<p>Bow词袋模型最早出现在自然语言处理和信息检索领域。该模型忽略文本的语法和语序，仅将其看做是若干个词汇的集合。将文本映射成一个词的向量，向量长度就是词典的大小，向量中每一个位置表示词典中的一个词，向量中的每一位上的数值表示该词在文本中出现的次数。</p>
+<h2 id="4-情感分析算法模块"><a href="#4-情感分析算法模块" class="headerlink" title="4.情感分析算法模块"></a>4.情感分析算法模块</h2><p>组件：python sklearn机器学习库、python pandas包、python pickle包</p>
+<p>  Sklearn机器学习库中内置了贝叶斯模型。贝叶斯方法是一个历史悠久，有着坚实基础的机器学习方法，很多高级自然语言处理模型也能够从它演化而来。</p>
+<p>  Pandas库建立于Numpy库之上，用于数据操纵和分析。</p>
+<p>  Pickle包用于对文件进行操作。</p>
+<h2 id="5-可视化模块"><a href="#5-可视化模块" class="headerlink" title="5.可视化模块"></a>5.可视化模块</h2><p>组件：pyecharts、python flask web服务器</p>
+<h1 id="三、工程文件解释"><a href="#三、工程文件解释" class="headerlink" title="三、工程文件解释"></a>三、工程文件解释</h1><h2 id="1-producer"><a href="#1-producer" class="headerlink" title="1.producer"></a>1.producer</h2><p>将爬虫整合到producer生产者中。获取经过观察，微博内容存在于td-02标签之中，按照整体页面结构循环读取出标签中的内容。得到爬取的内容并通过zookeeper向kafka cluster集群中指定的topic发送。</p>
+<p>爬虫函数需要观察网页结构布局、注意不同网页数据所在的位置</p>
+<p>微博查看需要注意登录状态，用户headers需要正确添加</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaProducer</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"><span class="keyword">from</span> pyspark.sql.functions <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> pyspark.sql.types <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> urllib.parse</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> weibo_top_sentiment <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">bayesSentimentModel = BayesSentiment()</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Cookie&#x27;</span>: <span class="string">&#x27;SINAGLOBAL=8952596771843.973.1619269017487; SCF=AqdkznlYHewYaGz11U_Ewp7RO2xO2Xd4cvwl_zD0tRWF0Wm2BeSnOv3Y-wXnvZYRLf0ffP44xgWozS0YFaAM8eI.; ALF=1663466356; UOR=cn.bing.com,weibo.com,localhost:8888; SUB=_2A25MZGr7DeRhGeNI7VUV8y_IzTiIHXVvp3azrDV8PUJbkNAKLVjCkW1NSCumaJHCc-hZj7e5J3Q4wPOjB0zVojev; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WFsS52AoM-aTTy1EieyUG8Z5NHD95QfSoqNShepShqXWs4Dqcj6i--RiKLFiKyFi--NiKnEiK.Ei--4i-2fi-82i--Xi-zRiKy2i--fiKysi-8si--fiKyWi-27i--RiKLFiKyF; _s_tentry=-; Apache=8470921214117.056.1634791170888; ULV=1634791170895:23:7:1:8470921214117.056.1634791170888:1634256856266&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_top</span>(<span class="params">producer</span>):</span><br><span class="line">    url = <span class="string">&quot;https://s.weibo.com/top/summary&quot;</span></span><br><span class="line">    r = requests.get(url, headers=headers)</span><br><span class="line">    <span class="comment"># print(res.text)</span></span><br><span class="line">    soup = BeautifulSoup(r.text, <span class="string">&quot;html.parser&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> soup.select(<span class="string">&#x27;tbody tr&#x27;</span>):</span><br><span class="line">        numtmp = i.select(<span class="string">&#x27;.ranktop&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(numtmp):</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                num = <span class="built_in">int</span>(numtmp[<span class="number">0</span>].string)</span><br><span class="line">                title = i.select(<span class="string">&#x27;.td-02 a&#x27;</span>)[<span class="number">0</span>].string</span><br><span class="line">                hot_score = i.select(<span class="string">&#x27;.td-02 span&#x27;</span>)[<span class="number">0</span>].string.split(<span class="string">&#x27; &#x27;</span>)[-<span class="number">1</span>]</span><br><span class="line">                <span class="comment"># yield num, key, hot</span></span><br><span class="line">                <span class="built_in">print</span>(num, title, <span class="string">&#x27;hot:&#x27;</span>, hot_score)</span><br><span class="line">                result = get_weibo_list(<span class="string">&quot;https://s.weibo.com//weibo?q=%23&quot;</span> + title[<span class="number">0</span>] + <span class="string">&quot;%23&amp;Refer=top&quot;</span>)</span><br><span class="line">            <span class="keyword">except</span> ValueError <span class="keyword">as</span> e:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">for</span> each <span class="keyword">in</span> result:</span><br><span class="line">                sentiment_score = bayesSentimentModel.predict(each)</span><br><span class="line">                <span class="built_in">print</span>(title, sentiment_score)</span><br><span class="line">                msg = &#123;<span class="string">&quot;title&quot;</span>: title, <span class="string">&quot;time&quot;</span>: time.strftime(<span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>, time.localtime()),<span class="string">&quot;sentiment_score&quot;</span>: sentiment_score&#125;</span><br><span class="line">                producer.send(<span class="string">&#x27;weibotop&#x27;</span>, key=<span class="string">&#x27;ff&#x27;</span>, value=json.dumps(msg))</span><br><span class="line"></span><br><span class="line">        time.sleep(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_weibo_list</span>(<span class="params">url</span>):</span><br><span class="line">    r = requests.get(url, headers=headers)</span><br><span class="line"></span><br><span class="line">    bs = BeautifulSoup(r.text)</span><br><span class="line">    body = bs.body</span><br><span class="line">    div_m_main = body.find(<span class="string">&#x27;div&#x27;</span>, attrs=&#123;<span class="string">&#x27;class&#x27;</span>: <span class="string">&#x27;m-main&#x27;</span>&#125;)</span><br><span class="line">    div_m_flex1 = div_m_main.find(<span class="string">&#x27;div&#x27;</span>, attrs=&#123;<span class="string">&#x27;class&#x27;</span>: <span class="string">&#x27;woo-box-flex&#x27;</span>&#125;)</span><br><span class="line">    div_m_wrap = div_m_flex1.find(<span class="string">&#x27;div&#x27;</span>, attrs=&#123;<span class="string">&#x27;class&#x27;</span>: <span class="string">&#x27;woo-box-flex&#x27;</span>, <span class="string">&#x27;id&#x27;</span>: <span class="string">&#x27;pl_feed_main&#x27;</span>&#125;)</span><br><span class="line">    div_m_con_l = div_m_wrap.find(<span class="string">&#x27;div&#x27;</span>, attrs=&#123;<span class="string">&#x27;class&#x27;</span>: <span class="string">&#x27;main-full&#x27;</span>&#125;)</span><br><span class="line">    data_div = div_m_con_l.findAll(<span class="string">&#x27;div&#x27;</span>, attrs=&#123;<span class="string">&#x27;class&#x27;</span>: <span class="string">&#x27;card-wrap&#x27;</span>, <span class="string">&#x27;action-type&#x27;</span>: <span class="string">&#x27;feed_list_item&#x27;</span>&#125;)</span><br><span class="line"></span><br><span class="line">    weibo_list = []</span><br><span class="line">    <span class="keyword">for</span> each_div <span class="keyword">in</span> data_div:</span><br><span class="line">        div_card = each_div.find(<span class="string">&#x27;div&#x27;</span>, attrs=&#123;<span class="string">&#x27;class&#x27;</span>: <span class="string">&#x27;card&#x27;</span>&#125;)</span><br><span class="line">        div_card_feed = div_card.find(<span class="string">&#x27;div&#x27;</span>, attrs=&#123;<span class="string">&#x27;class&#x27;</span>: <span class="string">&#x27;card-feed&#x27;</span>&#125;)</span><br><span class="line">        div_content = div_card_feed.find(<span class="string">&#x27;div&#x27;</span>, attrs=&#123;<span class="string">&#x27;class&#x27;</span>: <span class="string">&#x27;content&#x27;</span>&#125;)</span><br><span class="line"></span><br><span class="line">        p_feed_list_content = div_content.find(<span class="string">&#x27;p&#x27;</span>, attrs=&#123;<span class="string">&#x27;class&#x27;</span>: <span class="string">&#x27;txt&#x27;</span>, <span class="string">&#x27;node-type&#x27;</span>: <span class="string">&#x27;feed_list_content&#x27;</span>&#125;)</span><br><span class="line">        content_text = p_feed_list_content.get_text()</span><br><span class="line">        p_feed_list_content_full = div_content.find(<span class="string">&#x27;p&#x27;</span>, attrs=&#123;<span class="string">&#x27;class&#x27;</span>: <span class="string">&#x27;txt&#x27;</span>, <span class="string">&#x27;node-type&#x27;</span>: <span class="string">&#x27;feed_list_content_full&#x27;</span>&#125;)</span><br><span class="line">        <span class="keyword">if</span> p_feed_list_content_full:</span><br><span class="line">            content_text = p_feed_list_content_full.get_text()</span><br><span class="line"></span><br><span class="line">        weibo_list.append(content_text.strip())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> weibo_list</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">producer = KafkaProducer(bootstrap_servers=<span class="string">&#x27;localhost:9092&#x27;</span>,</span><br><span class="line">                         key_serializer=<span class="keyword">lambda</span> k: json.dumps(k).encode(),</span><br><span class="line">                         value_serializer=<span class="keyword">lambda</span> v: json.dumps(v).encode())</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    get_top(producer=producer)</span><br><span class="line">    time.sleep(<span class="number">600</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-数据处理与模型训练"><a href="#2-数据处理与模型训练" class="headerlink" title="2.数据处理与模型训练"></a>2.数据处理与模型训练</h2><p>process函数借助re包与jieba分词对于采集到的内容进行去重、去噪等预处理</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#去除url</span><br><span class="line">   text = re.sub(&quot;(https?|ftp|file)://[-A-Za-z0-9+&amp;@#/%=~_|]&quot;,&quot; &quot;,text)</span><br><span class="line">   #去除@xxx(用户名)</span><br><span class="line">   text = re.sub(&quot;@.+?( |$)&quot;, &quot; &quot;, text)</span><br><span class="line">   #去除&#123;%xxx%&#125;（地理定位，微博话题等）</span><br><span class="line">   text = re.sub(&quot;\&#123;%.+?%\&#125;&quot;, &quot; &quot;,text)</span><br><span class="line">   #去除#xx#（标题引用）</span><br><span class="line">   text = re.sub(&quot;\&#123;#.+?#\&#125;&quot;, &quot; &quot;, text)</span><br><span class="line">   #去除【xx】(里面的内容通常都不是用户自己写的)</span><br><span class="line">   text = re.sub(&quot;【.+?】&quot;, &quot; &quot;, text)</span><br><span class="line">   #数据集中的噪声</span><br><span class="line">   text = re.sub(&#x27;\u200b&#x27;,&quot; &quot;,text)</span><br><span class="line">                 </span><br><span class="line">   #分词</span><br><span class="line">   words = [w for w in jieba.lcut(text) if w.isalpha()]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>加载训练集与测试集建模并将训练好的模型保存</p>
+<p>贝叶斯方法是机器学习中一个有着悠久历史、坚实理论基础的方法。朴素贝叶斯的思想基础是：对于给出的待分类项，求解在此项出现的条件下各个类别出现的概率，哪个最大，就认为此待分类项属于哪个类别。本项目采用多项式贝叶斯算法MultinomialNB。是朴素贝叶斯的变体，常用与文本分类。详细理论需要多花时间研究，最最通俗来讲，在本项目中的体现在于将得出的结果与0和1两个极端值相比较，越趋近于0就认为负面情绪占比更多，越趋近于1就认为正面情绪占比更多。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re </span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> CountVectorizer,TfidfVectorizer</span><br><span class="line"><span class="keyword">from</span> sklearn.naive_bayes <span class="keyword">import</span> MultinomialNB</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_corpus</span>(<span class="params">path</span>):</span><br><span class="line">    data = []</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(path,<span class="string">&#x27;r&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>)<span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> f :</span><br><span class="line">            [_,sentiment,content] = line.split(<span class="string">&quot;,&quot;</span>,<span class="number">2</span>)</span><br><span class="line">            content = process(content)</span><br><span class="line">            data.append((content,<span class="built_in">int</span>(sentiment)))</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process</span>(<span class="params">text</span>):</span><br><span class="line">    text = re.sub(<span class="string">&quot;(http?|ftp|file)://[-A-Za-z0-9+%@#/%?=~_|!:,.;]+[-A-Za-z0-9+&amp;@#?%=~|]&quot;</span>,<span class="string">&quot; &quot;</span>,text)</span><br><span class="line">    text = re.sub(<span class="string">&quot;@.+?( |$)&quot;</span>,<span class="string">&quot; &quot;</span>,text)</span><br><span class="line">    text = re.sub(<span class="string">&quot;\&#123;%.+?%\&#125;&quot;</span>,<span class="string">&quot; &quot;</span>,text)</span><br><span class="line">    text = re.sub(<span class="string">&quot;\&#123;#.+?%\&#125;&quot;</span>,<span class="string">&quot; &quot;</span>,text)</span><br><span class="line">    text = re.sub(<span class="string">&quot;【.+?】&quot;</span>,<span class="string">&quot; &quot;</span>,text)</span><br><span class="line">    text = re.sub(<span class="string">&quot;\u200b&quot;</span>,<span class="string">&quot; &quot;</span>,text)</span><br><span class="line">    text = re.sub(<span class="string">&quot;n&quot;</span>,<span class="string">&quot; &quot;</span>,text)</span><br><span class="line">    words = [w <span class="keyword">for</span> w <span class="keyword">in</span> jieba.lcut(text) <span class="keyword">if</span> w.isalpha()]</span><br><span class="line">    result =<span class="string">&quot; &quot;</span>.join(words)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">TRAIN_PATH = <span class="string">&quot;/opt/train.txt&quot;</span></span><br><span class="line">TEST_PATH = <span class="string">&quot;/opt/test.txt&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>():</span><br><span class="line">    stopwords = []</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;/opt/stopwords.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>)<span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> w <span class="keyword">in</span> f :</span><br><span class="line">            stopwords.append(w.strip())</span><br><span class="line">    </span><br><span class="line">    train_data = load_corpus(TRAIN_PATH)</span><br><span class="line">    test_data = load_corpus(TEST_PATH)</span><br><span class="line">    df_train = pd.DataFrame(train_data,columns=[<span class="string">&quot;words&quot;</span>,<span class="string">&quot;label&quot;</span>])</span><br><span class="line">    df_test = pd.DataFrame(test_data,columns=[<span class="string">&quot;words&quot;</span>,<span class="string">&quot;label&quot;</span>])</span><br><span class="line">    vectorizer = CountVectorizer(token_pattern=<span class="string">&#x27;\[?\w+\]?&#x27;</span>,stop_words=stopwords)</span><br><span class="line">    x_train = vectorizer.fit_transform(df_train[<span class="string">&#x27;words&#x27;</span>])</span><br><span class="line">    y_train = df_train[<span class="string">&quot;label&quot;</span>]</span><br><span class="line">    x_test = vectorizer.transform(df_test[<span class="string">&quot;words&quot;</span>])</span><br><span class="line">    y_test = df_test[<span class="string">&quot;label&quot;</span>]</span><br><span class="line">    clf = MultinomialNB()</span><br><span class="line">    clf.fit(x_train,y_train)</span><br><span class="line">    y_pred =clf.predict(x_test)</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(metrics.classification_report(y_test,y_pred))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;准确率:&quot;</span>,metrics.accuracy_score(y_test,y_pred))</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;bayes_model.pkl&#x27;</span>,<span class="string">&#x27;wb&#x27;</span>)<span class="keyword">as</span> f:</span><br><span class="line">        pickle.dump([clf,vectorizer],f)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BayesSentiment</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;bayes_model.pkl&#x27;</span>,<span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            self.clf,self.vectorizer = pickle.load(f)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">predict</span>(<span class="params">self,sentence</span>):</span><br><span class="line">        sentenceprocessed = [process(sentence)]</span><br><span class="line">        vec = self.vectorizer.transform(sentenceprocessed)</span><br><span class="line">        <span class="keyword">return</span> self.clf.predict_proba(vec)[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    train()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-consumer"><a href="#3-consumer" class="headerlink" title="3.consumer"></a>3.consumer</h2><p>consumer消费者从kafka集群中broker指定的topic中读取消息，并将内容持久化为csv文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"><span class="keyword">from</span> pyspark.sql.functions <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> pyspark.sql.types <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> IPython.display <span class="keyword">import</span> clear_output</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"><span class="keyword">import</span> matplotlib</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@udf(<span class="params">returnType=StringType(<span class="params"></span>)</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gettitle</span>(<span class="params">column</span>):</span><br><span class="line">    jsonobject = json.loads(column)</span><br><span class="line">    jsonobject = json.loads(jsonobject)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;title&quot;</span> <span class="keyword">in</span> jsonobject:</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">str</span>(jsonobject[<span class="string">&#x27;title&#x27;</span>])</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@udf(<span class="params">returnType=DoubleType(<span class="params"></span>)</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getscore</span>(<span class="params">column</span>):</span><br><span class="line">    jsonobject = json.loads(column)</span><br><span class="line">    jsonobject = json.loads(jsonobject)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;sentiment_score&quot;</span> <span class="keyword">in</span> jsonobject:</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">float</span>(jsonobject[<span class="string">&#x27;sentiment_score&#x27;</span>])</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0.5</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) != <span class="number">4</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;参数错误&quot;</span>, file=sys.stderr)</span><br><span class="line">        sys.exit(-<span class="number">1</span>)</span><br><span class="line">    spark = SparkSession\</span><br><span class="line">        .builder\</span><br><span class="line">        .appName(<span class="string">&quot;WeiboSpark&quot;</span>)\</span><br><span class="line">        .getOrCreate()</span><br><span class="line">    sc = spark.sparkContext</span><br><span class="line">    sc.setLogLevel(<span class="string">&quot;ERROR&quot;</span>)</span><br><span class="line">    bootstrapServers = sys.argv[<span class="number">1</span>]</span><br><span class="line">    subscribeType = sys.argv[<span class="number">2</span>]</span><br><span class="line">    topics = sys.argv[<span class="number">3</span>]</span><br><span class="line">    lines = spark\</span><br><span class="line">        .readStream\</span><br><span class="line">        .<span class="built_in">format</span>(<span class="string">&quot;kafka&quot;</span>)\</span><br><span class="line">        .option(<span class="string">&quot;kafka.bootstrap.servers&quot;</span>, bootstrapServers)\</span><br><span class="line">        .option(subscribeType, topics)\</span><br><span class="line">        .load()</span><br><span class="line">    kafka_value_tb = lines.selectExpr(<span class="string">&quot;CAST(value AS STRING) as json&quot;</span>, <span class="string">&quot;timestamp&quot;</span>)</span><br><span class="line">    weibo_table = kafka_value_tb.select(gettitle(col(<span class="string">&quot;json&quot;</span>)).alias(<span class="string">&quot;title&quot;</span>),</span><br><span class="line">getscore(col(<span class="string">&quot;json&quot;</span>)).alias(<span class="string">&quot;sentiment_score&quot;</span>), col(<span class="string">&quot;timestamp&quot;</span>))</span><br><span class="line">    stat_avg = weibo_table.groupBy(window(col(<span class="string">&quot;timestamp&quot;</span>), <span class="string">&quot;30 seconds&quot;</span>, <span class="string">&quot;10 seconds&quot;</span>),</span><br><span class="line">col(<span class="string">&quot;title&quot;</span>)).avg(<span class="string">&quot;sentiment_score&quot;</span>).where(<span class="string">&quot;unix_timestamp(window.end)=int(unix_timestamp(current_timestamp)/10)*10&quot;</span>)</span><br><span class="line">    queryStream = (stat_avg.writeStream.<span class="built_in">format</span>(<span class="string">&quot;memory&quot;</span>).queryName(<span class="string">&quot;weibotop&quot;</span>).outputMode(<span class="string">&quot;complete&quot;</span>).start())</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        i = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;count&quot;</span>, <span class="built_in">str</span>(i))</span><br><span class="line">            df = spark.sql(</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">select * from weibotop&quot;&quot;&quot;</span></span><br><span class="line">).toPandas()</span><br><span class="line">            <span class="built_in">print</span>(df)</span><br><span class="line">            df.to_csv(<span class="string">&quot;weibo_sentiment_result.csv&quot;</span>)</span><br><span class="line"></span><br><span class="line">            time.sleep(<span class="number">10</span>)</span><br><span class="line">            i = i + <span class="number">1</span></span><br><span class="line">    <span class="keyword">except</span> KeyboardInterrupt:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;process interrupted&quot;</span>)</span><br><span class="line">    queryStream.awaitTermination()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-可视化"><a href="#4-可视化" class="headerlink" title="4.可视化"></a>4.可视化</h2><p>pyecharts柱状图与flask框架可视化。都是第三方库，使用比较简单方便。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> jinja2 <span class="keyword">import</span> Markup</span><br><span class="line"><span class="keyword">from</span> pyecharts <span class="keyword">import</span> options <span class="keyword">as</span> opts</span><br><span class="line"><span class="keyword">from</span> pyecharts.charts <span class="keyword">import</span> Bar</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">	bar = gen_data_bar()</span><br><span class="line">	<span class="keyword">return</span> Markup(bar.render_embed())</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gen_data_bar</span>():</span><br><span class="line">	df = pd.read_csv(<span class="string">&#x27;weibo_sentiment_result.csv&#x27;</span>)</span><br><span class="line">	title_names = []</span><br><span class="line">	avg_scores = []</span><br><span class="line">	df = df.sort_values(by=<span class="string">&quot;avg(sentiment_score)&quot;</span>,ascending=<span class="literal">False</span>)</span><br><span class="line">	<span class="keyword">for</span> index <span class="keyword">in</span> <span class="built_in">range</span>(df.shape[<span class="number">0</span>]):</span><br><span class="line">		title_names.append(df[<span class="string">&#x27;title&#x27;</span>].iloc[index])</span><br><span class="line">		avg_scores.append(<span class="built_in">str</span>(<span class="built_in">round</span>(<span class="built_in">float</span>(df[<span class="string">&#x27;avg(sentiment_score)&#x27;</span>].iloc[index]),<span class="number">2</span>)))</span><br><span class="line"></span><br><span class="line">	bar = (Bar()</span><br><span class="line">	.add_xaxis(title_names)</span><br><span class="line">	.add_yaxis(<span class="string">&#x27;得分&#x27;</span>,avg_scores)</span><br><span class="line">	.set_global_opts(title_opts=opts.TitleOpts(title=<span class="string">&quot;微博情绪分析&quot;</span>,subtitle=<span class="string">&quot;&quot;</span>),xaxis_opts=opts.AxisOpts(name=<span class="string">&quot;&quot;</span>,axislabel_opts=&#123;<span class="string">&quot;rotate&quot;</span>:<span class="number">15</span>&#125;,name_rotate=<span class="number">60</span>))</span><br><span class="line">	)</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> bar</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	app.run(host=<span class="string">&#x27;192.168.91.30&#x27;</span>,port=<span class="string">&#x27;8001&#x27;</span>,processes=<span class="number">1</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="四、项目流程"><a href="#四、项目流程" class="headerlink" title="四、项目流程"></a>四、项目流程</h1><h2 id="1-虚拟机环境配置好，准备好训练好的模型，开启kafka"><a href="#1-虚拟机环境配置好，准备好训练好的模型，开启kafka" class="headerlink" title="1.虚拟机环境配置好，准备好训练好的模型，开启kafka"></a>1.虚拟机环境配置好，准备好训练好的模型，开启kafka</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1、关闭防火墙(第一个shell窗口)</span><br><span class="line">    sudo systemctl stop firewalld</span><br><span class="line"></span><br><span class="line">2、启动kafka zookeeper服务器</span><br><span class="line">/opt/software/kafka_2.12-2.7.0/bin/zookeeper-server-start.sh /opt/software/kafka_2.12-2.7.0/config/zookeeper.properties</span><br><span class="line"></span><br><span class="line">3、启动kafka broker服务器（第二个shell窗口）</span><br><span class="line">/opt/software/kafka_2.12-2.7.0/bin/kafka-server-start.sh /opt/software/kafka_2.12-2.7.0/config/server.properties</span><br><span class="line"></span><br><span class="line">4、服务器启动后，创建topic(第三个shell窗口)</span><br><span class="line">/opt/software/kafka_2.12-2.7.0/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic weibotop</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/1.png"></p>
+<h2 id="2-Producer生产者获取微博热搜内容，进行评分并发送"><a href="#2-Producer生产者获取微博热搜内容，进行评分并发送" class="headerlink" title="2.Producer生产者获取微博热搜内容，进行评分并发送"></a>2.Producer生产者获取微博热搜内容，进行评分并发送</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python weibo_top_producer.py</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/2.png"></p>
+<h2 id="3-Consumer消费者接收内容，并持久化保存"><a href="#3-Consumer消费者接收内容，并持久化保存" class="headerlink" title="3.Consumer消费者接收内容，并持久化保存"></a>3.Consumer消费者接收内容，并持久化保存</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spark-submit --packages org.apache.spark:spark-streaming-kafka-0-10_2.12:3.0.1,org.apache.spark:spark-sql-kafka-0-10_2.12:3.0.1 weibo_top_consumer.py localhost:9092 subscribe weibotop</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/3.png"></p>
+<p><img src="/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/4.png"></p>
+<h2 id="4-可视化呈现"><a href="#4-可视化呈现" class="headerlink" title="4.可视化呈现"></a>4.可视化呈现</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python weibo_top_visual_pyecharts.py</span><br><span class="line">按flask配置在浏览器输入http://192.168.91.30:8001/</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/5.png"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/09/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/" rel="prev" title="微博热搜情感分析">
+      <i class="fa fa-chevron-left"></i> 微博热搜情感分析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/27/Gensim%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3/" rel="next" title="Gensim核心思想">
+      Gensim核心思想 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E7%9B%AE%E7%9A%84"><span class="nav-number">1.</span> <span class="nav-text">一、项目开发目的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">二、项目开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%80%BB%E4%BD%93%E7%8E%AF%E5%A2%83"><span class="nav-number">2.1.</span> <span class="nav-text">1.总体环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96%E6%A8%A1%E5%9D%97"><span class="nav-number">2.2.</span> <span class="nav-text">2.数据获取模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86%E6%A8%A1%E5%9D%97"><span class="nav-number">2.3.</span> <span class="nav-text">3.数据预处理模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E7%AE%97%E6%B3%95%E6%A8%A1%E5%9D%97"><span class="nav-number">2.4.</span> <span class="nav-text">4.情感分析算法模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%8F%AF%E8%A7%86%E5%8C%96%E6%A8%A1%E5%9D%97"><span class="nav-number">2.5.</span> <span class="nav-text">5.可视化模块</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%B7%A5%E7%A8%8B%E6%96%87%E4%BB%B6%E8%A7%A3%E9%87%8A"><span class="nav-number">3.</span> <span class="nav-text">三、工程文件解释</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-producer"><span class="nav-number">3.1.</span> <span class="nav-text">1.producer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E4%B8%8E%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="nav-number">3.2.</span> <span class="nav-text">2.数据处理与模型训练</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-consumer"><span class="nav-number">3.3.</span> <span class="nav-text">3.consumer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-number">3.4.</span> <span class="nav-text">4.可视化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E9%A1%B9%E7%9B%AE%E6%B5%81%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">四、项目流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E5%A5%BD%EF%BC%8C%E5%87%86%E5%A4%87%E5%A5%BD%E8%AE%AD%E7%BB%83%E5%A5%BD%E7%9A%84%E6%A8%A1%E5%9E%8B%EF%BC%8C%E5%BC%80%E5%90%AFkafka"><span class="nav-number">4.1.</span> <span class="nav-text">1.虚拟机环境配置好，准备好训练好的模型，开启kafka</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Producer%E7%94%9F%E4%BA%A7%E8%80%85%E8%8E%B7%E5%8F%96%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E5%86%85%E5%AE%B9%EF%BC%8C%E8%BF%9B%E8%A1%8C%E8%AF%84%E5%88%86%E5%B9%B6%E5%8F%91%E9%80%81"><span class="nav-number">4.2.</span> <span class="nav-text">2.Producer生产者获取微博热搜内容，进行评分并发送</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Consumer%E6%B6%88%E8%B4%B9%E8%80%85%E6%8E%A5%E6%94%B6%E5%86%85%E5%AE%B9%EF%BC%8C%E5%B9%B6%E6%8C%81%E4%B9%85%E5%8C%96%E4%BF%9D%E5%AD%98"><span class="nav-number">4.3.</span> <span class="nav-text">3.Consumer消费者接收内容，并持久化保存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%8F%AF%E8%A7%86%E5%8C%96%E5%91%88%E7%8E%B0"><span class="nav-number">4.4.</span> <span class="nav-text">4.可视化呈现</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="倬倬吃三碗"
+      src="/images/zaomiao2.jpg">
+  <p class="site-author-name" itemprop="name">倬倬吃三碗</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhuozhuo233" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhuozhuo233" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">倬倬吃三碗</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":300,"height":600,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>
