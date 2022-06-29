@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhuozhuo233.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="序数据结构是计算机存储、组织数据的方式。数据结构是指相互之间存在一种或多种特定关系的数据元素的集合。通常情况下，精心选择的数据结构可以带来更高的运行或者存储效率。数据结构往往同高效的检索算法和索引技术有关。 常见的数据结构有如下：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构笔记">
+<meta property="og:url" content="https://zhuozhuo233.github.io/2021/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="倬倬吃三碗">
+<meta property="og:description" content="序数据结构是计算机存储、组织数据的方式。数据结构是指相互之间存在一种或多种特定关系的数据元素的集合。通常情况下，精心选择的数据结构可以带来更高的运行或者存储效率。数据结构往往同高效的检索算法和索引技术有关。 常见的数据结构有如下：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E6%80%BB%E4%BD%93.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E6%95%B0%E7%BB%84.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/2021/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/数据结构笔记/LC485.jpg">
+<meta property="og:image" content="https://zhuozhuo233.github.io/2021/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/数据结构笔记/LC283.jpg">
+<meta property="og:image" content="https://zhuozhuo233.github.io/2021/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/数据结构笔记/LC27.jpg">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E9%93%BE%E8%A1%A8.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/2021/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/数据结构笔记/链表1.jpg">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E6%A0%88.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E9%98%9F%E5%88%97.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E6%A0%91.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E5%9B%BE.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E6%95%A3%E5%88%97%E8%A1%A8.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E6%95%A3%E5%88%97%E8%A1%A82.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E5%A0%86.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/mai.jpg">
+<meta property="article:published_time" content="2021-07-05T18:10:46.000Z">
+<meta property="article:modified_time" content="2022-06-29T09:55:12.958Z">
+<meta property="article:author" content="倬倬吃三碗">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhuozhuo233.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E6%80%BB%E4%BD%93.png">
+
+<link rel="canonical" href="https://zhuozhuo233.github.io/2021/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数据结构笔记 | 倬倬吃三碗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">倬倬吃三碗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2021/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zaomiao2.jpg">
+      <meta itemprop="name" content="倬倬吃三碗">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="倬倬吃三碗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据结构笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-06 02:10:46" itemprop="dateCreated datePublished" datetime="2021-07-06T02:10:46+08:00">2021-07-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-06-29 17:55:12" itemprop="dateModified" datetime="2022-06-29T17:55:12+08:00">2022-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p>数据结构是计算机存储、组织<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE">数据</a>的方式。数据结构是指相互之间存在一种或多种特定关系的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE%E5%85%83%E7%B4%A0/715313">数据元素</a>的集合。通常情况下，精心选择的数据结构可以带来更高的运行或者存储<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%88%E7%8E%87/868847">效率</a>。数据结构往往同高效的检索<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%AE%97%E6%B3%95/209025">算法</a>和<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%B4%A2%E5%BC%95/5716853">索引</a>技术有关。</p>
+<p>常见的数据结构有如下：</p>
+<p><img src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E6%80%BB%E4%BD%93.png" alt="总体"></p>
+<span id="more"></span>
+
+<h1 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h1><p>数组是讲相同类型的元素存储于连续内存空间的数据结构，长度不可变。</p>
+<p>初始化时需要给定长度并对每个索引元素赋值：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化一个长度为 5 的数组 array</span></span><br><span class="line"><span class="type">int</span>[] array = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">5</span>];</span><br><span class="line"><span class="comment">// 元素赋值</span></span><br><span class="line">array[<span class="number">0</span>] = <span class="number">2</span>;</span><br><span class="line">array[<span class="number">1</span>] = <span class="number">3</span>;</span><br><span class="line">array[<span class="number">2</span>] = <span class="number">1</span>;</span><br><span class="line">array[<span class="number">3</span>] = <span class="number">0</span>;</span><br><span class="line">array[<span class="number">4</span>] = <span class="number">2</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>或者可以使用直接复制的初始化方式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>[] array = &#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">2</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E6%95%B0%E7%BB%84.png" alt="Picture2.png"></p>
+<p>“可变数组”是经常使用的数据结构，其基于数组和扩容机制实现，相比普通数组更加灵活.常用的操作有:访问元素、添加元素、删除元素：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//初始化可变数组</span></span><br><span class="line">List&lt;Integer&gt; array = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;():</span><br><span class="line"><span class="comment">//向尾部添加元素</span></span><br><span class="line">array.add(<span class="number">2</span>);</span><br><span class="line">array.add(<span class="number">3</span>);</span><br><span class="line">array.add(<span class="number">1</span>);</span><br><span class="line">array.add(<span class="number">0</span>);</span><br><span class="line">array.add(<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="LC485-最大连续1的个数"><a href="#LC485-最大连续1的个数" class="headerlink" title="LC485.最大连续1的个数"></a>LC485.最大连续1的个数</h2><p>给定一个二进制数组 nums ， 计算其中最大连续 1 的个数。</p>
+<p>示例 1：</p>
+<p>输入：nums &#x3D; [1,1,0,1,1,1]<br>输出：3<br>解释：开头的两位和最后的三位都是连续 1 ，所以最大连续 1 的个数是 3.<br>示例 2:</p>
+<p>输入：nums &#x3D; [1,0,1,1,0,1]<br>输出：2</p>
+<p>提示：</p>
+<p>1 &lt;&#x3D; nums.length &lt;&#x3D; 105<br>nums[i] 不是 0 就是 1.</p>
+<p>来源：力扣（LeetCode）<br>链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/max-consecutive-ones">https://leetcode.cn/problems/max-consecutive-ones</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
+<img src="数据结构笔记/LC485.jpg" style="zoom:50%;" />
+
+<p>count记录当前连续1个数，遇到0时在当前count与result中取最大值赋给result，并重置当前count重新计数。</p>
+<h3 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findMaxConsecutiveOnes</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(nums == <span class="literal">null</span> || nums.length ==<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;i&lt;nums.length;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i] == <span class="number">1</span>)&#123;</span><br><span class="line">                count++;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                result = Math.max(count,result);</span><br><span class="line">                count = <span class="number">0</span>;</span><br><span class="line">             &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Math.max(result,count);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Python3"><a href="#Python3" class="headerlink" title="Python3"></a>Python3</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">findMaxConsecutiveOnes</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">if</span> nums <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> <span class="built_in">len</span>(nums) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        count = <span class="number">0</span></span><br><span class="line">        result = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> num == <span class="number">1</span>:</span><br><span class="line">                count += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result = <span class="built_in">max</span>(result,count)</span><br><span class="line">                count = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(result,count)</span><br></pre></td></tr></table></figure>
+
+<h2 id="LC283-移动零"><a href="#LC283-移动零" class="headerlink" title="LC283.移动零"></a>LC283.移动零</h2><p>给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。</p>
+<p>请注意 ，必须在不复制数组的情况下原地对数组进行操作。</p>
+<p>示例 1:</p>
+<p>输入: nums &#x3D; [0,1,0,3,12]<br>输出: [1,3,12,0,0]<br>示例 2:</p>
+<p>输入: nums &#x3D; [0]<br>输出: [0]</p>
+<p>提示:</p>
+<p>1 &lt;&#x3D; nums.length &lt;&#x3D; 104<br>-231 &lt;&#x3D; nums[i] &lt;&#x3D; 231 - 1</p>
+<p>进阶：你能尽量减少完成的操作次数吗？</p>
+<p>来源：力扣（LeetCode）<br>链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/move-zeroes">https://leetcode.cn/problems/move-zeroes</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
+<img src="数据结构笔记/LC283.jpg" style="zoom:50%;" />
+
+<p>遍历数组，当前不为0则赋给索引为0的位置并index+1，</p>
+<p>非0元素都移动到前面去后，</p>
+<p>从i&#x3D;index出发，对剩下的都赋0</p>
+<h3 id="Java-1"><a href="#Java-1" class="headerlink" title="Java"></a>Java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">moveZeroes</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;nums.length;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i] != <span class="number">0</span>)&#123;</span><br><span class="line">                nums[index] = nums[i];</span><br><span class="line">                index++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=index;i&lt;nums.length;i++)&#123;</span><br><span class="line">            nums[i] = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Python3-1"><a href="#Python3-1" class="headerlink" title="Python3"></a>Python3</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">moveZeroes</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        index = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> num != <span class="number">0</span>:</span><br><span class="line">                nums[index] = num</span><br><span class="line">                index +=<span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(index,<span class="built_in">len</span>(nums)):</span><br><span class="line">            nums[i] = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="LC27-移动元素"><a href="#LC27-移动元素" class="headerlink" title="LC27.移动元素"></a>LC27.移动元素</h2><p>给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素，并返回移除后数组的新长度。</p>
+<p>不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并 原地 修改输入数组。</p>
+<p>元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。</p>
+<p>说明:</p>
+<p>为什么返回数值是整数，但输出的答案是数组呢?</p>
+<p>请注意，输入数组是以「引用」方式传递的，这意味着在函数里修改输入数组对于调用者是可见的。</p>
+<p>你可以想象内部操作如下:</p>
+<p>&#x2F;&#x2F; nums 是以“引用”方式传递的。也就是说，不对实参作任何拷贝<br>int len &#x3D; removeElement(nums, val);</p>
+<p>&#x2F;&#x2F; 在函数里修改输入数组对于调用者是可见的。<br>&#x2F;&#x2F; 根据你的函数返回的长度, 它会打印出数组中 该长度范围内 的所有元素。<br>for (int i &#x3D; 0; i &lt; len; i++) {<br>    print(nums[i]);<br>}</p>
+<p>示例 1：</p>
+<p>输入：nums &#x3D; [3,2,2,3], val &#x3D; 3<br>输出：2, nums &#x3D; [2,2]<br>解释：函数应该返回新的长度 2, 并且 nums 中的前两个元素均为 2。你不需要考虑数组中超出新长度后面的元素。例如，函数返回的新长度为 2 ，而 nums &#x3D; [2,2,3,3] 或 nums &#x3D; [2,2,0,0]，也会被视作正确答案。<br>示例 2：</p>
+<p>输入：nums &#x3D; [0,1,2,2,3,0,4,2], val &#x3D; 2<br>输出：5, nums &#x3D; [0,1,4,0,3]<br>解释：函数应该返回新的长度 5, 并且 nums 中的前五个元素为 0, 1, 3, 0, 4。注意这五个元素可为任意顺序。你不需要考虑数组中超出新长度后面的元素。</p>
+<p>提示：</p>
+<p>0 &lt;&#x3D; nums.length &lt;&#x3D; 100<br>0 &lt;&#x3D; nums[i] &lt;&#x3D; 50<br>0 &lt;&#x3D; val &lt;&#x3D; 100</p>
+<p>来源：力扣（LeetCode）<br>链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-element">https://leetcode.cn/problems/remove-element</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
+<img src="数据结构笔记/LC27.jpg" style="zoom:50%;" />
+
+<p>双指针，i找到val时停下，j找不到val时停下</p>
+<p>i，j值交换</p>
+<p>i &gt;&#x3D; j时，循环停止。前半部分是有效部分，存储不等于val的元素，后半部分是无效部分，存储等于val的元素，需要返回前半部分</p>
+<p>判断如果nums[l] &#x3D;&#x3D; val，代表l的值等于当前数组的长度,直接返回</p>
+<p>否则返回l + 1</p>
+<h3 id="Java-2"><a href="#Java-2" class="headerlink" title="Java"></a>Java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">removeElement</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> val)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(nums == <span class="literal">null</span> || nums.length == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">l</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> nums.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">            <span class="keyword">while</span>(l &lt; r &amp;&amp; nums[l] != val)&#123;</span><br><span class="line">                l++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span>(l &lt;r &amp;&amp; nums[r] == val)&#123;</span><br><span class="line">                r--;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> nums[l];</span><br><span class="line">            nums[l] = nums[r];</span><br><span class="line">            nums[r] = temp; </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> nums[l] == val? l: l+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Python3-2"><a href="#Python3-2" class="headerlink" title="Python3"></a>Python3</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">removeElement</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], val: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">if</span> nums <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> <span class="built_in">len</span>(nums) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        l,r = <span class="number">0</span>,<span class="built_in">len</span>(nums) - <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span>(l &lt; r):</span><br><span class="line">            <span class="keyword">while</span>(l &lt; r <span class="keyword">and</span> nums[l] != val):</span><br><span class="line">                l +=<span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span>(l &lt; r <span class="keyword">and</span> nums[r] == val):</span><br><span class="line">                r -= <span class="number">1</span></span><br><span class="line">            nums[l],nums[r] = nums[r],nums[l]</span><br><span class="line">        <span class="keyword">if</span> nums[l] == val:</span><br><span class="line">            <span class="keyword">return</span> l</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            l+<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h1><p>链表以节点为单位，每个元素都是一个独立对象，在内存空间的存储是非连续的。链表的节点对象具有两个成员变量：「值 <code>val</code>」，「后继节点引用 <code>next</code>」 。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ListNode</span> &#123;</span><br><span class="line">    <span class="type">int</span> val;       <span class="comment">// 节点值</span></span><br><span class="line">    ListNode next; <span class="comment">// 后继节点引用</span></span><br><span class="line">    ListNode(<span class="type">int</span> x) &#123; val = x; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>建立链表需要实例化每个节点，并构建各节点的引用指向。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//实例化节点</span></span><br><span class="line"><span class="type">ListNode</span> <span class="variable">n1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(<span class="number">4</span>); <span class="comment">//头节点 head</span></span><br><span class="line"><span class="type">ListNode</span> <span class="variable">n2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(<span class="number">5</span>);</span><br><span class="line"><span class="type">ListNode</span> <span class="variable">n3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//构建引用指向</span></span><br><span class="line">n1.next = n2;</span><br><span class="line">n2.next = n3;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E9%93%BE%E8%A1%A8.png" alt="Picture3.png"></p>
+<img src="数据结构笔记/链表1.jpg" style="zoom:50%;" />
+
+<h2 id="LC203-移除链表元素"><a href="#LC203-移除链表元素" class="headerlink" title="LC203.移除链表元素"></a>LC203.移除链表元素</h2><p>给你一个链表的头节点 head 和一个整数 val ，请你删除链表中所有满足 Node.val &#x3D;&#x3D; val 的节点，并返回 新的头节点 。</p>
+<p>示例 1：</p>
+<p>输入：head &#x3D; [1,2,6,3,4,5,6], val &#x3D; 6<br>输出：[1,2,3,4,5]<br>示例 2：</p>
+<p>输入：head &#x3D; [], val &#x3D; 1<br>输出：[]<br>示例 3：</p>
+<p>输入：head &#x3D; [7,7,7,7], val &#x3D; 7<br>输出：[]</p>
+<p>来源：力扣（LeetCode）<br>链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-linked-list-elements">https://leetcode.cn/problems/remove-linked-list-elements</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
+<h1 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h1><p>栈是一种具有 「先入后出」 特点的抽象数据结构，可使用数组或链表实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stack&lt;Integer&gt; stack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>如下图所示，通过常用操作「入栈 <code>push()</code>」,「出栈 <code>pop()</code>」，展示了栈的先入后出特性。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">stack.push(<span class="number">1</span>); <span class="comment">//元素1入栈</span></span><br><span class="line">stack.push(<span class="number">2</span>); <span class="comment">//元素2入栈</span></span><br><span class="line">stack.pop();   <span class="comment">// 出栈 -&gt; 元素 2</span></span><br><span class="line">stack.pop();   <span class="comment">// 出栈 -&gt; 元素 1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E6%A0%88.png" alt="Picture4.png"></p>
+<blockquote>
+<p>注意：通常情况下，不推荐使用 Java 的 <code>Vector</code> 以及其子类 <code>Stack</code> ，而一般将 <code>LinkedList</code> 作为栈来使用。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">LinkedList&lt;Integer&gt;stack = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;()</span><br><span class="line"></span><br><span class="line">stack.addLast(<span class="number">1</span>);   <span class="comment">// 元素 1 入栈</span></span><br><span class="line">stack.addLast(<span class="number">2</span>);   <span class="comment">// 元素 2 入栈</span></span><br><span class="line">stack.removeLast(); <span class="comment">// 出栈 -&gt; 元素 2</span></span><br><span class="line">stack.removeLast(); <span class="comment">// 出栈 -&gt; 元素 1</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h1><p>队列是一种具有 「先入先出」 特点的抽象数据结构，可使用链表实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Queue&lt;Integer&gt; queue = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>如下图所示，通过常用操作「入队 <code>push()</code>」,「出队 <code>pop()</code>」，展示了队列的先入先出特性。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">queue.offer(<span class="number">1</span>);	<span class="comment">//元素1入队</span></span><br><span class="line">queue.offer(<span class="number">2</span>); <span class="comment">//元素2入队</span></span><br><span class="line">queue.poll();	<span class="comment">//出队 -&gt; 元素1</span></span><br><span class="line">queue.poll();	<span class="comment">//出队 -&gt; 元素2</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E9%98%9F%E5%88%97.png" alt="Picture5.png"></p>
+<h1 id="树"><a href="#树" class="headerlink" title="树"></a>树</h1><p>树是一种非线性数据结构，根据子节点数量可分为 「二叉树」 和 「多叉树」，最顶层的节点称为「根节点 root」。以二叉树为例，每个节点包含三个成员变量：「值 val」、「左子节点 left」、「右子节点 right」</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span> &#123;</span><br><span class="line">    <span class="type">int</span> val;        <span class="comment">// 节点值</span></span><br><span class="line">    TreeNode left;  <span class="comment">// 左子节点</span></span><br><span class="line">    TreeNode right; <span class="comment">// 右子节点</span></span><br><span class="line">    TreeNode(<span class="type">int</span> x) &#123; val = x; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如下图所示，建立此二叉树需要实例化每个节点，并构建各节点的引用指向。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化节点</span></span><br><span class="line"><span class="type">TreeNode</span> <span class="variable">n1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(<span class="number">3</span>); <span class="comment">// 根节点 root</span></span><br><span class="line"><span class="type">TreeNode</span> <span class="variable">n2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(<span class="number">4</span>);</span><br><span class="line"><span class="type">TreeNode</span> <span class="variable">n3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(<span class="number">5</span>);</span><br><span class="line"><span class="type">TreeNode</span> <span class="variable">n4</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(<span class="number">1</span>);</span><br><span class="line"><span class="type">TreeNode</span> <span class="variable">n5</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 构建引用指向</span></span><br><span class="line">n1.left = n2;</span><br><span class="line">n1.right = n3;</span><br><span class="line">n2.left = n4;</span><br><span class="line">n2.right = n5;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E6%A0%91.png"></p>
+<h1 id="图"><a href="#图" class="headerlink" title="图"></a>图</h1><p>图是一种非线性数据结构，由「节点（顶点）vertex」和「边 edge」组成，每条边连接一对顶点。根据边的方向有无，图可分为「有向图」和「无向图」。本文 以无向图为例 开展介绍。</p>
+<p>如下图所示，此无向图的 顶点 和 边 集合分别为：</p>
+<ul>
+<li><p><strong>顶点集合</strong>： vertices &#x3D; {1, 2, 3, 4, 5}</p>
+</li>
+<li><p><strong>边集合</strong>： edges &#x3D; {(1, 2), (1, 3), (1, 4), (1, 5), (2, 4), (3, 5), (4, 5)}</p>
+<p><img src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E5%9B%BE.png"></p>
+</li>
+</ul>
+<ol>
+<li><p><strong>邻接矩阵</strong>： 使用数组 verticesvertices 存储顶点，邻接矩阵 edgesedges 存储边； edges[i][j]edges[i][j] 代表节点 i + 1i+1 和 节点 j + 1j+1 之间是否有边。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vertices = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">edges = [[<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">         [<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">         [<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">         [<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">         [<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>]]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p><strong>邻接表</strong>： 使用数组 verticesvertices 存储顶点，邻接表 edgesedges 存储边。 edgesedges 为一个二维容器，第一维 ii 代表顶点索引，第二维 edges[i]edges[i] 存储此顶点对应的边集和；例如 edges[0] &#x3D; [1, 2, 3, 4]edges[0]&#x3D;[1,2,3,4] 代表 vertices[0]vertices[0] 的边集合为 [1, 2, 3, 4][1,2,3,4] 。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vertices = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">edges = [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>],</span><br><span class="line">         [<span class="number">0</span>, <span class="number">3</span>],</span><br><span class="line">         [<span class="number">0</span>, <span class="number">4</span>],</span><br><span class="line">         [<span class="number">0</span>, <span class="number">1</span>, <span class="number">4</span>],</span><br><span class="line">         [<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>]]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>邻接矩阵 VS 邻接表 ：</strong></p>
+<p>邻接矩阵的大小只与节点数量有关，即 N^2,其中 N 为节点数量。因此，当边数量明显少于节点数量时，使用邻接矩阵存储图会造成较大的内存浪费。<br>因此，邻接表 适合存储稀疏图（顶点较多、边较少）； 邻接矩阵 适合存储稠密图（顶点较少、边较多）。</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="散列表"><a href="#散列表" class="headerlink" title="散列表"></a>散列表</h1><p>散列表是一种非线性数据结构，通过利用 Hash 函数将指定的「键 <code>key</code>」映射至对应的「值 <code>value</code>」，以实现高效的元素查找。</p>
+<blockquote>
+<p>设想一个简单场景：小力、小特、小扣的学号分别为 10001, 10002, 10003 。<br>现需求从「姓名」查找「学号」。</p>
+</blockquote>
+<p>则可通过建立姓名为 <code>key</code> ，学号为 <code>value</code> 的散列表实现此需求，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化散列表</span></span><br><span class="line">Map&lt;String, Integer&gt; dic = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加 key -&gt; value 键值对</span></span><br><span class="line">dic.put(<span class="string">&quot;小力&quot;</span>, <span class="number">10001</span>);</span><br><span class="line">dic.put(<span class="string">&quot;小特&quot;</span>, <span class="number">10002</span>);</span><br><span class="line">dic.put(<span class="string">&quot;小扣&quot;</span>, <span class="number">10003</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从姓名查找学号</span></span><br><span class="line">dic.get(<span class="string">&quot;小力&quot;</span>); <span class="comment">// -&gt; 10001</span></span><br><span class="line">dic.get(<span class="string">&quot;小特&quot;</span>); <span class="comment">// -&gt; 10002</span></span><br><span class="line">dic.get(<span class="string">&quot;小扣&quot;</span>); <span class="comment">// -&gt; 10003</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E6%95%A3%E5%88%97%E8%A1%A8.png"></p>
+<p><strong>Hash函数设计Demo</strong></p>
+<blockquote>
+<p>假设需求：从「学号」查找「姓名」。</p>
+</blockquote>
+<p>将三人的姓名存储至以下数组中，则各姓名在数组中的索引分别为 0, 1, 2 。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String[] names = &#123;<span class="string">&quot;小力&quot;</span>,<span class="string">&quot;小特&quot;</span>,<span class="string">&quot;小扣&quot;</span>&#125;:</span><br></pre></td></tr></table></figure>
+
+<p>此时，我们构造一个简单的 Hash 函数（ %% 为取余符号 ），公式和封装函数如下所示：</p>
+<p><em>hash(key) &#x3D; (key - 1) % 10000</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">hash</span><span class="params">(<span class="type">int</span> id)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> (id - <span class="number">1</span>) %<span class="number">1000</span>;</span><br><span class="line">    <span class="keyword">return</span> index;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>则我们构建了以学号为 key 、姓名对应的数组索引为 value 的散列表。利用此 Hash 函数，则可在 O(1)O(1) 时间复杂度下通过学号查找到对应姓名，即：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">names[hash(<span class="number">10001</span>)] <span class="comment">// 小力</span></span><br><span class="line">names[hash(<span class="number">10002</span>)] <span class="comment">// 小特</span></span><br><span class="line">names[hash(<span class="number">10003</span>)] <span class="comment">// 小扣</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E6%95%A3%E5%88%97%E8%A1%A82.png"></p>
+<p>以上设计只适用于此示例，实际的 Hash 函数需保证低碰撞率、 健壮性等，以适用于各类数据和场景。</p>
+<h1 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h1><p>堆是一种基于「完全二叉树」的数据结构，可使用数组实现。以堆为原理的排序算法称为「堆排序」，基于堆实现的数据结构为「优先队列」。堆分为「大顶堆」和「小顶堆」，大（小）顶堆：任意节点的值不大于（小于）其父节点的值。</p>
+<blockquote>
+<p><strong>完全二叉树定义</strong>： 设二叉树深度为 k ，若二叉树除第 k 层外的其它各层（第 11 至 k-1 层）的节点达到最大个数，且处于第 k 层的节点都连续集中在最左边，则称此二叉树为完全二叉树。</p>
+</blockquote>
+<p>如下图所示，为包含 <code>1, 4, 2, 6, 8</code> 元素的小顶堆。将堆（完全二叉树）中的结点按层编号，即可映射到右边的数组存储形式。</p>
+<p><img src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E5%A0%86.png"></p>
+<p>通过使用「优先队列」的「压入 <code>push()</code>」和「弹出 <code>pop()</code>」操作，即可完成堆排序，实现代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化小顶堆</span></span><br><span class="line">Queue&lt;Integer&gt; heap = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 元素入堆</span></span><br><span class="line">heap.add(<span class="number">1</span>);</span><br><span class="line">heap.add(<span class="number">4</span>);</span><br><span class="line">heap.add(<span class="number">2</span>);</span><br><span class="line">heap.add(<span class="number">6</span>);</span><br><span class="line">heap.add(<span class="number">8</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 元素出堆（从小到大）</span></span><br><span class="line">heap.poll(); <span class="comment">// -&gt; 1</span></span><br><span class="line">heap.poll(); <span class="comment">// -&gt; 2</span></span><br><span class="line">heap.poll(); <span class="comment">// -&gt; 4</span></span><br><span class="line">heap.poll(); <span class="comment">// -&gt; 6</span></span><br><span class="line">heap.poll(); <span class="comment">// -&gt; 8</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">作者：Krahets</span><br><span class="line">链接：https://leetcode-cn.com/leetbook/read/illustration-of-algorithm/50e446/</span><br><span class="line">来源：力扣（LeetCode）</span><br><span class="line">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/mai.jpg"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/12/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="next" title="基于Spark的智能餐饮推荐系统">
+      基于Spark的智能餐饮推荐系统 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%8F"><span class="nav-number">1.</span> <span class="nav-text">序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E7%BB%84"><span class="nav-number">2.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#LC485-%E6%9C%80%E5%A4%A7%E8%BF%9E%E7%BB%AD1%E7%9A%84%E4%B8%AA%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">LC485.最大连续1的个数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java"><span class="nav-number">2.1.1.</span> <span class="nav-text">Java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python3"><span class="nav-number">2.1.2.</span> <span class="nav-text">Python3</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LC283-%E7%A7%BB%E5%8A%A8%E9%9B%B6"><span class="nav-number">2.2.</span> <span class="nav-text">LC283.移动零</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">Java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python3-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">Python3</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LC27-%E7%A7%BB%E5%8A%A8%E5%85%83%E7%B4%A0"><span class="nav-number">2.3.</span> <span class="nav-text">LC27.移动元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">Java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python3-2"><span class="nav-number">2.3.2.</span> <span class="nav-text">Python3</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8"><span class="nav-number">3.</span> <span class="nav-text">链表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#LC203-%E7%A7%BB%E9%99%A4%E9%93%BE%E8%A1%A8%E5%85%83%E7%B4%A0"><span class="nav-number">3.1.</span> <span class="nav-text">LC203.移除链表元素</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%88"><span class="nav-number">4.</span> <span class="nav-text">栈</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%9F%E5%88%97"><span class="nav-number">5.</span> <span class="nav-text">队列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91"><span class="nav-number">6.</span> <span class="nav-text">树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE"><span class="nav-number">7.</span> <span class="nav-text">图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%A3%E5%88%97%E8%A1%A8"><span class="nav-number">8.</span> <span class="nav-text">散列表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A0%86"><span class="nav-number">9.</span> <span class="nav-text">堆</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="倬倬吃三碗"
+      src="/images/zaomiao2.jpg">
+  <p class="site-author-name" itemprop="name">倬倬吃三碗</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhuozhuo233" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhuozhuo233" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">倬倬吃三碗</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":300,"height":600,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>
