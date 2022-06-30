@@ -297,7 +297,7 @@
 <p>（3）配置hdfs-site.xml</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@master hadoop]# vim hdfs-site.xml</span><br></pre></td></tr></table></figure>
 
-<p>在该文件的一对configuration&gt;</configuration>标签中，编写如下配置，然后保存退出</p>
+<p>在该文件的一对configuration&gt;标签中，编写如下配置，然后保存退出</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">		&lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;3&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 指定Hadoop辅助名称节点主机配置 --&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">      &lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt;</span><br><span class="line">      &lt;value&gt;slave2:50090&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>（4）配置mapred-site.xml</p>
@@ -307,13 +307,13 @@
 <p>然后打开mapred-site.xml文件</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@master hadoop]# vim mapred-site.xml</span><br></pre></td></tr></table></figure>
 
-<p>在该文件的一对configuration&gt;</configuration>标签中，编写如下配置，然后保存退出</p>
+<p>在该文件的一对configuration&gt;标签中，编写如下配置，然后保存退出</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 指定mr运行在yarn上 --&gt;</span><br><span class="line">		&lt;property&gt;</span><br><span class="line">			&lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">			&lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">		&lt;/property&gt;</span><br></pre></td></tr></table></figure>
 
 <p>（5）配置yarn-site.xml</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@master hadoop]# vim yarn-site.xml</span><br></pre></td></tr></table></figure>
 
-<p>在该文件的一对configuration&gt;</configuration>标签中，编写如下配置，然后保存退出</p>
+<p>在该文件的一对configuration&gt;标签中，编写如下配置，然后保存退出</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 指定YARN的老大（ResourceManager）的地址 --&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;</span><br><span class="line">&lt;value&gt;slave1&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;!-- reducer获取数据的方式 --&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">&lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
 
 <p>（6）配置slaves文件</p>

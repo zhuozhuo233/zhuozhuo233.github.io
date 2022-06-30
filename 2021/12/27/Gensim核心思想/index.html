@@ -27,12 +27,12 @@
 <meta property="og:site_name" content="倬倬吃三碗">
 <meta property="og:description" content="Gensim核心概念文档(Document)Gensim中的文档（document）是文本序列（就像python3中的str）类型的对象。 1document &#x3D; &quot;Human machine interface for lab abc computer applications&quot;  语料库（Corpus）一个语料库是许多文档对象的集合。语料库在Gensim中起到两种作用：">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="c:/Users/倬倬/AppData/Roaming/Typora/typora-user-images/image-20211223105809234.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/2021/12/27/Gensim%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3/Users/倬倬/AppData/Roaming/Typora/typora-user-images/image-20211223105809234.png">
 <meta property="article:published_time" content="2021-12-26T16:01:32.000Z">
 <meta property="article:modified_time" content="2021-12-26T16:40:51.646Z">
 <meta property="article:author" content="倬倬吃三碗">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:/Users/倬倬/AppData/Roaming/Typora/typora-user-images/image-20211223105809234.png">
+<meta name="twitter:image" content="https://zhuozhuo233.github.io/2021/12/27/Gensim%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3/Users/倬倬/AppData/Roaming/Typora/typora-user-images/image-20211223105809234.png">
 
 <link rel="canonical" href="https://zhuozhuo233.github.io/2021/12/27/Gensim%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3/">
 
@@ -241,7 +241,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[(0, 1), (1, 1)]</span><br><span class="line">#(字典中的id，出现次数)</span><br></pre></td></tr></table></figure>
 
 <p><strong>独热向量与稀疏向量：</strong></p>
-<p><img src="C:\Users\倬倬\AppData\Roaming\Typora\typora-user-images\image-20211223105809234.png" alt="image-20211223105809234"></p>
+<p><img src="/2021/12/27/Gensim%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3/Users\倬倬\AppData\Roaming\Typora\typora-user-images\image-20211223105809234.png" alt="image-20211223105809234"></p>
 <p>将整个原始语料库转为向量列表</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bow_corpus = [dictionary.doc2bow(text) <span class="keyword">for</span> text <span class="keyword">in</span> processed_corpus]</span><br><span class="line"><span class="built_in">print</span>(bow_corpus)</span><br></pre></td></tr></table></figure>
 
