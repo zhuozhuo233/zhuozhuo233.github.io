@@ -150,6 +150,98 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2021/09/12/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zaomiao2.jpg">
+      <meta itemprop="name" content="倬倬吃三碗">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="倬倬吃三碗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/12/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">基于Spark的智能餐饮推荐系统</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-09-12 01:15:17 / 修改时间：01:55:14" itemprop="dateCreated datePublished" datetime="2021-09-12T01:15:17+08:00">2021-09-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6%E4%B8%8E%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">数据科学与大数据技术</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="一、项目开发目的"><a href="#一、项目开发目的" class="headerlink" title="一、项目开发目的"></a>一、项目开发目的</h1><p>随着科技的高速发展，人们的生活节奏也越来越快。忙碌的都市生活让许多年轻一族习惯于在餐饮外卖平台上进行订餐。“今天吃是什么”这个问题在生活中也越来越普遍。为了解决人们对于外卖餐饮的选择问题，本项目随之诞生。本项目的开发目的就在于为人们提供个性化的菜品推荐系统，解决人们选择困难的问题。</p>
+<h1 id="二、项目开发环境"><a href="#二、项目开发环境" class="headerlink" title="二、项目开发环境"></a>二、项目开发环境</h1><h2 id="1-项目设计组件及语言"><a href="#1-项目设计组件及语言" class="headerlink" title="1.项目设计组件及语言"></a>1.项目设计组件及语言</h2><p>1.hadoop</p>
+<p>2.spark</p>
+<p>3.Hive</p>
+<p>4.spark</p>
+<p>5.mysql</p>
+<p>6.java</p>
+<h2 id="2-环境搭建流程"><a href="#2-环境搭建流程" class="headerlink" title="2.环境搭建流程"></a>2.环境搭建流程</h2><p>1.搭建Hadoop分布式集群</p>
+<p>2.spark安装配置</p>
+<p>3.mysql安装配置</p>
+<p>4.hive安装配置</p>
+<p>5.scala安装配置</p>
+<p>6.idea配置maven仓库、scalasdk </p>
+<h2 id="3-数据来源及构成"><a href="#3-数据来源及构成" class="headerlink" title="3.数据来源及构成"></a>3.数据来源及构成</h2><p>数据来源是网站的数据库（MySQL）中保存着的菜品数据集</p>
+<p><img src="/2021/09/12/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/%E6%95%B0%E6%8D%AE%E6%9D%A5%E6%BA%90.png" alt="总体"></p>
+<p>数据集用JSON格式存储，数据结构固定。每条记录由如下属性组成：UserID、Rating、ReviewTime、Review、MealID。其中，UserID为用户ID、Rating为用户评分、ReviewTime为评论时间戳、Review为用户评论、MealID为菜品ID。</p>
+<p>本数据源包含38384条总记录数、总用户数为5130、总菜品数为1685，最高评分为5.0，最低评分为1.0。</p>
+<p>工程文件:<a target="_blank" rel="noopener" href="https://github.com/zhuozhuo233/Catering-recommendation">https://github.com/zhuozhuo233/Catering-recommendation</a></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/09/12/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2021/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -300,7 +392,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
