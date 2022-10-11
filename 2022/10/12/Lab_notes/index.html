@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhuozhuo233.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Lab1Write a Python program to calculate the ROI (Return of investment) with the steps below  Create a variable earning and assign it value to 3765432.  Create the variable invest and assign it value t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lab_notes">
+<meta property="og:url" content="https://zhuozhuo233.github.io/2022/10/12/Lab_notes/index.html">
+<meta property="og:site_name" content="倬倬吃三碗">
+<meta property="og:description" content="Lab1Write a Python program to calculate the ROI (Return of investment) with the steps below  Create a variable earning and assign it value to 3765432.  Create the variable invest and assign it value t">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhuozhuo233.github.io/2022/10/12/Lab_notes/1107px-ASCII-Table.svg.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/2022/10/12/Lab_notes/image-20221012015831837.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/2022/10/12/Lab_notes/image-20221012015501267.png">
+<meta property="article:published_time" content="2022-10-11T17:56:16.575Z">
+<meta property="article:modified_time" content="2022-10-11T18:02:59.061Z">
+<meta property="article:author" content="倬倬吃三碗">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhuozhuo233.github.io/2022/10/12/Lab_notes/1107px-ASCII-Table.svg.png">
+
+<link rel="canonical" href="https://zhuozhuo233.github.io/2022/10/12/Lab_notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Lab_notes | 倬倬吃三碗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">倬倬吃三碗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2022/10/12/Lab_notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zaomiao2.jpg">
+      <meta itemprop="name" content="倬倬吃三碗">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="倬倬吃三碗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Lab_notes
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-10-12 01:56:16 / 修改时间：02:02:59" itemprop="dateCreated datePublished" datetime="2022-10-12T01:56:16+08:00">2022-10-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Course-notes/" itemprop="url" rel="index"><span itemprop="name">Course_notes</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Lab1"><a href="#Lab1" class="headerlink" title="Lab1"></a>Lab1</h1><p>Write a Python program to calculate the ROI (Return of investment) with the steps below</p>
+<ul>
+<li><p>Create a variable earning and assign it value to 3765432.</p>
+</li>
+<li><p>Create the variable invest and assign it value to 1000000.</p>
+</li>
+<li><p>Create the variable roi and assign the formula<br> $roi &#x3D; \frac{Earnings - Invest}{Invest}$<br>You can find more Markdown syntax about writing mathematical expressions <a target="_blank" rel="noopener" href="https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/writing-mathematical-expressions">here</a></p>
+</li>
+<li><p>Display the result</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Earnings = <span class="number">3765432</span></span><br><span class="line">Invest = <span class="number">1000000</span></span><br><span class="line">roi = (Earnings - Invest)/Invest</span><br><span class="line"><span class="built_in">print</span>(roi)</span><br><span class="line"><span class="comment">#2.765432</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>Write a Python program to get the user input as a string and output the result in uppercase, lowercase and title.<br>You may find the input() function <a target="_blank" rel="noopener" href="https://www.w3schools.com/python/ref_func_input.asp">here</a>.<br>You may also find the String methods <a target="_blank" rel="noopener" href="https://www.w3schools.com/python/python_ref_string.asp">here</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="built_in">input</span>(<span class="string">&quot;type here plz:&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(x.upper())</span><br><span class="line"><span class="built_in">print</span>(x.lower())</span><br><span class="line"><span class="built_in">print</span>(x.title())</span><br><span class="line"><span class="comment">#type here plz:ABCDKSF</span></span><br><span class="line"><span class="comment">#ABCDKSF</span></span><br><span class="line"><span class="comment">#abcdksf</span></span><br><span class="line"><span class="comment">#Abcdksf</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Lab2"><a href="#Lab2" class="headerlink" title="Lab2"></a>Lab2</h1><p>Write a Python program to find the maximum value of three numbers. You are REQUIRED to implement a function named <code>max()</code> to take three arguments and print print the result. e.g. max(5,56, 12) 56</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">max</span>(<span class="params">num1,num2,num3</span>):</span><br><span class="line">    <span class="built_in">list</span> = [num1,num2,num3]</span><br><span class="line">    tmp = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">list</span>:</span><br><span class="line">        <span class="keyword">if</span> i &gt; tmp:</span><br><span class="line">            tmp = i</span><br><span class="line">    <span class="built_in">print</span>(tmp)</span><br><span class="line">    </span><br><span class="line"><span class="built_in">max</span>(<span class="number">5</span>,<span class="number">56</span>,<span class="number">12</span>)</span><br><span class="line"><span class="comment">#56</span></span><br></pre></td></tr></table></figure>
+
+<p>Write a Python program to reverse a string. You are REQUIRED to implement a function named <code>reverse()</code> to take a string and return the result. <a target="_blank" rel="noopener" href="https://www.w3schools.com/python/python_howto_reverse_string.asp">Hint</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">revers</span>(<span class="params">str1</span>):</span><br><span class="line">    rstr = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="built_in">len</span>(<span class="built_in">str</span>) + <span class="number">1</span>):</span><br><span class="line">        rstr = rstr + str1[-i]</span><br><span class="line">        <span class="built_in">print</span>(rstr)</span><br><span class="line"></span><br><span class="line">text = <span class="built_in">input</span>(<span class="string">&quot;typing a string plz:&quot;</span>)</span><br><span class="line">revers(text)</span><br><span class="line"><span class="comment">#typing a string,plz:jack</span></span><br><span class="line"><span class="comment">#kcaj</span></span><br></pre></td></tr></table></figure>
+
+<p>Write a Python program to create and print a list where the values are first N square of numbers. You are REQUIRED to implement a function named <code>printSquare()</code> to take n where n is an positive integer.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Please write your code here</span></span><br><span class="line"><span class="comment"># if &#x27;first N&#x27; means  input:6 -&gt; output:[0, 1, 4, 9, 16, 25]</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">printSquare</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="built_in">list</span> = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">int</span>(n)):</span><br><span class="line">        <span class="built_in">list</span>.append(i**<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">list</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># if &#x27;first N&#x27; means  input:5 -&gt; output:[0, 1, 4, 9, 16, 25]</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">printSquare</span>(<span class="params">n</span>):</span><br><span class="line">     <span class="built_in">list</span> = []</span><br><span class="line">     <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">int</span>(n) + <span class="number">1</span>):</span><br><span class="line">         <span class="built_in">list</span>.append(i**<span class="number">2</span>)</span><br><span class="line">     <span class="keyword">return</span> <span class="built_in">list</span></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">num = <span class="built_in">input</span>(<span class="string">&quot;Please input an integer&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(printSquare(num))</span><br></pre></td></tr></table></figure>
+
+<h1 id="Lab3"><a href="#Lab3" class="headerlink" title="Lab3"></a>Lab3</h1><p>Lists</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">email = <span class="string">&quot;zhuo@hkbu.edu.hk&quot;</span></span><br><span class="line">list1 = <span class="built_in">list</span>(email)</span><br><span class="line">list1.insert(list1.index(<span class="string">&#x27;@&#x27;</span>) + <span class="number">1</span>,<span class="string">&#x27;comp.&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(list1)</span><br><span class="line">email = <span class="string">&quot;&quot;</span>.join(list1)</span><br><span class="line"><span class="built_in">print</span>(email)</span><br></pre></td></tr></table></figure>
+
+<p>Below is an exmaple to accept an phone number and format the result.<br>You can use it to format for the currency as well.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">phonenumber = <span class="built_in">input</span>(<span class="string">&quot;plaz enter a phone number&quot;</span>)</span><br><span class="line">list2 = <span class="built_in">list</span>(phonenumber)</span><br><span class="line">list2.insert(<span class="number">4</span>,<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">phonenumber = <span class="string">&quot;&quot;</span>.join(list2)</span><br><span class="line"><span class="built_in">print</span>(phonenumber)</span><br><span class="line"><span class="comment">#plaz enter a phone number12345678</span></span><br><span class="line"><span class="comment">#1234-5678</span></span><br></pre></td></tr></table></figure>
+
+<p>If we wish to deal with the wordings in a sentence</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sentence = <span class="built_in">input</span>(<span class="string">&quot;plz input a sentence&quot;</span>)</span><br><span class="line">words = sentence.split()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;First word:&quot;</span>,word[<span class="number">0</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;last word&quot;</span>,words[-<span class="number">1</span>])</span><br><span class="line"><span class="comment">#plz input a sentencetoday is a good day</span></span><br><span class="line"><span class="comment">#[&#x27;today&#x27;, &#x27;is&#x27;, &#x27;a&#x27;, &#x27;good&#x27;, &#x27;day&#x27;]</span></span><br><span class="line"><span class="comment">#First word today</span></span><br><span class="line"><span class="comment">#last word day</span></span><br></pre></td></tr></table></figure>
+
+<p>Sets</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">poem = <span class="string">&quot;Mary had a little lamb, little lamb, little lamb, Mary had a little lamb, Its fleece was white as snow&quot;</span></span><br><span class="line">poem = poem.replace(<span class="string">&#x27;,&#x27;</span>,<span class="string">&#x27;&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(words)</span><br><span class="line">words = <span class="built_in">set</span>(words)</span><br><span class="line"><span class="built_in">print</span>(words)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;There are&quot;</span>, <span class="built_in">len</span>(words), <span class="string">&quot;unique words in this peom&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#[&#x27;Mary&#x27;, &#x27;had&#x27;, &#x27;a&#x27;, &#x27;little&#x27;, &#x27;lamb&#x27;, &#x27;little&#x27;, &#x27;lamb&#x27;, &#x27;little&#x27;, &#x27;lamb&#x27;, &#x27;Mary&#x27;, &#x27;had&#x27;, &#x27;a&#x27;, &#x27;little&#x27;, &#x27;lamb&#x27;, &#x27;Its&#x27;, &#x27;fleece&#x27;, &#x27;was&#x27;, &#x27;white&#x27;, &#x27;as&#x27;, &#x27;snow&#x27;]</span></span><br><span class="line"><span class="comment">#&#123;&#x27;a&#x27;, &#x27;Mary&#x27;, &#x27;was&#x27;, &#x27;Its&#x27;, &#x27;white&#x27;, &#x27;as&#x27;, &#x27;snow&#x27;, &#x27;lamb&#x27;, &#x27;fleece&#x27;, &#x27;little&#x27;, &#x27;had&#x27;&#125;</span></span><br><span class="line"><span class="comment">#There are 11 unique words in this peom</span></span><br></pre></td></tr></table></figure>
+
+<p>Dictionary</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">examples = &#123;<span class="string">&#x27;a&#x27;</span> : <span class="number">12</span>, <span class="string">&#x27;b&#x27;</span> : <span class="number">23</span>, <span class="string">&#x27;abc&#x27;</span> : <span class="number">8</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(examples[<span class="string">&#x27;a&#x27;</span>], examples[<span class="string">&#x27;b&#x27;</span>], examples[<span class="string">&#x27;abc&#x27;</span>])</span><br><span class="line">examples[<span class="string">&#x27;cp3&#x27;</span>] = <span class="number">98</span></span><br><span class="line"><span class="built_in">print</span>(examples)</span><br></pre></td></tr></table></figure>
+
+<p>Let’s initialize a dictionary.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">smallLetters = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">26</span>):</span><br><span class="line">    smallLetters[<span class="built_in">chr</span>(i + <span class="number">97</span>)] = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line"><span class="built_in">print</span>(smallLetters)</span><br><span class="line"></span><br><span class="line"><span class="comment">#&#123;&#x27;a&#x27;: 0, &#x27;b&#x27;: 0, &#x27;c&#x27;: 0, &#x27;d&#x27;: 0, &#x27;e&#x27;: 0, &#x27;f&#x27;: 0, &#x27;g&#x27;: 0, &#x27;h&#x27;: 0, &#x27;i&#x27;: 0, &#x27;j&#x27;: 0, &#x27;k&#x27;: 0, &#x27;l&#x27;: 0, &#x27;m&#x27;: 0, &#x27;n&#x27;: 0, &#x27;o&#x27;: 0, &#x27;p&#x27;: 0, &#x27;q&#x27;: 0, &#x27;r&#x27;: 0, &#x27;s&#x27;: 0, &#x27;t&#x27;: 0, &#x27;u&#x27;: 0, &#x27;v&#x27;: 0, &#x27;w&#x27;: 0, &#x27;x&#x27;: 0, &#x27;y&#x27;: 0, &#x27;z&#x27;: 0&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">message =<span class="string">&#x27;Python is an interpreted high-level general-purpose programming language. Its design philosophy emphasizes code readability with its use of significant indentation. Its language constructs as well as its object-oriented approach aim to help programmers write clear, logical code for small and large-scale projects.[30] Python is dynamically-typed and garbage-collected.&#x27;</span></span><br><span class="line"><span class="keyword">for</span> char <span class="keyword">in</span> message:</span><br><span class="line">    <span class="keyword">if</span> char &gt;= <span class="string">&#x27;a&#x27;</span> <span class="keyword">and</span> char &lt;= <span class="string">&#x27;z&#x27;</span>:</span><br><span class="line">        smallLetters[char] += <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(smallLetters)</span><br><span class="line"></span><br><span class="line"><span class="comment">#&#123;&#x27;a&#x27;: 29, &#x27;b&#x27;: 3, &#x27;c&#x27;: 14, &#x27;d&#x27;: 12, &#x27;e&#x27;: 33, &#x27;f&#x27;: 3, &#x27;g&#x27;: 15, &#x27;h&#x27;: 10, &#x27;i&#x27;: 23, &#x27;j&#x27;: 2, &#x27;k&#x27;: 0, &#x27;l&#x27;: 21, &#x27;m&#x27;: 8, &#x27;n&#x27;: 19, &#x27;o&#x27;: 20, &#x27;p&#x27;: 13, &#x27;q&#x27;: 0, &#x27;r&#x27;: 19, &#x27;s&#x27;: 21, &#x27;t&#x27;: 22, &#x27;u&#x27;: 5, &#x27;v&#x27;: 1, &#x27;w&#x27;: 3, &#x27;x&#x27;: 0, &#x27;y&#x27;: 7, &#x27;z&#x27;: 1&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>The difference between ‘A’ and ‘a’ is 32. Same as all other pairs of small and capital letters.</p>
+<p><img src="/2022/10/12/Lab_notes/1107px-ASCII-Table.svg.png" alt="ASCII_table"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">letters = [<span class="number">0</span>] * <span class="number">26</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> char <span class="keyword">in</span> message:</span><br><span class="line">    <span class="keyword">if</span> char &gt;= <span class="string">&#x27;A&#x27;</span> <span class="keyword">and</span> char &lt;= <span class="string">&#x27;Z&#x27;</span>:</span><br><span class="line">        letters[<span class="built_in">ord</span>(char) - <span class="number">65</span>] += <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> char &gt;= <span class="string">&#x27;a&#x27;</span> <span class="keyword">and</span> char &lt;= <span class="string">&#x27;z&#x27;</span>:</span><br><span class="line">        letters[<span class="built_in">ord</span>(char) - <span class="number">97</span>] += <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(letters)</span><br><span class="line"><span class="comment">#[29, 3, 14, 12, 33, 3, 15, 10, 25, 2, 0, 21, 8, 19, 20, 15, 0, 19, 21, 22, 5, 1, 3, 0, 7, 1]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="extra"><a href="#extra" class="headerlink" title="extra"></a>extra</h2><p>Write a Python program to search a list for the first int object which is divisible by 13.<br>You may test your program with the list [12, “COMP”, 999.9, “2022”, 26, “Great”]<br><em>Hint <a target="_blank" rel="noopener" href="https://www.w3schools.com/python/ref_func_isinstance.asp"><code>isinstance()</code></a></em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## Please write your code here</span></span><br><span class="line"><span class="built_in">list</span> = [<span class="number">12</span>, <span class="string">&quot;COMP&quot;</span>, <span class="number">999.9</span>, <span class="string">&quot;2022&quot;</span>, <span class="number">26</span>, <span class="string">&quot;Great&quot;</span>]</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> <span class="built_in">list</span>:</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(item, <span class="built_in">int</span>):</span><br><span class="line">        <span class="comment">#This is an integer</span></span><br><span class="line">        <span class="comment">#print(item, &quot;Check for integer type pass!&quot;)</span></span><br><span class="line">        <span class="keyword">if</span> item % <span class="number">13</span> == <span class="number">0</span>:</span><br><span class="line">            <span class="comment">#This is divisble by 13</span></span><br><span class="line">            <span class="comment">#print(item, &quot;Check for divisible by 13 pass!&quot;)</span></span><br><span class="line">            <span class="built_in">print</span>(item, <span class="string">&quot;is divisible by 13&quot;</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<pre><code>26 is divisible by 13
+</code></pre>
+<p>Write a Python program to convert the 24 hour clock to a 12 hour clock format.<br>For example, to get an user input 1532, then output </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## Please write your code here</span></span><br><span class="line">timeIn = <span class="built_in">input</span>(<span class="string">&quot;Please input a time in 24 hour format e.g. 1532 or 0945&quot;</span>)</span><br><span class="line">hour = <span class="built_in">int</span>(timeIn[:<span class="number">2</span>])</span><br><span class="line">minute = <span class="built_in">int</span>(timeIn[<span class="number">2</span>:])</span><br><span class="line"><span class="keyword">if</span> minute &lt; <span class="number">10</span>:</span><br><span class="line">    minute = <span class="string">&#x27;0&#x27;</span> + <span class="built_in">str</span>(minute)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    minute = <span class="built_in">str</span>(minute)</span><br><span class="line"><span class="keyword">if</span> (hour &gt; <span class="number">12</span>):</span><br><span class="line">    time = <span class="built_in">str</span>(hour - <span class="number">12</span>) + <span class="string">&#x27;:&#x27;</span> + minute + <span class="string">&#x27;pm&#x27;</span></span><br><span class="line"><span class="keyword">elif</span> hour == <span class="number">12</span>:</span><br><span class="line">    time = <span class="string">&#x27;12&#x27;</span> + <span class="string">&#x27;:&#x27;</span> + minute + <span class="string">&#x27;pm&#x27;</span></span><br><span class="line"><span class="keyword">elif</span> hour == <span class="number">0</span>:</span><br><span class="line">    time = <span class="string">&#x27;12&#x27;</span> + <span class="string">&#x27;:&#x27;</span> + minute + <span class="string">&#x27;am&#x27;</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    time = <span class="built_in">str</span>(hour) + <span class="string">&#x27;:&#x27;</span> + minute +<span class="string">&#x27;am&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(time)</span><br></pre></td></tr></table></figure>
+
+<pre><code>Please input a time in 24 hour format e.g. 1532 or 0945 1532
+
+
+3:32pm
+</code></pre>
+<h1 id="HW1"><a href="#HW1" class="headerlink" title="HW1"></a>HW1</h1><ol>
+<li>Write a Python program with function to sum of two given integers. However, if the sum is between 15 to 20 it will return 20.</li>
+</ol>
+<p>For example:</p>
+<p>if a&#x3D;10, b &#x3D;6, it will return 20</p>
+<p>if a&#x3D;10, b&#x3D;2, it will return 12</p>
+<p>if a&#x3D;10, b&#x3D;12, it will return 22</p>
+<p>DONOT PRINT IN THE FUNCTION. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">sum</span>(<span class="params">x, y</span>):</span><br><span class="line">    <span class="comment">#Write your code below </span></span><br><span class="line">    result = x + y</span><br><span class="line">    <span class="keyword">if</span> result &gt;= <span class="number">15</span> <span class="keyword">and</span> result &lt;= <span class="number">20</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">20</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">sum</span>(<span class="number">10</span>, <span class="number">6</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">sum</span>(<span class="number">10</span>, <span class="number">2</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">sum</span>(<span class="number">10</span>, <span class="number">12</span>))</span><br></pre></td></tr></table></figure>
+
+<pre><code>20
+12
+22
+</code></pre>
+<ol start="2">
+<li>Please transfer the following equation into Python<br>$y&#x3D;\sqrt{(a-b)^2+(a+b)^2}$.</li>
+</ol>
+<p>You can use a function in math library for sqrt<br>#DO NOT PRINT IN THE FUNCTION!! </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ED</span>(<span class="params">a, b</span>):</span><br><span class="line"><span class="comment">##Please write your code below</span></span><br><span class="line">    x = <span class="built_in">pow</span>((a - b),<span class="number">2</span>)</span><br><span class="line">    y = <span class="built_in">pow</span>((a + b),<span class="number">2</span>)</span><br><span class="line">    res = <span class="built_in">pow</span>((x + y),<span class="number">0.5</span>)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(ED(<span class="number">3</span>, <span class="number">5</span>))</span><br><span class="line"><span class="built_in">print</span>(ED(<span class="number">7</span>, <span class="number">8</span>))</span><br><span class="line"><span class="built_in">print</span>(ED(<span class="number">8</span>, <span class="number">9</span>))</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<pre><code>8.246211251235321
+15.033296378372908
+17.029386365926403
+</code></pre>
+<ol start="3">
+<li>Write a Python program to check if a number is positive, negative or zero.<br>Hint: if elif else</li>
+</ol>
+<p>num is provided in the first line using input(“Input a number”). You can input any numbers you like.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">num = <span class="built_in">float</span>(<span class="built_in">input</span>(<span class="string">&quot;Input a number: &quot;</span>))</span><br><span class="line"><span class="comment">##Write your code with if elif else below</span></span><br><span class="line"><span class="keyword">if</span> num &gt; <span class="number">0</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;positive&#x27;</span>)</span><br><span class="line"><span class="keyword">elif</span> num == <span class="number">0</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;zero&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;negative&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<pre><code>Input a number: -1
+negative
+</code></pre>
+<ol start="4">
+<li>Write a Python program to calculate the sum of three given numbers, if the values of each number are equal then return thrice of their sum else please return their sum directly.</li>
+</ol>
+<p>For example, </p>
+<p>if x &#x3D; 3, y &#x3D; 3, z &#x3D; 3, return 27</p>
+<p>if x &#x3D; 1, y &#x3D; 2, z &#x3D; 3, return 6</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">sum_thrice</span>(<span class="params">x, y, z</span>):</span><br><span class="line">    <span class="keyword">if</span> x == y <span class="keyword">and</span> y == z:</span><br><span class="line">        <span class="keyword">return</span> x*x*x</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> x + y +z</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(sum_thrice(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>))</span><br><span class="line"><span class="built_in">print</span>(sum_thrice(<span class="number">0</span>, <span class="number">4</span>, <span class="number">5</span>))</span><br><span class="line"><span class="built_in">print</span>(sum_thrice(<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>))</span><br></pre></td></tr></table></figure>
+
+<pre><code>6
+9
+27
+</code></pre>
+<ol start="5">
+<li>Write a Python program to find whether a given number is even or odd, print out an appropriate message to users.</li>
+</ol>
+<p>For example: </p>
+<p>if the number is even, print “The number is even” otherwise print “The number is odd”</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">judgenum</span>(<span class="params">num</span>):</span><br><span class="line">    <span class="keyword">if</span> num%<span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;The number is even&#x27;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;The number is odd&#x27;</span>)</span><br><span class="line"></span><br><span class="line">judgenum(<span class="number">1</span>)</span><br><span class="line">judgenum(<span class="number">2</span>)</span><br><span class="line">judgenum(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>The number is odd
+The number is even
+The number is odd
+</code></pre>
+<ol start="6">
+<li>Write a Python program to get the volume of a sphere with given radius values.<br>The volume of the sphere is : $V &#x3D; 4&#x2F;3 × π × r^3$.<br>DONOT PRINT IN FUNCTION</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">volume</span>(<span class="params">radius</span>):</span><br><span class="line">  <span class="comment">##show your codes</span></span><br><span class="line">    v = (<span class="number">4</span>/<span class="number">3</span>) * math.pi * <span class="built_in">pow</span>(radius,<span class="number">3</span>)</span><br><span class="line">    <span class="keyword">return</span> v</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(volume(<span class="number">4</span>))</span><br><span class="line"><span class="built_in">print</span>(volume(<span class="number">5</span>))</span><br><span class="line"><span class="comment">##PLEASE ENSURE THAT YOUR RESULTS ARE DISPLAYED BY PRINT HERE. </span></span><br></pre></td></tr></table></figure>
+
+<pre><code>268.082573106329
+523.5987755982989
+</code></pre>
+<ol start="7">
+<li>Write a Python program to append list1 to list2.</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">0</span>]</span><br><span class="line">list2 = [<span class="string">&#x27;Red&#x27;</span>, <span class="string">&#x27;Green&#x27;</span>, <span class="string">&#x27;Black&#x27;</span>]</span><br><span class="line"><span class="comment">##Write your code blew and rember to display them</span></span><br><span class="line">list3 = list1 + list2</span><br><span class="line">list2 = list3</span><br><span class="line"><span class="built_in">print</span>(list2)</span><br></pre></td></tr></table></figure>
+
+<pre><code>[1, 2, 3, 0, &#39;Red&#39;, &#39;Green&#39;, &#39;Black&#39;]
+</code></pre>
+<ol start="8">
+<li>Write a Python program to get the largest number from a list.</li>
+</ol>
+<p>For example:<br>We can use max([1,2,3]) to get the largest number of a list. Now, please do not use max() and write a fuction for this purpose yourself.</p>
+<p>Requirements: </p>
+<p>a. Donot use max(a list) to get the largest number, otherwise you can only get the minimum point.</p>
+<p>b. Donot print the value inside the function. Just return them. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">max_num_in_list</span>(<span class="params"> <span class="built_in">list</span> </span>):</span><br><span class="line"><span class="comment">#     tmp = 0</span></span><br><span class="line"><span class="comment">#     for i in list:</span></span><br><span class="line"><span class="comment">#         if i &gt; tmp:</span></span><br><span class="line"><span class="comment">#             tmp = i</span></span><br><span class="line"><span class="comment">#     return tmp</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    tmp = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(<span class="built_in">list</span>)):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">list</span>[i] &gt; tmp:</span><br><span class="line">            tmp = <span class="built_in">list</span>[i]</span><br><span class="line">    <span class="keyword">return</span> tmp</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(max_num_in_list([<span class="number">1</span>, <span class="number">2</span>, -<span class="number">8</span>, <span class="number">0</span>]))</span><br><span class="line"><span class="built_in">print</span>(max_num_in_list([<span class="number">3</span>, <span class="number">3</span>, -<span class="number">1</span>, <span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+
+<pre><code>2
+3
+</code></pre>
+<ol start="9">
+<li>Write a Python program to sum all the items in a list.</li>
+</ol>
+<p>For a list [1, 2, -8], we can use sum([1, 2, -8]) for this purpose.<br>Now, donot use sum(). Write this function yourself. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">sum_list</span>(<span class="params">items</span>):</span><br><span class="line">    result = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> items:</span><br><span class="line">        result = result + i</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(sum_list([<span class="number">1</span>,<span class="number">2</span>,-<span class="number">8</span>]))</span><br><span class="line"><span class="built_in">print</span>(sum_list([<span class="number">3</span>,<span class="number">2</span>,-<span class="number">8</span>]))</span><br></pre></td></tr></table></figure>
+
+<pre><code>-5
+-3
+</code></pre>
+<ol start="10">
+<li>Write a Python program to get a string from a given string where all occurrences of its first char have been changed to ‘$’, except the first char itself.</li>
+</ol>
+<p><img src="/2022/10/12/Lab_notes/image-20221012015831837.png" alt="image-20221012015831837"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">change_char</span>(<span class="params">str1</span>):</span><br><span class="line">    s = <span class="built_in">list</span>(str1)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="built_in">len</span>(s)):</span><br><span class="line">        <span class="keyword">if</span> s[i] == s[<span class="number">0</span>]:</span><br><span class="line">            s[i] = <span class="string">&#x27;$&#x27;</span></span><br><span class="line">    res = <span class="string">&#x27;&#x27;</span>.join(s)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(change_char(<span class="string">&#x27;restart&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<pre><code>resta$t
+</code></pre>
+<p>11.Write a Python program to remove the characters which have odd index values of a given string.</p>
+<p><img src="/2022/10/12/Lab_notes/image-20221012015501267.png" alt="image-20221012015501267"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">odd_values_string</span>(<span class="params"><span class="built_in">str</span></span>):</span><br><span class="line">    s = <span class="built_in">list</span>(<span class="built_in">str</span>)</span><br><span class="line">    s2 = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(s)):</span><br><span class="line">        <span class="keyword">if</span> i % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">            s2.append(s[i])</span><br><span class="line">    res = <span class="string">&#x27;&#x27;</span>.join(s2)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(odd_values_string(<span class="string">&#x27;abcdef&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(odd_values_string(<span class="string">&#x27;python&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<pre><code>ace
+pto
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/07/27/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/" rel="prev" title="基础算法笔记">
+      <i class="fa fa-chevron-left"></i> 基础算法笔记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Lab1"><span class="nav-text">Lab1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lab2"><span class="nav-text">Lab2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lab3"><span class="nav-text">Lab3</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#extra"><span class="nav-text">extra</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HW1"><span class="nav-text">HW1</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="倬倬吃三碗"
+      src="/images/zaomiao2.jpg">
+  <p class="site-author-name" itemprop="name">倬倬吃三碗</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhuozhuo233" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhuozhuo233" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">倬倬吃三碗</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":300,"height":600,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>
