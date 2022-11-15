@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhuozhuo233.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Lab4 IOQ1 123456file &#x3D; open(&amp;#x27;.&#x2F;districts.txt&amp;#x27;,&amp;#x27;r&amp;#x27;)districts &#x3D; [line for line in file]districts.sort()for i in range(0,18):    print(districts[i])file.close()">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lab_notes_2">
+<meta property="og:url" content="https://zhuozhuo233.github.io/2022/11/16/Lab_notes_2/index.html">
+<meta property="og:site_name" content="倬倬吃三碗">
+<meta property="og:description" content="Lab4 IOQ1 123456file &#x3D; open(&amp;#x27;.&#x2F;districts.txt&amp;#x27;,&amp;#x27;r&amp;#x27;)districts &#x3D; [line for line in file]districts.sort()for i in range(0,18):    print(districts[i])file.close()">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhuozhuo233.github.io/2022/11/16/Lab_notes_2/image-20221115231845515.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/2022/11/16/Lab_notes_2/image-20221115232029804.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/2022/11/16/Lab_notes_2/image-20221115232115184.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/2022/11/16/Lab_notes_2/image-20221115232217987.png">
+<meta property="article:published_time" content="2022-11-15T17:22:56.021Z">
+<meta property="article:modified_time" content="2022-11-15T17:30:50.356Z">
+<meta property="article:author" content="倬倬吃三碗">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhuozhuo233.github.io/2022/11/16/Lab_notes_2/image-20221115231845515.png">
+
+<link rel="canonical" href="https://zhuozhuo233.github.io/2022/11/16/Lab_notes_2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Lab_notes_2 | 倬倬吃三碗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">倬倬吃三碗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2022/11/16/Lab_notes_2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zaomiao2.jpg">
+      <meta itemprop="name" content="倬倬吃三碗">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="倬倬吃三碗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Lab_notes_2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-11-16 01:22:56 / 修改时间：01:30:50" itemprop="dateCreated datePublished" datetime="2022-11-16T01:22:56+08:00">2022-11-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Course-notes/" itemprop="url" rel="index"><span itemprop="name">Course_notes</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Lab4-IO"><a href="#Lab4-IO" class="headerlink" title="Lab4 IO"></a>Lab4 IO</h1><p>Q1</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">file = <span class="built_in">open</span>(<span class="string">&#x27;./districts.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">districts = [line <span class="keyword">for</span> line <span class="keyword">in</span> file]</span><br><span class="line">districts.sort()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="number">18</span>):</span><br><span class="line">    <span class="built_in">print</span>(districts[i])</span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">Central and Western</span><br><span class="line"></span><br><span class="line">Eastern</span><br><span class="line"></span><br><span class="line">Islands</span><br><span class="line"></span><br><span class="line">Kowloon City</span><br><span class="line"></span><br><span class="line">Kwai Tsing</span><br><span class="line"></span><br><span class="line">Kwun Tong</span><br><span class="line"></span><br><span class="line">North</span><br><span class="line"></span><br><span class="line">Sai Kung</span><br><span class="line"></span><br><span class="line">Sha Tin</span><br><span class="line"></span><br><span class="line">Sham Shui Po</span><br><span class="line"></span><br><span class="line">Southern</span><br><span class="line"></span><br><span class="line">Tai Po</span><br><span class="line"></span><br><span class="line">Tsuen Wan</span><br><span class="line"></span><br><span class="line">Tuen Mun</span><br><span class="line"></span><br><span class="line">Wan Chai</span><br><span class="line"></span><br><span class="line">Wong Tai Sin</span><br><span class="line"></span><br><span class="line">Yau Tsim Mong</span><br><span class="line"></span><br><span class="line">Yuen Long</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Q2</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">path = <span class="string">&#x27;./data&#x27;</span></span><br><span class="line">emails = []</span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> os.listdir(path):</span><br><span class="line">    file = <span class="built_in">open</span>(path + <span class="string">&#x27;//&#x27;</span> + file, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> file:</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;@&#x27;</span> <span class="keyword">in</span> line:</span><br><span class="line">            emails.append(line.rstrip(<span class="string">&#x27;\n&#x27;</span>))</span><br><span class="line">    file.close()</span><br><span class="line">emails.sort()</span><br><span class="line"><span class="built_in">print</span>(emails)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#x27;choi@comp.hkbu.edu.hk&#x27;, &#x27;chxw@comp.hkbu.edu.hk&#x27;, &#x27;jiming@comp.hkbu.edu.hk&#x27;, &#x27;jng@comp.hkbu.edu.hk&#x27;, &#x27;pcyuen@comp.hkbu.edu.hk&#x27;, &#x27;william@comp.hkbu.edu.hk&#x27;, &#x27;xujl@comp.hkbu.edu.hk&#x27;, &#x27;yikeguo@hkbu.edu.hk&#x27;, &#x27;ymc@comp.hkbu.edu.hk&#x27;, &#x27;ywleung@comp.hkbu.edu.hk&#x27;]</span><br></pre></td></tr></table></figure>
+
+<p>Q3</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;week4.txt&#x27;</span>,<span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">    file.write(<span class="string">&quot;This is the first line\n&quot;</span>)</span><br><span class="line">    file.write(<span class="string">&quot;This is the second line\n&quot;</span>)</span><br><span class="line">    file.write(<span class="string">&quot;The end\n&quot;</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">#new content to an existinf file</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;week4.txt&#x27;</span>,<span class="string">&#x27;a&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">    file.write(<span class="string">&quot;Extra line added\n&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>Q4 Get current directory</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.getcwd()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;C:\\Users\\f2401539\\Desktop&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>Q5 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">file = <span class="built_in">open</span>(os.getcwd() + <span class="string">&#x27;\districts.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">districts = [line <span class="keyword">for</span> line <span class="keyword">in</span> file]</span><br><span class="line">districts.sort()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="number">18</span>):</span><br><span class="line">    <span class="built_in">print</span>(districts[i])</span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">Central and Western</span><br><span class="line"></span><br><span class="line">Eastern</span><br><span class="line"></span><br><span class="line">Islands</span><br><span class="line"></span><br><span class="line">Kowloon City</span><br><span class="line"></span><br><span class="line">Kwai Tsing</span><br><span class="line"></span><br><span class="line">Kwun Tong</span><br><span class="line"></span><br><span class="line">North</span><br><span class="line"></span><br><span class="line">Sai Kung</span><br><span class="line"></span><br><span class="line">Sha Tin</span><br><span class="line"></span><br><span class="line">Sham Shui Po</span><br><span class="line"></span><br><span class="line">Southern</span><br><span class="line"></span><br><span class="line">Tai Po</span><br><span class="line"></span><br><span class="line">Tsuen Wan</span><br><span class="line"></span><br><span class="line">Tuen Mun</span><br><span class="line"></span><br><span class="line">Wan Chai</span><br><span class="line"></span><br><span class="line">Wong Tai Sin</span><br><span class="line"></span><br><span class="line">Yau Tsim Mong</span><br><span class="line"></span><br><span class="line">Yuen Long</span><br></pre></td></tr></table></figure>
+
+<p>Q6 write and read csv</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line">courses = [[<span class="string">&#x27;Course Code&#x27;</span>, <span class="string">&#x27;Year&#x27;</span>, <span class="string">&#x27;Semester&#x27;</span>,<span class="string">&#x27;Course Name&#x27;</span>],</span><br><span class="line">           [<span class="string">&#x27;COMP7035&#x27;</span>, <span class="string">&#x27;2022-23&#x27;</span>, <span class="string">&#x27;Sem A&#x27;</span>, <span class="string">&#x27;Python for Data Analytics and Artificial Intelligence&#x27;</span>],</span><br><span class="line">           [<span class="string">&#x27;COMP1007&#x27;</span>, <span class="string">&#x27;2021-22&#x27;</span>, <span class="string">&#x27;Sem B&#x27;</span>,<span class="string">&#x27;Introduction to Python and Its Applications&#x27;</span>]]</span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;courses.csv&#x27;</span>,<span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="keyword">with</span> f:</span><br><span class="line">    writer = csv.writer(f)</span><br><span class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> courses:</span><br><span class="line">        writer.writerow(row)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;courses.csv&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> f:</span><br><span class="line">    reader = csv.reader(f)</span><br><span class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> reader(f)</span><br><span class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">        <span class="built_in">print</span>(row)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[&#x27;Course Code&#x27;, &#x27;Year&#x27;, &#x27;Semester&#x27;, &#x27;Course Name&#x27;]</span><br><span class="line">[]</span><br><span class="line">[&#x27;COMP7035&#x27;, &#x27;2022-23&#x27;, &#x27;Sem A&#x27;, &#x27;Python for Data Analytics and Artificial Intelligence&#x27;]</span><br><span class="line">[]</span><br><span class="line">[&#x27;COMP1007&#x27;, &#x27;2021-22&#x27;, &#x27;Sem B&#x27;, &#x27;Introduction to Python and Its Applications&#x27;]</span><br><span class="line">[]</span><br></pre></td></tr></table></figure>
+
+<h1 id="Lab5-Numpy"><a href="#Lab5-Numpy" class="headerlink" title="Lab5 Numpy"></a>Lab5 Numpy</h1><p>create an array of the integers from 20 to 50</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">array = np.arange(<span class="number">20</span>,<span class="number">51</span>)</span><br><span class="line"><span class="built_in">print</span>(array)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50]</span><br></pre></td></tr></table></figure>
+
+<p>create an array of the integers from 0 to 50 with evenly spacing of 10</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">array = np.linspace(<span class="number">0</span>,<span class="number">50</span>,<span class="number">6</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ 0. 10. 20. 30. 40. 50.]</span><br></pre></td></tr></table></figure>
+
+<p>show different properties of the numpy array</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">array = np.arange(<span class="number">20</span>)</span><br><span class="line"><span class="built_in">print</span>(array)</span><br><span class="line"></span><br><span class="line">array = array.reshape(<span class="number">4</span>,<span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>(array)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(array))</span><br><span class="line"><span class="built_in">print</span>(array.ndim)</span><br><span class="line"><span class="built_in">print</span>(array.shape)</span><br><span class="line"><span class="built_in">print</span>(array.dtype)</span><br><span class="line"><span class="built_in">print</span>(array.itemsize)</span><br><span class="line"><span class="built_in">print</span>(array.size)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]</span><br><span class="line"></span><br><span class="line">[[ 0  1  2  3  4]</span><br><span class="line"> [ 5  6  7  8  9]</span><br><span class="line"> [10 11 12 13 14]</span><br><span class="line"> [15 16 17 18 19]]</span><br><span class="line"> </span><br><span class="line">&lt;class &#x27;numpy.ndarray&#x27;&gt;</span><br><span class="line"></span><br><span class="line">2</span><br><span class="line"></span><br><span class="line">(4, 5)</span><br><span class="line"></span><br><span class="line">int32</span><br><span class="line"></span><br><span class="line">4</span><br><span class="line"></span><br><span class="line">20</span><br></pre></td></tr></table></figure>
+
+<p>create an array of thre integers from 9 to 31 and print all values except the first and the last</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">array = arange(<span class="number">9</span>,<span class="number">32</span>)</span><br><span class="line"><span class="built_in">print</span>(array[<span class="number">1</span>:-<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30]</span><br></pre></td></tr></table></figure>
+
+<p>create an array of 5 zeros, 5 ones, 5 fives</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;An array of 5 zeros:&#x27;</span>)</span><br><span class="line">array = np.zeros(<span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>(array)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;An array of 5 ones:&#x27;</span>)</span><br><span class="line">array = np.ones(<span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>(array1)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;An array of 5 fives:&#x27;</span>)</span><br><span class="line">array = np.ones(<span class="number">5</span>) * <span class="number">5</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">An array of 5 zeros:</span><br><span class="line">[0. 0. 0. 0. 0.]</span><br><span class="line">An array of 5 ones:</span><br><span class="line">[1. 1. 1. 1. 1.]</span><br><span class="line">An array of 5 fives:</span><br><span class="line">[5. 5. 5. 5. 5.]</span><br></pre></td></tr></table></figure>
+
+<p>create 5x5 zero matrix with elements with the diagonal to 5,4,3,2,1</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">array = np.diag([<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>])</span><br><span class="line"><span class="built_in">print</span>(array)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[[5 0 0 0 0]</span><br><span class="line"> [0 4 0 0 0]</span><br><span class="line"> [0 0 3 0 0]</span><br><span class="line"> [0 0 0 2 0]</span><br><span class="line"> [0 0 0 0 1]]</span><br></pre></td></tr></table></figure>
+
+<p>find missing item in a given array</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">array = np.array([[<span class="number">1</span>,<span class="number">1</span>,np.nan,<span class="number">1</span>],</span><br><span class="line">              [np.nan,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>],</span><br><span class="line">              [<span class="number">1</span>,np.nan,<span class="number">1</span>,<span class="number">1</span>]])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\nFind the missing data of the said array:&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(np.isnan(array))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Find the missing data of the said array:</span><br><span class="line">[[False False  True False]</span><br><span class="line"> [ True False False False]</span><br><span class="line"> [False  True False False]]</span><br></pre></td></tr></table></figure>
+
+<p>indexing row and col</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">array = np.array(([<span class="number">5</span>,<span class="number">10</span>,<span class="number">15</span>],[<span class="number">20</span>,<span class="number">25</span>,<span class="number">30</span>],[<span class="number">35</span>,<span class="number">40</span>,<span class="number">45</span>]))</span><br><span class="line">array[<span class="number">1</span>]</span><br><span class="line">array[<span class="number">1</span>][<span class="number">0</span>]</span><br><span class="line"><span class="built_in">print</span>(array)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;----&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(array[:<span class="number">2</span>,<span class="number">1</span>:])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">array([20, 25, 30])</span><br><span class="line">20</span><br><span class="line">[[ 5 10 15]</span><br><span class="line"> [20 25 30]</span><br><span class="line"> [35 40 45]]</span><br><span class="line">----</span><br><span class="line">[[10 15]</span><br><span class="line"> [25 30]]</span><br></pre></td></tr></table></figure>
+
+<h1 id="Lab6-Matplotlib"><a href="#Lab6-Matplotlib" class="headerlink" title="Lab6 Matplotlib"></a>Lab6 Matplotlib</h1><p>Simple plots</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pylot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">x = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">y = [<span class="number">50</span>,<span class="number">100</span>,<span class="number">150</span>]</span><br><span class="line">plt.plot(x,y)</span><br></pre></td></tr></table></figure>
+
+<p>Add the title and x, y label</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">y = [<span class="number">50</span>, <span class="number">100</span>, <span class="number">150</span>]</span><br><span class="line"></span><br><span class="line">plt.plot(x, y)</span><br><span class="line">plt.title(<span class="string">&quot;Title&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&quot;Label X&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;Label Y&quot;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>fit the line:xlim(), ylin()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">y = [<span class="number">50</span>, <span class="number">100</span>, <span class="number">150</span>]</span><br><span class="line"></span><br><span class="line">plt.xlim(<span class="number">1</span>,<span class="number">3</span>)</span><br><span class="line">plt.ylim(<span class="number">0</span>,<span class="number">140</span>)</span><br><span class="line">plt.plot(x, y)</span><br><span class="line">plt.title(<span class="string">&quot;Title&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&quot;Label X&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;Label Y&quot;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>customize</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(x, y, color=<span class="string">&quot;green&quot;</span>, marker=<span class="string">&#x27;&gt;&#x27;</span>, markersize=<span class="number">20</span>, linestyle=<span class="string">&#x27;dashdot&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plt.xlim(<span class="number">1</span>, <span class="number">3</span>)</span><br><span class="line">plt.ylim(<span class="number">0</span>, <span class="number">150</span>)</span><br><span class="line"></span><br><span class="line">plt.title(<span class="string">&#x27;Title&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;Label X&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Label Y&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>example</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">df = read_csv(<span class="string">&#x27;elderly.csv&#x27;</span>)</span><br><span class="line">year = df[<span class="string">&#x27;Year&#x27;</span>].values.tolist()</span><br><span class="line"><span class="built_in">print</span>(year)</span><br><span class="line">sixtyFiveAbove = df[<span class="string">&#x27;65 years old and above&#x27;</span>].values.tolist()</span><br><span class="line"><span class="built_in">print</span>(sixtyFiveAbove)</span><br><span class="line"></span><br><span class="line">plt.plot(year, sixtyFiveAbove, color=<span class="string">&quot;green&quot;</span>, marker=<span class="string">&#x27;&gt;&#x27;</span>, markersize=<span class="number">20</span>, linestyle=<span class="string">&#x27;dashdot&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Title&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;Label X&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Label Y&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020]</span><br><span class="line">[&#x27;836&#x27;, &#x27;859&#x27;, &#x27;892&#x27;, &#x27;931&#x27;, &#x27;975&#x27;, &#x27;1,022&#x27;, &#x27;1,067&#x27;, &#x27;1,116&#x27;, &#x27;1,164&#x27;, &#x27;1,222&#x27;, &#x27;1,297&#x27;]</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/11/16/Lab_notes_2/image-20221115231845515.png" alt="image-20221115231845515"></p>
+<p>Example2</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line">n1 = <span class="number">100</span></span><br><span class="line">n2 = <span class="number">1000</span></span><br><span class="line">n3 = <span class="number">100000</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">rolls_plt</span>(<span class="params">arg</span>):</span><br><span class="line">    num = [<span class="number">0</span>] * <span class="number">6</span></span><br><span class="line">    y = []</span><br><span class="line">    x = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(arg):</span><br><span class="line">        r_num = random.randint(<span class="number">0</span>,<span class="number">5</span>)</span><br><span class="line">        num[r_num] = num[r_num] + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">6</span>):</span><br><span class="line">        y_fre = num[i] / arg</span><br><span class="line">        y.append(y_fre)</span><br><span class="line">    plt.bar(x,y,color = <span class="string">&#x27;royalblue&#x27;</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line">rolls_plt(n1)</span><br><span class="line"><span class="comment">#rolls_plt(n2)</span></span><br><span class="line"><span class="comment">#rolls_plt(n3)</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/11/16/Lab_notes_2/image-20221115232029804.png" alt="image-20221115232029804"></p>
+<p>Example3</p>
+<p>𝑥&#x3D;𝑐𝑜𝑠(𝜃)x&#x3D;cos(θ)</p>
+<p>𝑦&#x3D;𝑠𝑖𝑛(𝜃)+𝑐𝑜𝑠(𝜃)2&#x2F;3</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line">theta = np.linspace(<span class="number">0</span>, <span class="number">2</span> * np.pi, <span class="number">100</span>)</span><br><span class="line">x = np.cos(theta)</span><br><span class="line">y = np.sin(theta) + np.cos(theta) ** <span class="number">2</span>/<span class="number">3</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">plt.plot(x, y)</span><br><span class="line">plt.show()             </span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/11/16/Lab_notes_2/image-20221115232115184.png" alt="image-20221115232115184"></p>
+<p>Example4</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> animation</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> IPython.display <span class="keyword">import</span> display, clear_output</span><br><span class="line"></span><br><span class="line">fig = plt.figure() <span class="comment">#Create a canvas to be painted</span></span><br><span class="line"></span><br><span class="line">x = np.cos(theta)</span><br><span class="line">y = np.sin(theta) + np.cos(theta) ** <span class="number">2</span>/<span class="number">3</span></span><br><span class="line"></span><br><span class="line">ax = fig.subplots()</span><br><span class="line">l = ax.plot(x,y)</span><br><span class="line">l = l[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">animate</span>(<span class="params">i</span>):</span><br><span class="line">    l.set_data(x[:i],y[:i])</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(x)):</span><br><span class="line">    animate(i)</span><br><span class="line">    clear_output(wait = <span class="literal">True</span>)</span><br><span class="line">    display(fig)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/11/16/Lab_notes_2/image-20221115232217987.png" alt="image-20221115232217987"></p>
+<h1 id="Lab7-Seaborn-x2F-class"><a href="#Lab7-Seaborn-x2F-class" class="headerlink" title="Lab7 Seaborn&#x2F;class"></a>Lab7 Seaborn&#x2F;class</h1><p>Write a class for Person</p>
+<p>Basic Properties: Age, Name, Sex.</p>
+<p>Extension Properties: Working, Sleepings, just consider the hours they work and sleep everyday.</p>
+<p>Then, instantiate the two classes into to different persons</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, age, sex</span>):</span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.sex = sex</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">Working</span>(<span class="params">self, hours</span>):</span><br><span class="line">        <span class="built_in">print</span>(self.name + <span class="string">&#x27;working&#x27;</span> + <span class="built_in">str</span>(hours) + <span class="string">&quot;hours everyday&quot;</span>)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">Sleep</span>(<span class="params">self, hours</span>):</span><br><span class="line">        <span class="built_in">print</span>(self.name + <span class="string">&#x27;sleep&#x27;</span> + <span class="built_in">str</span>(hours) + <span class="string">&quot;hours everyday&quot;</span>)</span><br><span class="line">        </span><br><span class="line">object1 = Person(<span class="string">&#x27;jack&#x27;</span>,<span class="number">18</span>,<span class="string">&#x27;male&#x27;</span>)</span><br><span class="line">object2 = Person(<span class="string">&#x27;mark&#x27;</span>,<span class="number">19</span>,<span class="string">&#x27;male&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(object1.name, object1.age, object1.sex)</span><br><span class="line"><span class="built_in">print</span>(object2.name, object2.age, object2.sex)</span><br><span class="line">object1.Working(<span class="number">4</span>)</span><br><span class="line">object2.Sleep(<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">jack 18 male</span><br><span class="line">mark 19 male</span><br><span class="line">jack working 4 hours everyday</span><br><span class="line">mark sleeping 4 hours everyday</span><br></pre></td></tr></table></figure>
+
+<p><strong>Create a matrix with the following style(pad)</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">a = [[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line">a_pad = np.pad(a,((<span class="number">1</span>,<span class="number">9</span>),(<span class="number">3</span>,<span class="number">3</span>)),<span class="string">&#x27;constant&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[[0 0 0 0 0 0 0 0]</span><br><span class="line"> [0 0 0 1 2 0 0 0]</span><br><span class="line"> [0 0 0 3 4 0 0 0]</span><br><span class="line"> [0 0 0 0 0 0 0 0]</span><br><span class="line"> [0 0 0 0 0 0 0 0]</span><br><span class="line"> [0 0 0 0 0 0 0 0]</span><br><span class="line"> [0 0 0 0 0 0 0 0]</span><br><span class="line"> [0 0 0 0 0 0 0 0]</span><br><span class="line"> [0 0 0 0 0 0 0 0]</span><br><span class="line"> [0 0 0 0 0 0 0 0]</span><br><span class="line"> [0 0 0 0 0 0 0 0]</span><br><span class="line"> [0 0 0 0 0 0 0 0]]</span><br></pre></td></tr></table></figure>
+
+<p><strong>Create a matrix with the following style</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">a = np.arange(<span class="number">1</span>,<span class="number">4</span>)</span><br><span class="line">a_d = diag(a)</span><br><span class="line"><span class="built_in">print</span>(a_d)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[[1. 0. 0. 0.]</span><br><span class="line"> [0. 2. 0. 0.]</span><br><span class="line"> [0. 0. 3. 0.]</span><br><span class="line"> [0. 0. 0. 4.]]</span><br></pre></td></tr></table></figure>
+
+<p><strong>Seaborn-&gt;pass</strong></p>
+<h1 id="Lab8-Pandas-1"><a href="#Lab8-Pandas-1" class="headerlink" title="Lab8 Pandas_1"></a>Lab8 Pandas_1</h1><h2 id="Exam1"><a href="#Exam1" class="headerlink" title="Exam1"></a>Exam1</h2><p><strong>1. Create a 5-D random numpy list var_list</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">var_list = np.random.randn(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. use “uuid” to generate 5 random keys (use str(uuid.uuid4())), and store them into a list key_list</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line">key_list = [<span class="built_in">str</span>(uuid.uuid4())[:<span class="number">6</span>] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>)]</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>3. Create a dictionary dict from var_list and key_list</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dict_tmp = &#123;key_list[i]:var_list[i] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>)&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>4. Create a Pandas Series from a) var_list b) var_list and key_list c) dict</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">pd_series_var = pd.Series(var_list)</span><br><span class="line">pd_series_var_key = pd.Series(var_list,key_list)</span><br><span class="line">pd_series_dict = pd.Series(dict_tmp)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>5. Convert the Series back to the list and dictionary</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var_list_new = pd_series_var_key.to_list()</span><br><span class="line">dict_new = pd_series_dict.to_dict()</span><br></pre></td></tr></table></figure>
+
+<p><strong>6. Find out the elements larger than zero</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd_series_positive = pd.series_dict[pd_series_dict &gt; <span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>7. Calculate the proportion of positive elements in the Series</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proportion = <span class="built_in">len</span>(pd_series_postive)/<span class="built_in">len</span>(pd_series_dict)</span><br></pre></td></tr></table></figure>
+
+<p><strong>8. Write down as many ways of forming a list that contains the values of Series elements</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">val_1 = pd_series_dict.to_list()</span><br><span class="line">val_2 = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> idx, ival <span class="keyword">in</span> pd_series_dict.iteritems():</span><br><span class="line">    val_2.append(ival)</span><br><span class="line">val_3 = pd_series_dict.values</span><br><span class="line">val_tmp = pd_series_dict.index</span><br><span class="line">val_4 = [pd_series_dict[ikey] <span class="keyword">for</span> ikey <span class="keyword">in</span> pd_series_dict.index]</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>9. Calculate the proportion of elements that are larger than the mean value of the Series</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mean_val = np.mean(pd_series_dict)</span><br><span class="line">pd_series_larger_than_mean = pd_series_dict[pd_series_dict &gt; mean_val]</span><br><span class="line">proportion_2 = <span class="built_in">len</span>(pd_series_larger_than_mean)/<span class="built_in">len</span>(pd_series_dict)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Exam2"><a href="#Exam2" class="headerlink" title="Exam2"></a>Exam2</h2><p><strong>1. Write codes to create a random dict x which has 5 random keys and each key corresponds to a 6-D numpy array</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line">data = &#123;&#125;</span><br><span class="line">key_list = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">    rand_key = <span class="built_in">str</span>(uuid.uuid4())[:<span class="number">6</span>]</span><br><span class="line">    key_list.append(rand_key)</span><br><span class="line">    data[rand_key] = np.random.randn(<span class="number">6</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>2. Create a pandas dataframe using x</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df = pd.DataFrame(data)</span><br><span class="line"><span class="built_in">print</span>(df)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>3. Create a pandas dataframe using a subset of x, in the subset of x, only keys that start with a digit are chosen</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sub_key_list = [i_key <span class="keyword">for</span> i_key <span class="keyword">in</span> key_list <span class="keyword">if</span> i_key[<span class="number">0</span>] <span class="keyword">in</span> <span class="string">&#x27;0123456789&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(sub_key_list)</span><br><span class="line">df_sub = pd.DataFrame(data,columns = sub_key_list)</span><br><span class="line"><span class="built_in">print</span>(df_sub)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>4. Create a new pandas dataframe using the codes in the previous slide</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dates = pd.data_range(<span class="string">&#x27;1/1/2000&#x27;</span>,periods = <span class="number">8</span>)</span><br><span class="line">df = pd.DataFrame(np.random.randn(<span class="number">8</span>,<span class="number">4</span>),index = dates, columns = [<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>,<span class="string">&#x27;D&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span>(df)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>5. Select rows whose attribute A is smaller than the mean of attribute C</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">df_c = df[<span class="string">&#x27;C&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(df_c)</span><br><span class="line">mean_c = np.mean(df_c)</span><br><span class="line"><span class="built_in">print</span>(mean_c)</span><br><span class="line"><span class="built_in">print</span>(df[df[<span class="string">&#x27;A&#x27;</span>]&lt;mean_c])</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>6. Can you select the column B and C using [] indexing? Try it out and see what happens</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df_bc = df[[<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>]]</span><br><span class="line"><span class="built_in">print</span>(df_bc)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Exam3"><a href="#Exam3" class="headerlink" title="Exam3"></a>Exam3</h2><p><strong>convert a Panda module Series to Python list</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">series = pd.Series([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Pandas Series and type&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(series)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(series))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Convert Pandas Series to Python list&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(series.tolist())</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(series.tolist()))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Pandas Series and type</span><br><span class="line">0    1</span><br><span class="line">1    2</span><br><span class="line">2    3</span><br><span class="line">3    4</span><br><span class="line">4    5</span><br><span class="line">dtype: int64</span><br><span class="line">&lt;class &#x27;pandas.core.series.Series&#x27;&gt;</span><br><span class="line">Convert Pandas Series to Python list</span><br><span class="line">[1, 2, 3, 4, 5]</span><br><span class="line">&lt;class &#x27;list&#x27;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>convert a dictionary to a Pandas series</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="built_in">dict</span> = &#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">100</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">200</span>, <span class="string">&#x27;c&#x27;</span>:<span class="number">300</span>, <span class="string">&#x27;d&#x27;</span>:<span class="number">400</span>, <span class="string">&#x27;e&#x27;</span>:<span class="number">500</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Original dictionary:&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">dict</span>)</span><br><span class="line"></span><br><span class="line">new_series = pd.Series(<span class="built_in">dict</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Converted series:&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(new_series)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Original dictionary:</span><br><span class="line">&#123;&#x27;a&#x27;: 100, &#x27;b&#x27;: 200, &#x27;c&#x27;: 300, &#x27;d&#x27;: 400, &#x27;e&#x27;: 500&#125;</span><br><span class="line">Converted series:</span><br><span class="line">a    100</span><br><span class="line">b    200</span><br><span class="line">c    300</span><br><span class="line">d    400</span><br><span class="line">e    500</span><br><span class="line">dtype: int64</span><br></pre></td></tr></table></figure>
+
+<p><strong>convert a NumPy array to a Pandas series</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">np_array = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;NumPy array:&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(np_array)</span><br><span class="line"></span><br><span class="line">new_series = pd.Series(np_array)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Converted Pandas series:&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(new_series)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">NumPy array:</span><br><span class="line">[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span>]</span><br><span class="line">Converted Pandas series:</span><br><span class="line"><span class="number">0</span>    <span class="number">1</span></span><br><span class="line"><span class="number">1</span>    <span class="number">2</span></span><br><span class="line"><span class="number">2</span>    <span class="number">3</span></span><br><span class="line"><span class="number">3</span>    <span class="number">4</span></span><br><span class="line"><span class="number">4</span>    <span class="number">5</span></span><br><span class="line">dtype: int32</span><br></pre></td></tr></table></figure>
+
+<p><strong>convert the column of a DataFrame as a Series</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">d = &#123;<span class="string">&#x27;col1&#x27;</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">11</span>], <span class="string">&#x27;col2&#x27;</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">9</span>, <span class="number">5</span>, <span class="number">0</span>], <span class="string">&#x27;col3&#x27;</span>: [<span class="number">7</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">12</span>, <span class="number">1</span>,<span class="number">11</span>]&#125;</span><br><span class="line">df = pd.DataFrame(data=d)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(df))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Original DataFrame&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(df)</span><br><span class="line">s1 = df.iloc[:,<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\n1st column as a Series:&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(s1)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(s1))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;class &#x27;pandas.core.frame.DataFrame&#x27;&gt;</span><br><span class="line">Original DataFrame</span><br><span class="line">   col1  col2  col3</span><br><span class="line">0     1     4     7</span><br><span class="line">1     2     5     5</span><br><span class="line">2     3     6     8</span><br><span class="line">3     4     9    12</span><br><span class="line">4     7     5     1</span><br><span class="line">5    11     0    11</span><br><span class="line"></span><br><span class="line">1st column as a Series:</span><br><span class="line">0     1</span><br><span class="line">1     2</span><br><span class="line">2     3</span><br><span class="line">3     4</span><br><span class="line">4     7</span><br><span class="line">5    11</span><br><span class="line">Name: col1, dtype: int64</span><br><span class="line">&lt;class &#x27;pandas.core.series.Series&#x27;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Create a subset of a series</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mport pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">s = pd.Series([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>,<span class="number">13</span>,<span class="number">14</span>,<span class="number">15</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Original Data Series:&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(s)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\nSubset of the above Data Series:&quot;</span>)</span><br><span class="line">n = <span class="number">10</span></span><br><span class="line">new_s = s[s &gt; n]</span><br><span class="line"><span class="built_in">print</span>(new_s)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Original Data Series:</span><br><span class="line">0      0</span><br><span class="line">1      1</span><br><span class="line">2      2</span><br><span class="line">3      3</span><br><span class="line">4      4</span><br><span class="line">5      5</span><br><span class="line">6      6</span><br><span class="line">7      7</span><br><span class="line">8      8</span><br><span class="line">9      9</span><br><span class="line">10    10</span><br><span class="line">11    11</span><br><span class="line">12    12</span><br><span class="line">13    13</span><br><span class="line">14    14</span><br><span class="line">15    15</span><br><span class="line">dtype: int64</span><br><span class="line"></span><br><span class="line">Subset of the above Data Series:</span><br><span class="line">11    11</span><br><span class="line">12    12</span><br><span class="line">13    13</span><br><span class="line">14    14</span><br><span class="line">15    15</span><br><span class="line">dtype: int64</span><br></pre></td></tr></table></figure>
+
+<h1 id="Lab9-Pandas-2"><a href="#Lab9-Pandas-2" class="headerlink" title="Lab9 Pandas_2"></a>Lab9 Pandas_2</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>1. Write codes to create two DataFrames df_left, df_right, with the columns as “[key, lval1, lval2]” and “[key, rval1, rval2]”, and the values are “[a,b,c]”, and “[b,c,d]” respectively. Generate random numbers with normal distribution to for the “lval<em>” and “rval</em>” elements</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">split_str = <span class="string">&#x27;_______&#x27;</span></span><br><span class="line">left_df = pd.DataFrame(&#123;<span class="string">&#x27;key&#x27;</span>:[<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span>],<span class="string">&#x27;lval1&#x27;</span>:np.random.randn(<span class="number">3</span>),<span class="string">&#x27;lval2&#x27;</span>:np.random.randn(<span class="number">3</span>)&#125;)</span><br><span class="line">right_df = pd.DataFrame(&#123;<span class="string">&#x27;key&#x27;</span>:<span class="built_in">list</span>(<span class="string">&#x27;bcd&#x27;</span>),<span class="string">&#x27;rval1&#x27;</span>:np.random.randn(<span class="number">3</span>),<span class="string">&#x27;rval2&#x27;</span>:np.randoom.randn(<span class="number">3</span>)&#125;)</span><br><span class="line"><span class="built_in">print</span>(left_df)</span><br><span class="line"><span class="built_in">print</span>(split_str)</span><br><span class="line"><span class="built_in">print</span>(right_df)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">  key     lval1     lval2</span><br><span class="line">0   a -0.306740  0.370246</span><br><span class="line">1   b -1.633727 -0.351369</span><br><span class="line">2   c  1.558975 -0.179692</span><br><span class="line">---------</span><br><span class="line">  key     rval1     rval2</span><br><span class="line">0   b -0.036699  0.724182</span><br><span class="line">1   c -1.241680 -1.695795</span><br><span class="line">2   d  1.580775 -1.271330</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>2. Compute the left outer join of df_left and df_right, check out the results</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">left_merge = pd.merge(left_df, right_df, how = <span class="string">&#x27;left&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(left_merge)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  key     lval1     lval2     rval1     rval2</span><br><span class="line">0   a -0.306740  0.370246       NaN       NaN</span><br><span class="line">1   b -1.633727 -0.351369 -0.036699  0.724182</span><br><span class="line">2   c  1.558975 -0.179692 -1.241680 -1.695795</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>3. Change the name “key” of df_left to “key_left”, re-run step 2 and see what happens</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">left_df.columns = [<span class="string">&#x27;key_left&#x27;</span>,<span class="string">&#x27;lval1&#x27;</span>,<span class="string">&#x27;lval2&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>4. Compute the right outer join of df_left and df_right in step 2, check out the results</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">right_merge = pd.merge(left_df, right_df, how = <span class="string">&#x27;right&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(right_merge)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  key     lval1     lval2     rval1     rval2</span><br><span class="line">0   b -1.633727 -0.351369 -0.036699  0.724182</span><br><span class="line">1   c  1.558975 -0.179692 -1.241680 -1.695795</span><br><span class="line">2   d       NaN       NaN  1.580775 -1.271330</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>5. Compute the full outer join of df_left and df_right in step 2, check out the results</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">outer_merge = pd.merge(left_df, right_df, how = <span class="string">&#x27;outer&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(outer_merge)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  key     lval1     lval2     rval1     rval2</span><br><span class="line">0   a -0.306740  0.370246       NaN       NaN</span><br><span class="line">1   b -1.633727 -0.351369 -0.036699  0.724182</span><br><span class="line">2   c  1.558975 -0.179692 -1.241680 -1.695795</span><br><span class="line">3   d       NaN       NaN  1.580775 -1.271330</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>6. Compute the inner join of df_left and df_right in step 2, check out the results</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">inner_merge = pd.merge(left_df, right_df, how = <span class="string">&#x27;inner&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(inner_merge)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  key     lval1     lval2     rval1     rval2</span><br><span class="line">0   b -1.633727 -0.351369 -0.036699  0.724182</span><br><span class="line">1   c  1.558975 -0.179692 -1.241680 -1.695795</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>7. Get the floating value columns of df_left (lval1,lval2), get the square root of the absolute values using apply</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(left_df)</span><br><span class="line">left_df_val = left_df[[<span class="string">&#x27;lval1&#x27;</span>,<span class="string">&#x27;lval2&#x27;</span>]]</span><br><span class="line"><span class="built_in">print</span>(left_df_val)</span><br><span class="line"></span><br><span class="line">left_df_val_abs = left_df_val.apply(np.<span class="built_in">abs</span>)</span><br><span class="line"><span class="built_in">print</span>(left_df_val_abs)</span><br><span class="line"></span><br><span class="line">left_df_val_abs_sqrt = left_df_val_abs.apply(np.sqrt)</span><br><span class="line"><span class="built_in">print</span>(left_df_val_abs_sqrt)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">  key     lval1     lval2</span><br><span class="line">0   a -0.306740  0.370246</span><br><span class="line">1   b -1.633727 -0.351369</span><br><span class="line">2   c  1.558975 -0.179692</span><br><span class="line">      lval1     lval2</span><br><span class="line">0 -0.306740  0.370246</span><br><span class="line">1 -1.633727 -0.351369</span><br><span class="line">2  1.558975 -0.179692</span><br><span class="line">      lval1     lval2</span><br><span class="line">0  0.306740  0.370246</span><br><span class="line">1  1.633727  0.351369</span><br><span class="line">2  1.558975  0.179692</span><br><span class="line">      lval1     lval2</span><br><span class="line">0  0.553841  0.608478</span><br><span class="line">1  1.278173  0.592764</span><br><span class="line">2  1.248589  0.423901</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>8. Try using numpy to directly calculate the above operations on df_left</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">left_df_val_abs_sqrt_np = np.sqrt(np.<span class="built_in">abs</span>(left_df_val))</span><br><span class="line"><span class="built_in">print</span>(left_df_val_abs_sqrt_np)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">      lval1     lval2</span><br><span class="line">0  0.553841  0.608478</span><br><span class="line">1  1.278173  0.592764</span><br><span class="line">2  1.248589  0.423901</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>9. Write the apply_map functions to accomplish step 7</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(left_df)</span><br><span class="line">left_df_val = left_df[[<span class="string">&#x27;lval1&#x27;</span>,<span class="string">&#x27;lval2&#x27;</span>]]</span><br><span class="line"><span class="built_in">print</span>(left_df_val)</span><br><span class="line">left_df_val_abs = left_df_val.applymap(np.<span class="built_in">abs</span>)</span><br><span class="line"><span class="built_in">print</span>(left_df_val_abs)</span><br><span class="line">left_df_val_abs_sqrt = left_df_val_abs.applymap(np.sqrt)</span><br><span class="line"><span class="built_in">print</span>(left_df_val_abs_sqrt)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">  key     lval1     lval2</span><br><span class="line">0   a -0.306740  0.370246</span><br><span class="line">1   b -1.633727 -0.351369</span><br><span class="line">2   c  1.558975 -0.179692</span><br><span class="line">      lval1     lval2</span><br><span class="line">0 -0.306740  0.370246</span><br><span class="line">1 -1.633727 -0.351369</span><br><span class="line">2  1.558975 -0.179692</span><br><span class="line">      lval1     lval2</span><br><span class="line">0  0.306740  0.370246</span><br><span class="line">1  1.633727  0.351369</span><br><span class="line">2  1.558975  0.179692</span><br><span class="line">      lval1     lval2</span><br><span class="line">0  0.553841  0.608478</span><br><span class="line">1  1.278173  0.592764</span><br><span class="line">2  1.248589  0.423901</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>10. Get the data of “Countries and dependencies by area” from wiki and save to the excel excluding index</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url_wiki = <span class="string">&#x27;https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_area&#x27;</span></span><br><span class="line">r = requests.get(url_wiki,headers =&#123;<span class="string">&#x27;User-Agent&#x27;</span>:<span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0;Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124Safari/537.36&#x27;</span>&#125;)</span><br><span class="line"></span><br><span class="line">data = pd.read_html(r.text)</span><br><span class="line"><span class="built_in">print</span>([idata.shape <span class="keyword">for</span> idata <span class="keyword">in</span> data])</span><br><span class="line">data_area = data[<span class="number">1</span>]</span><br><span class="line"><span class="built_in">print</span>(data_area)</span><br><span class="line">data_area.to_excel(<span class="string">&#x27;area_info.xlsx&#x27;</span>,index = <span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/10/12/Lab_notes/" rel="prev" title="Lab_notes">
+      <i class="fa fa-chevron-left"></i> Lab_notes
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Lab4-IO"><span class="nav-text">Lab4 IO</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lab5-Numpy"><span class="nav-text">Lab5 Numpy</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lab6-Matplotlib"><span class="nav-text">Lab6 Matplotlib</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lab7-Seaborn-x2F-class"><span class="nav-text">Lab7 Seaborn&#x2F;class</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lab8-Pandas-1"><span class="nav-text">Lab8 Pandas_1</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Exam1"><span class="nav-text">Exam1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exam2"><span class="nav-text">Exam2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exam3"><span class="nav-text">Exam3</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lab9-Pandas-2"><span class="nav-text">Lab9 Pandas_2</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="倬倬吃三碗"
+      src="/images/zaomiao2.jpg">
+  <p class="site-author-name" itemprop="name">倬倬吃三碗</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhuozhuo233" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhuozhuo233" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">倬倬吃三碗</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":300,"height":600,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>
