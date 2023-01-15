@@ -150,6 +150,90 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2021/11/05/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zaomiao2.jpg">
+      <meta itemprop="name" content="倬倬吃三碗">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="倬倬吃三碗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/05/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">基于kafka的微博情感分析与可视化实现</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-05 08:42:51" itemprop="dateCreated datePublished" datetime="2021-11-05T08:42:51+08:00">2021-11-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-09 02:21:39" itemprop="dateModified" datetime="2022-12-09T02:21:39+08:00">2022-12-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/A-%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86-%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0-A/" itemprop="url" rel="index"><span itemprop="name">A_项目经历&总结笔记_A</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="一、项目开发目的"><a href="#一、项目开发目的" class="headerlink" title="一、项目开发目的"></a>一、项目开发目的</h1><p>​	随着互联网信息技术高速发展，近年来网络上的数据可以说是爆炸式增长。如果这这些数据能够被科学地收集起来进行分析，那么对于政府、企业都可以以网络舆情为参考制定自己下一步的战略规划。具体而言，对于政府来说，通过对微博内容进行分析可以进一步了解大众，把握社会舆情风向。针对各种社会风气进行或提倡或批评的指导。对于企业来说，通过对微博内容进行分析可以快速进行用户调研，比起传统的问卷调研来说有着无与伦比的优势，并且还可以监控竞品公司舆情，以此做出全方位的分析并改善自己的产品。</p>
+<p>​	新浪微博上涵盖的信息大到国家战略层面的指示，小到生活中人们的鸡毛琐事。面对这海量数据，针对微博热搜榜进行分析就可以极大程度上缩小数据量，提高对于舆论热点把握的精确性。本项目旨在爬取微博热搜正文及内容，利用贝叶斯算法对于每一条评论文本进行情绪分析，最后可视化呈现情绪评分。实现了对于微博热搜条目的可视化情感分析，以供快速理解舆情。同时，本项目也可以扩展到专门针对特定商品或政策进行情感分析，助力政企直观了解舆情，为下一步的发展提供重要参考。</p>
+<p>​	基于此社会背景及需求，本项目在舆情分析方面做出一小步探索。将爬虫、数据处理、kafka架构、贝叶斯算法建模、pyecharts可视化、flask框架整合运用。作为阶段性总结在此将项目流程以此笔记记录下来。</p>
+<p>工程文件：<a target="_blank" rel="noopener" href="https://github.com/zhuozhuo233/weibotop_sentiment_analysis">https://github.com/zhuozhuo233/weibotop_sentiment_analysis</a></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/05/%E5%9F%BA%E4%BA%8Ekafka%E7%9A%84%E5%BE%AE%E5%8D%9A%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E7%8E%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2021/10/09/%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -880,7 +964,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -919,7 +1003,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
