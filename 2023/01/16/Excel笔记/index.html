@@ -50,8 +50,10 @@
 <meta property="og:image" content="https://zhuozhuo233.github.io/2023/01/16/Excel%E7%AC%94%E8%AE%B0/image-20230116020525599.png">
 <meta property="og:image" content="https://zhuozhuo233.github.io/2023/01/16/Excel%E7%AC%94%E8%AE%B0/image-20230116020820991.png">
 <meta property="og:image" content="https://zhuozhuo233.github.io/2023/01/16/Excel%E7%AC%94%E8%AE%B0/image-20230116022040832.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/2023/01/16/Excel%E7%AC%94%E8%AE%B0/image-20230118155945736.png">
+<meta property="og:image" content="https://zhuozhuo233.github.io/2023/01/16/Excel%E7%AC%94%E8%AE%B0/image-20230118161353206.png">
 <meta property="article:published_time" content="2023-01-15T19:37:48.072Z">
-<meta property="article:modified_time" content="2023-01-15T19:39:18.713Z">
+<meta property="article:modified_time" content="2023-01-18T08:42:09.438Z">
 <meta property="article:author" content="倬倬吃三碗">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://zhuozhuo233.github.io/2023/01/16/Excel%E7%AC%94%E8%AE%B0/image-20230115180222162.png">
@@ -201,10 +203,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-01-16 03:37:48 / 修改时间：03:39:18" itemprop="dateCreated datePublished" datetime="2023-01-16T03:37:48+08:00">2023-01-16</time>
+              <time title="创建时间：2023-01-16 03:37:48" itemprop="dateCreated datePublished" datetime="2023-01-16T03:37:48+08:00">2023-01-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-18 16:42:09" itemprop="dateModified" datetime="2023-01-18T16:42:09+08:00">2023-01-18</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -318,6 +326,29 @@
 <p><strong>VLOOKUP联动数据透视表</strong></p>
 <p>锁定需要查找的区域(数据透视表)</p>
 <p><img src="/2023/01/16/Excel%E7%AC%94%E8%AE%B0/image-20230116022040832.png" alt="image-20230116022040832"></p>
+<h2 id="7-INDEX-amp-MATCH"><a href="#7-INDEX-amp-MATCH" class="headerlink" title="7. INDEX&amp;MATCH"></a>7. INDEX&amp;MATCH</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MATCH(lookup_value,lookup_array,[match_type])</span><br><span class="line">MATCH(查找项,查找区域，0/1)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INDEX(array,row_num,column_num)</span><br><span class="line">INDEX(区域,行号,列号)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INDEX(数据区域,MATCH(行查找项,index数据区域的相对区域,0),MATCH(列查找项,index数据区域的相对区域,0))</span><br></pre></td></tr></table></figure>
+
+<p><strong>自动填充报表</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=INDEX(&#x27;拌客源数据1-8月&#x27;!$A:$X,MATCH($B112,&#x27;拌客源数据1-8月&#x27;!$I:$I,0),MATCH(D$111,&#x27;拌客源数据1-8月&#x27;!$1:$1,0))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">INDEX(整个原数据,MATCH找到门店名称对应的行位置，MATCH找到title对应名称的列位置)</span><br><span class="line">&#x27;拌客源数据1-8月&#x27;!$A:$X</span><br><span class="line">//原数据锁定</span><br><span class="line">$B112</span><br><span class="line">//MATCH不同的门店名称,锁列不锁行，上下变化</span><br><span class="line">$I:$I</span><br><span class="line">//原数据锁定,在门店名称I列里匹配</span><br><span class="line">D$111</span><br><span class="line">//MATCH表头，锁行不锁列，左右变化</span><br><span class="line">$1:$1</span><br><span class="line">//原数据锁定,只在第一行中匹配</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/2023/01/16/Excel%E7%AC%94%E8%AE%B0/image-20230118155945736.png" alt="image-20230118155945736"></p>
+<p><strong>特殊情况</strong></p>
+<p>GMV,进店人数,下单人数在原表中按天记录，这里需要某个门店的总和</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=SUMIFS(INDEX(&#x27;拌客源数据1-8月&#x27;!$A:$X,0,MATCH(G$111,&#x27;拌客源数据1-8月&#x27;!$1:$1,0)),&#x27;拌客源数据1-8月&#x27;!$I:$I,$B112)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SUMIFS(使用INDEX和MATCH匹配到G$111整列(原表GMV整列),原表平台名称区域(I列),门店名称条件($B112))</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/2023/01/16/Excel%E7%AC%94%E8%AE%B0/image-20230118161353206.png" alt="image-20230118161353206"></p>
 
     </div>
 
@@ -395,7 +426,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%91%A8%E6%8A%A5%E5%B8%B8%E7%94%A8"><span class="nav-text">1. 周报常用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%80%8F%E8%A7%86%E8%A1%A8"><span class="nav-text">数据透视表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E6%8C%87%E6%A0%87"><span class="nav-text">常见指标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-SUM"><span class="nav-text">1. SUM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-SUMIF"><span class="nav-text">2. SUMIF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-SUMIFS"><span class="nav-text">3. SUMIFS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-SUBTOTAL"><span class="nav-text">4. SUBTOTAL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-IF"><span class="nav-text">5. IF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-VLOOKUP"><span class="nav-text">6. VLOOKUP</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%91%A8%E6%8A%A5%E5%B8%B8%E7%94%A8"><span class="nav-text">1. 周报常用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%80%8F%E8%A7%86%E8%A1%A8"><span class="nav-text">数据透视表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E6%8C%87%E6%A0%87"><span class="nav-text">常见指标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-SUM"><span class="nav-text">1. SUM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-SUMIF"><span class="nav-text">2. SUMIF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-SUMIFS"><span class="nav-text">3. SUMIFS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-SUBTOTAL"><span class="nav-text">4. SUBTOTAL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-IF"><span class="nav-text">5. IF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-VLOOKUP"><span class="nav-text">6. VLOOKUP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-INDEX-amp-MATCH"><span class="nav-text">7. INDEX&amp;MATCH</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
