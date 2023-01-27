@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhuozhuo233.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1.选择595.大的国家">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL专项练习笔记">
+<meta property="og:url" content="https://zhuozhuo233.github.io/2023/01/28/SQL%E4%B8%93%E9%A1%B9%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="倬倬吃三碗">
+<meta property="og:description" content="1.选择595.大的国家">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-01-27T18:32:42.952Z">
+<meta property="article:modified_time" content="2023-01-27T19:03:38.243Z">
+<meta property="article:author" content="倬倬吃三碗">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://zhuozhuo233.github.io/2023/01/28/SQL%E4%B8%93%E9%A1%B9%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>SQL专项练习笔记 | 倬倬吃三碗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">倬倬吃三碗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2023/01/28/SQL%E4%B8%93%E9%A1%B9%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zaomiao2.jpg">
+      <meta itemprop="name" content="倬倬吃三碗">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="倬倬吃三碗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SQL专项练习笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-01-28 02:32:42 / 修改时间：03:03:38" itemprop="dateCreated datePublished" datetime="2023-01-28T02:32:42+08:00">2023-01-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">数据库相关</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-选择"><a href="#1-选择" class="headerlink" title="1.选择"></a>1.选择</h1><h2 id="595-大的国家"><a href="#595-大的国家" class="headerlink" title="595.大的国家"></a>595.大的国家</h2><span id="more"></span>
+
+<p>World表:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">+-------------+---------+</span><br><span class="line">| Column Name | Type    |</span><br><span class="line">+-------------+---------+</span><br><span class="line">| name        | varchar |</span><br><span class="line">| continent   | varchar |</span><br><span class="line">| area        | int     |</span><br><span class="line">| population  | int     |</span><br><span class="line">| gdp         | int     |</span><br><span class="line">+-------------+---------+</span><br><span class="line">name 是这张表的主键。</span><br><span class="line">这张表的每一行提供：国家名称、所属大陆、面积、人口和 GDP 值。</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>面积至少为 300 万平方公里（即，<code>3000000 km2</code>）</p>
+<p>或者</p>
+</li>
+<li><p>人口至少为 2500 万（即 <code>25000000</code>）</p>
+</li>
+</ul>
+<p>编写一个 SQL 查询以报告 <strong>大国</strong> 的国家名称、人口和面积。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT name, population, area</span><br><span class="line">FROM World</span><br><span class="line">WHERE area &gt;= 3000000 or population &gt;= 25000000;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">| name        | population | area    |</span><br><span class="line">| ----------- | ---------- | ------- |</span><br><span class="line">| Afghanistan | 25500100   | 652230  |</span><br><span class="line">| Algeria     | 37100000   | 2381741 |</span><br></pre></td></tr></table></figure>
+
+<h2 id="1757-可回收且低脂的产品"><a href="#1757-可回收且低脂的产品" class="headerlink" title="1757.可回收且低脂的产品"></a>1757.可回收且低脂的产品</h2><p>Products表:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">+-------------+---------+</span><br><span class="line">| Column Name | Type    |</span><br><span class="line">+-------------+---------+</span><br><span class="line">| product_id  | int     |</span><br><span class="line">| low_fats    | enum    |</span><br><span class="line">| recyclable  | enum    |</span><br><span class="line">+-------------+---------+</span><br><span class="line">product_id 是这个表的主键。</span><br><span class="line">low_fats 是枚举类型，取值为以下两种 (&#x27;Y&#x27;, &#x27;N&#x27;)，其中 &#x27;Y&#x27; 表示该产品是低脂产品，&#x27;N&#x27; 表示不是低脂产品。</span><br><span class="line">recyclable 是枚举类型，取值为以下两种 (&#x27;Y&#x27;, &#x27;N&#x27;)，其中 &#x27;Y&#x27; 表示该产品可回收，而 &#x27;N&#x27; 表示不可回收。</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查找既是低脂又是可回收的产品编号</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT product_id</span><br><span class="line">FROM products</span><br><span class="line">WHERE low_fats = &#x27;Y&#x27; AND recyclable = &#x27;y&#x27;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">| product_id |</span><br><span class="line">| ---------- |</span><br><span class="line">| 1          |</span><br><span class="line">| 3          |</span><br></pre></td></tr></table></figure>
+
+<h2 id="584-寻找用户推荐人"><a href="#584-寻找用户推荐人" class="headerlink" title="584.寻找用户推荐人"></a>584.寻找用户推荐人</h2><p>customer表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">+------+------+-----------+</span><br><span class="line">| id   | name | referee_id|</span><br><span class="line">+------+------+-----------+</span><br><span class="line">|    1 | Will |      NULL |</span><br><span class="line">|    2 | Jane |      NULL |</span><br><span class="line">|    3 | Alex |         2 |</span><br><span class="line">|    4 | Bill |      NULL |</span><br><span class="line">|    5 | Zack |         1 |</span><br><span class="line">|    6 | Mark |         2 |</span><br><span class="line">+------+------+-----------+</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>返回一个客户列表，列表中客户的推荐人的编号都 <strong>不是</strong> 2</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT name</span><br><span class="line">FROM customer</span><br><span class="line">WHERE referee_id != 2 OR referee_id is NULL;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">| name |</span><br><span class="line">| ---- |</span><br><span class="line">| Will |</span><br><span class="line">| Jane |</span><br><span class="line">| Bill |</span><br><span class="line">| Zack |</span><br></pre></td></tr></table></figure>
+
+<h2 id="183-从不订购的客户"><a href="#183-从不订购的客户" class="headerlink" title="183.从不订购的客户"></a>183.从不订购的客户</h2><p>Customers表:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+----+-------+</span><br><span class="line">| Id | Name  |</span><br><span class="line">+----+-------+</span><br><span class="line">| 1  | Joe   |</span><br><span class="line">| 2  | Henry |</span><br><span class="line">| 3  | Sam   |</span><br><span class="line">| 4  | Max   |</span><br><span class="line">+----+-------+</span><br></pre></td></tr></table></figure>
+
+<p>Order表:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+----+------------+</span><br><span class="line">| Id | CustomerId |</span><br><span class="line">+----+------------+</span><br><span class="line">| 1  | 3          |</span><br><span class="line">| 2  | 1          |</span><br><span class="line">+----+------------+</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>找出所有从不订购任何东西的客户</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT C.name Customers</span><br><span class="line">FROM Customers C</span><br><span class="line">WHERE C.id not in(</span><br><span class="line">	SELECT CustomerId</span><br><span class="line">    FROM Orders</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT name Customers</span><br><span class="line">FROM Customers C</span><br><span class="line">LEFT JOIN Orders O</span><br><span class="line">ON C.id = O.CustomerId</span><br><span class="line">WHERE O.CustomerId is NULL;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">| Customers |</span><br><span class="line">| --------- |</span><br><span class="line">| Henry     |</span><br><span class="line">| Max       |</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/01/28/%E5%89%91%E6%8C%87offer%E7%AC%94%E8%AE%B0/" rel="prev" title="剑指offer笔记">
+      <i class="fa fa-chevron-left"></i> 剑指offer笔记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E9%80%89%E6%8B%A9"><span class="nav-text">1.选择</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#595-%E5%A4%A7%E7%9A%84%E5%9B%BD%E5%AE%B6"><span class="nav-text">595.大的国家</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1757-%E5%8F%AF%E5%9B%9E%E6%94%B6%E4%B8%94%E4%BD%8E%E8%84%82%E7%9A%84%E4%BA%A7%E5%93%81"><span class="nav-text">1757.可回收且低脂的产品</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#584-%E5%AF%BB%E6%89%BE%E7%94%A8%E6%88%B7%E6%8E%A8%E8%8D%90%E4%BA%BA"><span class="nav-text">584.寻找用户推荐人</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#183-%E4%BB%8E%E4%B8%8D%E8%AE%A2%E8%B4%AD%E7%9A%84%E5%AE%A2%E6%88%B7"><span class="nav-text">183.从不订购的客户</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="倬倬吃三碗"
+      src="/images/zaomiao2.jpg">
+  <p class="site-author-name" itemprop="name">倬倬吃三碗</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhuozhuo233" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhuozhuo233" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">倬倬吃三碗</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":300,"height":600,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":false,"scale":0.2},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>
