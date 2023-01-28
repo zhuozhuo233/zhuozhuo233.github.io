@@ -28,7 +28,7 @@
 <meta property="og:description" content="1.选择595.大的国家">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-01-27T18:32:42.952Z">
-<meta property="article:modified_time" content="2023-01-27T19:03:38.243Z">
+<meta property="article:modified_time" content="2023-01-28T19:35:21.114Z">
 <meta property="article:author" content="倬倬吃三碗">
 <meta name="twitter:card" content="summary">
 
@@ -177,10 +177,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-01-28 02:32:42 / 修改时间：03:03:38" itemprop="dateCreated datePublished" datetime="2023-01-28T02:32:42+08:00">2023-01-28</time>
+              <time title="创建时间：2023-01-28 02:32:42" itemprop="dateCreated datePublished" datetime="2023-01-28T02:32:42+08:00">2023-01-28</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-29 03:35:21" itemprop="dateModified" datetime="2023-01-29T03:35:21+08:00">2023-01-29</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -204,7 +210,7 @@
       
         <h1 id="1-选择"><a href="#1-选择" class="headerlink" title="1.选择"></a>1.选择</h1><h2 id="595-大的国家"><a href="#595-大的国家" class="headerlink" title="595.大的国家"></a>595.大的国家</h2><span id="more"></span>
 
-<p>World表:</p>
+<p><code>World</code>表:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">+-------------+---------+</span><br><span class="line">| Column Name | Type    |</span><br><span class="line">+-------------+---------+</span><br><span class="line">| name        | varchar |</span><br><span class="line">| continent   | varchar |</span><br><span class="line">| area        | int     |</span><br><span class="line">| population  | int     |</span><br><span class="line">| gdp         | int     |</span><br><span class="line">+-------------+---------+</span><br><span class="line">name 是这张表的主键。</span><br><span class="line">这张表的每一行提供：国家名称、所属大陆、面积、人口和 GDP 值。</span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -219,7 +225,7 @@
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">| name        | population | area    |</span><br><span class="line">| ----------- | ---------- | ------- |</span><br><span class="line">| Afghanistan | 25500100   | 652230  |</span><br><span class="line">| Algeria     | 37100000   | 2381741 |</span><br></pre></td></tr></table></figure>
 
-<h2 id="1757-可回收且低脂的产品"><a href="#1757-可回收且低脂的产品" class="headerlink" title="1757.可回收且低脂的产品"></a>1757.可回收且低脂的产品</h2><p>Products表:</p>
+<h2 id="1757-可回收且低脂的产品"><a href="#1757-可回收且低脂的产品" class="headerlink" title="1757.可回收且低脂的产品"></a>1757.可回收且低脂的产品</h2><p><code>Products</code>表:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">+-------------+---------+</span><br><span class="line">| Column Name | Type    |</span><br><span class="line">+-------------+---------+</span><br><span class="line">| product_id  | int     |</span><br><span class="line">| low_fats    | enum    |</span><br><span class="line">| recyclable  | enum    |</span><br><span class="line">+-------------+---------+</span><br><span class="line">product_id 是这个表的主键。</span><br><span class="line">low_fats 是枚举类型，取值为以下两种 (&#x27;Y&#x27;, &#x27;N&#x27;)，其中 &#x27;Y&#x27; 表示该产品是低脂产品，&#x27;N&#x27; 表示不是低脂产品。</span><br><span class="line">recyclable 是枚举类型，取值为以下两种 (&#x27;Y&#x27;, &#x27;N&#x27;)，其中 &#x27;Y&#x27; 表示该产品可回收，而 &#x27;N&#x27; 表示不可回收。</span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -229,7 +235,7 @@
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">| product_id |</span><br><span class="line">| ---------- |</span><br><span class="line">| 1          |</span><br><span class="line">| 3          |</span><br></pre></td></tr></table></figure>
 
-<h2 id="584-寻找用户推荐人"><a href="#584-寻找用户推荐人" class="headerlink" title="584.寻找用户推荐人"></a>584.寻找用户推荐人</h2><p>customer表：</p>
+<h2 id="584-寻找用户推荐人"><a href="#584-寻找用户推荐人" class="headerlink" title="584.寻找用户推荐人"></a>584.寻找用户推荐人</h2><p><code>customer</code>表：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">+------+------+-----------+</span><br><span class="line">| id   | name | referee_id|</span><br><span class="line">+------+------+-----------+</span><br><span class="line">|    1 | Will |      NULL |</span><br><span class="line">|    2 | Jane |      NULL |</span><br><span class="line">|    3 | Alex |         2 |</span><br><span class="line">|    4 | Bill |      NULL |</span><br><span class="line">|    5 | Zack |         1 |</span><br><span class="line">|    6 | Mark |         2 |</span><br><span class="line">+------+------+-----------+</span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -239,7 +245,7 @@
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">| name |</span><br><span class="line">| ---- |</span><br><span class="line">| Will |</span><br><span class="line">| Jane |</span><br><span class="line">| Bill |</span><br><span class="line">| Zack |</span><br></pre></td></tr></table></figure>
 
-<h2 id="183-从不订购的客户"><a href="#183-从不订购的客户" class="headerlink" title="183.从不订购的客户"></a>183.从不订购的客户</h2><p>Customers表:</p>
+<h2 id="183-从不订购的客户"><a href="#183-从不订购的客户" class="headerlink" title="183.从不订购的客户"></a>183.从不订购的客户</h2><p><code>Customers</code>表:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+----+-------+</span><br><span class="line">| Id | Name  |</span><br><span class="line">+----+-------+</span><br><span class="line">| 1  | Joe   |</span><br><span class="line">| 2  | Henry |</span><br><span class="line">| 3  | Sam   |</span><br><span class="line">| 4  | Max   |</span><br><span class="line">+----+-------+</span><br></pre></td></tr></table></figure>
 
 <p>Order表:</p>
@@ -253,6 +259,57 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT name Customers</span><br><span class="line">FROM Customers C</span><br><span class="line">LEFT JOIN Orders O</span><br><span class="line">ON C.id = O.CustomerId</span><br><span class="line">WHERE O.CustomerId is NULL;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">| Customers |</span><br><span class="line">| --------- |</span><br><span class="line">| Henry     |</span><br><span class="line">| Max       |</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-排序-amp-修改"><a href="#2-排序-amp-修改" class="headerlink" title="2.排序&amp;修改"></a>2.排序&amp;修改</h1><h2 id="1873-计算特殊奖金"><a href="#1873-计算特殊奖金" class="headerlink" title="1873.计算特殊奖金"></a>1873.计算特殊奖金</h2><p><code>Employees</code>表:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+-------------+---------+</span><br><span class="line">| 列名        | 类型     |</span><br><span class="line">+-------------+---------+</span><br><span class="line">| employee_id | int     |</span><br><span class="line">| name        | varchar |</span><br><span class="line">| salary      | int     |</span><br><span class="line">+-------------+---------+</span><br><span class="line">employee_id 是这个表的主键。</span><br><span class="line">此表的每一行给出了雇员id ，名字和薪水。</span><br></pre></td></tr></table></figure>
+
+<p>写出一个SQL 查询语句，计算每个雇员的奖金。如果一个雇员的id是奇数并且他的名字不是以’M’开头，那么他的奖金是他工资的100%，否则奖金为0。</p>
+<p>返回的结果集请按照<code>employee_id</code>排序。</p>
+<p>CASE WHEN</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SELECT employee_id,</span><br><span class="line">(CASE</span><br><span class="line">WHEN MOD(employee_id,2) != 0 AND LEFT(name, 1) != &#x27;M&#x27;</span><br><span class="line">THEN salary</span><br><span class="line">WHEN MOD(employee_id,2) = 0 OR LEFT(name, 1) = &#x27;M&#x27;</span><br><span class="line">THEN 0</span><br><span class="line">END) bonus</span><br><span class="line">FROM Employees</span><br><span class="line">ORDER BY employee_id;</span><br></pre></td></tr></table></figure>
+
+<p>IF</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT employee_id,</span><br><span class="line">IF(employee_id%2 != 0 AND name NOT LIKE(&#x27;M%&#x27;),salary,0) bonus</span><br><span class="line">FROM Employees</span><br><span class="line">ORDER BY employee_id;</span><br></pre></td></tr></table></figure>
+
+<p>regexp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT employee_id,</span><br><span class="line">(CASE </span><br><span class="line">WHEN employee_id%2 = 1 AND name NOT REGEXP(&#x27;^M&#x27;) THEN salary ELSE 0</span><br><span class="line">END) bonus</span><br><span class="line">FROM Employees</span><br><span class="line">ORDER BY employee_id;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">| employee_id | bonus |</span><br><span class="line">| ----------- | ----- |</span><br><span class="line">| 2           | 0     |</span><br><span class="line">| 3           | 0     |</span><br><span class="line">| 7           | 7400  |</span><br><span class="line">| 8           | 0     |</span><br><span class="line">| 9           | 7700  |</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">LEFT(Original_String, Index_position);</span><br><span class="line">返回原字符串中指定数目的字符</span><br><span class="line">IF(expr, V1, V2)</span><br><span class="line">真返回v1，假返回v2</span><br></pre></td></tr></table></figure>
+
+<h2 id="627-变更性别"><a href="#627-变更性别" class="headerlink" title="627.变更性别"></a>627.变更性别</h2><p><code>Salary</code> 表:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">+-------------+----------+</span><br><span class="line">| Column Name | Type     |</span><br><span class="line">+-------------+----------+</span><br><span class="line">| id          | int      |</span><br><span class="line">| name        | varchar  |</span><br><span class="line">| sex         | ENUM     |</span><br><span class="line">| salary      | int      |</span><br><span class="line">+-------------+----------+</span><br><span class="line">id 是这个表的主键。</span><br><span class="line">sex 这一列的值是 ENUM 类型，只能从 (&#x27;m&#x27;, &#x27;f&#x27;) 中取。</span><br><span class="line">本表包含公司雇员的信息。</span><br></pre></td></tr></table></figure>
+
+<p>请你编写一个 SQL 查询来交换所有的 <code>&#39;f&#39;</code> 和 <code>&#39;m&#39;</code> （即，将所有 <code>&#39;f&#39;</code> 变为 <code>&#39;m&#39;</code> ，反之亦然），仅使用 <strong>单个 update 语句</strong> ，且不产生中间临时表。</p>
+<p>IF</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UPDATE Salary</span><br><span class="line">SET sex = IF(sex = &#x27;m&#x27;, &#x27;f&#x27;, &#x27;m&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>CASE WHEN</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UPDATE Salary</span><br><span class="line">SET sex = CASE sex WHEN &#x27;m&#x27; THEN &#x27;f&#x27; ELSE &#x27;m&#x27; END;</span><br></pre></td></tr></table></figure>
+
+<p>奇怪的解法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">UPDATE salary SET sex = char(ascii(sex) ^ ascii(&#x27;m&#x27;) ^ ascii(&#x27;f&#x27;))</span><br><span class="line">异或，同位相同为0，不同为1，任何数与0异或等于这个数本身</span><br><span class="line"></span><br><span class="line">UPDATE Salary SET sex = char(ascii(&#x27;m&#x27;) + ascii(&#x27;f&#x27;) - ascii(sex));</span><br><span class="line">求和-本身=另一个</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">| id | name | sex | salary |</span><br><span class="line">| -- | ---- | --- | ------ |</span><br><span class="line">| 1  | A    | f   | 2500   |</span><br><span class="line">| 2  | B    | m   | 1500   |</span><br><span class="line">| 3  | C    | f   | 5500   |</span><br><span class="line">| 4  | D    | m   | 500    |</span><br></pre></td></tr></table></figure>
+
+<h2 id="196-删除重复的电子邮箱"><a href="#196-删除重复的电子邮箱" class="headerlink" title="196.删除重复的电子邮箱"></a>196.删除重复的电子邮箱</h2><p><code>Person</code>表:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+-------------+---------+</span><br><span class="line">| Column Name | Type    |</span><br><span class="line">+-------------+---------+</span><br><span class="line">| id          | int     |</span><br><span class="line">| email       | varchar |</span><br><span class="line">+-------------+---------+</span><br><span class="line">id是该表的主键列。</span><br><span class="line">该表的每一行包含一封电子邮件。电子邮件将不包含大写字母。</span><br></pre></td></tr></table></figure>
+
+<p>编写一个 SQL <strong>删除语句</strong>来 <strong>删除</strong> 所有重复的电子邮件，只保留一个id最小的唯一电子邮件。</p>
+<p>以 <strong>任意顺序</strong> 返回结果表。 （<strong>注意</strong>： 仅需要写删除语句，将自动对剩余结果进行查询）</p>
+<p>自连接</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">DELETE p1</span><br><span class="line">FROM Person p1, Person p2</span><br><span class="line">WHERE p1.email = p2.email AND p1.id &gt; p2.id;</span><br></pre></td></tr></table></figure>
+
+<p>NOT IN子查询</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM Person</span><br><span class="line">WHERE id NOT IN(</span><br><span class="line">	SELECT id</span><br><span class="line">    FROM(</span><br><span class="line">    	SELECT min(id) id</span><br><span class="line">        FROM Person</span><br><span class="line">        GROUP BY email</span><br><span class="line">    )p</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>ROW_NUMBER()开窗函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM PERSON</span><br><span class="line">WHERE id IN(</span><br><span class="line">	SELECT id</span><br><span class="line">    FROM(</span><br><span class="line">    	SELECT id,email,</span><br><span class="line">        ROW_NUMBER() OVER(PARTITION BY email ORDER BY id) AS id_order</span><br><span class="line">        FROM Person</span><br><span class="line">    )p</span><br><span class="line">    WHERE id_order &gt; 1</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -331,7 +388,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E9%80%89%E6%8B%A9"><span class="nav-text">1.选择</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#595-%E5%A4%A7%E7%9A%84%E5%9B%BD%E5%AE%B6"><span class="nav-text">595.大的国家</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1757-%E5%8F%AF%E5%9B%9E%E6%94%B6%E4%B8%94%E4%BD%8E%E8%84%82%E7%9A%84%E4%BA%A7%E5%93%81"><span class="nav-text">1757.可回收且低脂的产品</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#584-%E5%AF%BB%E6%89%BE%E7%94%A8%E6%88%B7%E6%8E%A8%E8%8D%90%E4%BA%BA"><span class="nav-text">584.寻找用户推荐人</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#183-%E4%BB%8E%E4%B8%8D%E8%AE%A2%E8%B4%AD%E7%9A%84%E5%AE%A2%E6%88%B7"><span class="nav-text">183.从不订购的客户</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E9%80%89%E6%8B%A9"><span class="nav-text">1.选择</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#595-%E5%A4%A7%E7%9A%84%E5%9B%BD%E5%AE%B6"><span class="nav-text">595.大的国家</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1757-%E5%8F%AF%E5%9B%9E%E6%94%B6%E4%B8%94%E4%BD%8E%E8%84%82%E7%9A%84%E4%BA%A7%E5%93%81"><span class="nav-text">1757.可回收且低脂的产品</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#584-%E5%AF%BB%E6%89%BE%E7%94%A8%E6%88%B7%E6%8E%A8%E8%8D%90%E4%BA%BA"><span class="nav-text">584.寻找用户推荐人</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#183-%E4%BB%8E%E4%B8%8D%E8%AE%A2%E8%B4%AD%E7%9A%84%E5%AE%A2%E6%88%B7"><span class="nav-text">183.从不订购的客户</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%8E%92%E5%BA%8F-amp-%E4%BF%AE%E6%94%B9"><span class="nav-text">2.排序&amp;修改</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1873-%E8%AE%A1%E7%AE%97%E7%89%B9%E6%AE%8A%E5%A5%96%E9%87%91"><span class="nav-text">1873.计算特殊奖金</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#627-%E5%8F%98%E6%9B%B4%E6%80%A7%E5%88%AB"><span class="nav-text">627.变更性别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#196-%E5%88%A0%E9%99%A4%E9%87%8D%E5%A4%8D%E7%9A%84%E7%94%B5%E5%AD%90%E9%82%AE%E7%AE%B1"><span class="nav-text">196.删除重复的电子邮箱</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
