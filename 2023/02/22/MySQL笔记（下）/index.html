@@ -20,28 +20,32 @@
     var CONFIG = {"hostname":"zhuozhuo233.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="倬倬吃三碗">
-<meta property="og:url" content="https://zhuozhuo233.github.io/page/3/index.html">
+  <meta name="description" content="1.MySQL数据目录1.1 MySQL8主要数据目录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL笔记（下）">
+<meta property="og:url" content="https://zhuozhuo233.github.io/2023/02/22/MySQL%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%8B%EF%BC%89/index.html">
 <meta property="og:site_name" content="倬倬吃三碗">
+<meta property="og:description" content="1.MySQL数据目录1.1 MySQL8主要数据目录">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-02-22T01:33:01.130Z">
+<meta property="article:modified_time" content="2023-02-22T02:24:40.418Z">
 <meta property="article:author" content="倬倬吃三碗">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://zhuozhuo233.github.io/page/3/">
+<link rel="canonical" href="https://zhuozhuo233.github.io/2023/02/22/MySQL%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%8B%EF%BC%89/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>倬倬吃三碗</title>
+  <title>MySQL笔记（下） | 倬倬吃三碗</title>
   
 
 
@@ -144,13 +148,14 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2021/09/12/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">
+    <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2023/02/22/MySQL%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%8B%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zaomiao2.jpg">
@@ -162,10 +167,9 @@
       <meta itemprop="name" content="倬倬吃三碗">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/12/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">基于Spark的智能餐饮推荐系统</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          MySQL笔记（下）
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -173,23 +177,17 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-09-12 01:15:17" itemprop="dateCreated datePublished" datetime="2021-09-12T01:15:17+08:00">2021-09-12</time>
+              <time title="创建时间：2023-02-22 09:33:01 / 修改时间：10:24:40" itemprop="dateCreated datePublished" datetime="2023-02-22T09:33:01+08:00">2023-02-22</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-12-09 02:22:04" itemprop="dateModified" datetime="2022-12-09T02:22:04+08:00">2022-12-09</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/A-%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86-%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0-A/" itemprop="url" rel="index"><span itemprop="name">A_项目经历&总结笔记_A</span></a>
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">数据库相关</span></a>
                 </span>
             </span>
 
@@ -204,134 +202,82 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="一、项目开发目的"><a href="#一、项目开发目的" class="headerlink" title="一、项目开发目的"></a>一、项目开发目的</h1><p>随着科技的高速发展，人们的生活节奏也越来越快。忙碌的都市生活让许多年轻一族习惯于在餐饮外卖平台上进行订餐。“今天吃是什么”这个问题在生活中也越来越普遍。为了解决人们对于外卖餐饮的选择问题，本项目随之诞生。本项目的开发目的就在于为人们提供个性化的菜品推荐系统，解决人们选择困难的问题。</p>
-<h1 id="二、项目开发环境"><a href="#二、项目开发环境" class="headerlink" title="二、项目开发环境"></a>二、项目开发环境</h1><h2 id="1-项目设计组件及语言"><a href="#1-项目设计组件及语言" class="headerlink" title="1.项目设计组件及语言"></a>1.项目设计组件及语言</h2><p>1.hadoop</p>
-<p>2.spark</p>
-<p>3.Hive</p>
-<p>4.spark</p>
-<p>5.mysql</p>
-<p>6.java</p>
-<h2 id="2-环境搭建流程"><a href="#2-环境搭建流程" class="headerlink" title="2.环境搭建流程"></a>2.环境搭建流程</h2><p>1.搭建Hadoop分布式集群</p>
-<p>2.spark安装配置</p>
-<p>3.mysql安装配置</p>
-<p>4.hive安装配置</p>
-<p>5.scala安装配置</p>
-<p>6.idea配置maven仓库、scalasdk </p>
-<h2 id="3-数据来源及构成"><a href="#3-数据来源及构成" class="headerlink" title="3.数据来源及构成"></a>3.数据来源及构成</h2><p>数据来源是网站的数据库（MySQL）中保存着的菜品数据集</p>
-<p><img src="/2021/09/12/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/%E6%95%B0%E6%8D%AE%E6%9D%A5%E6%BA%90.png" alt="总体"></p>
-<p>数据集用JSON格式存储，数据结构固定。每条记录由如下属性组成：UserID、Rating、ReviewTime、Review、MealID。其中，UserID为用户ID、Rating为用户评分、ReviewTime为评论时间戳、Review为用户评论、MealID为菜品ID。</p>
-<p>本数据源包含38384条总记录数、总用户数为5130、总菜品数为1685，最高评分为5.0，最低评分为1.0。</p>
-<p>工程文件:<a target="_blank" rel="noopener" href="https://github.com/zhuozhuo233/Catering-recommendation">https://github.com/zhuozhuo233/Catering-recommendation</a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/09/12/%E5%9F%BA%E4%BA%8ESpark%E7%9A%84%E6%99%BA%E8%83%BD%E9%A4%90%E9%A5%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
+        <h1 id="1-MySQL数据目录"><a href="#1-MySQL数据目录" class="headerlink" title="1.MySQL数据目录"></a>1.MySQL数据目录</h1><h2 id="1-1-MySQL8主要数据目录"><a href="#1-1-MySQL8主要数据目录" class="headerlink" title="1.1 MySQL8主要数据目录"></a>1.1 MySQL8主要数据目录</h2><span id="more"></span>
+
+<p><strong>数据库文件的存放路径：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/mysql</span><br></pre></td></tr></table></figure>
+
+<p><strong>相关命令目录：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin	#mysqladmin, mysqlbinlong, mysqldump等</span><br><span class="line">/usr/sbin</span><br></pre></td></tr></table></figure>
+
+<p><strong>配置文件目录：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/share/mysql-8.0	#命令以及配置文件</span><br><span class="line">/etc/mysql	#my.cnf</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="1-2-数据库与文件系统"><a href="#1-2-数据库与文件系统" class="headerlink" title="1.2 数据库与文件系统"></a>1.2 数据库与文件系统</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW DATABASES;</span><br></pre></td></tr></table></figure>
+
+<p>4个<strong>自带数据库</strong>：</p>
+<ul>
+<li><p><strong>mysql</strong></p>
+<p>MySQL自带的<strong>核心数据库</strong>，存储MySQL的<strong>用户账户</strong>与<strong>权限信息</strong>，<strong>存储过程</strong>，<strong>事件的定义信息</strong>，运行过程中产生的<strong>日志信息</strong>，<strong>帮助信息</strong>，<strong>时区信息</strong>等</p>
+</li>
+<li><p><strong>information——schema</strong></p>
+<p>存储MySQL<strong>服务器维护的所有其他数据库的信息</strong>，如<strong>表</strong>，<strong>视图</strong>，<strong>触发器</strong>，<strong>列</strong>，<strong>索引</strong>等。这些并不是真实的用户数据，而是一些<strong>描述性信息</strong>，也称之为<strong>元数据</strong>。该数据库下<strong>innodb_sys</strong>开头的表为<strong>内部系统表</strong></p>
+</li>
+<li><p><strong>performance_schema</strong></p>
+<p>存储MySQL<strong>服务器运行过程中的状态信息</strong>，可以监控MySQL服务的<strong>各项性能指标</strong>。包括<strong>最近执行了哪些语句</strong>，执行过程的<strong>各个阶段耗时</strong>，<strong>内存使用情况</strong>等</p>
+</li>
+<li><p><strong>sys</strong></p>
+<p>该数据库主要通过<strong>视图</strong>的形式把<strong>information_schema</strong>与<strong>performance_schema</strong>结合起来，帮助监控MySQL的技术性能</p>
+</li>
+</ul>
+<h2 id="1-3-表与文件系统"><a href="#1-3-表与文件系统" class="headerlink" title="1.3 表与文件系统"></a>1.3 表与文件系统</h2><h3 id="1-3-1-InnoDB存储引擎"><a href="#1-3-1-InnoDB存储引擎" class="headerlink" title="1.3.1 InnoDB存储引擎"></a>1.3.1 InnoDB存储引擎</h3><p>​	<strong>1.系统表空间（system tablespace）</strong></p>
+<p>​		默认情况下InnoDB会在数据目录下创建一个名为<strong>ibdata1</strong>，大小为<strong>12M</strong>的文件，该文件对应<strong>系统表空间</strong>在文件系统上的表示，它是<strong>自扩展文件</strong>，不够用时会自己增加文件大小。</p>
+<p>​	<strong>2.独立表空间（file-per-table tablespace）</strong></p>
+<p>​		<strong>MySQL5.6.6</strong>之后，<strong>InnoDB</strong>不会默认把各个表的数据存储到系统表空间中，而是为<strong>每一个表建立一个独立空间</strong>。使用<strong>表独立空间</strong>存储表数据会在<strong>该表所属数据库</strong>对应的<strong>子目录</strong>下创建一个<strong>表示该独立表空间的文件</strong>，文件名与表名相同，扩展名为**.ibd**</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">test.frm	#存储表结构</span><br><span class="line">test.ibd	#存储数据和索引</span><br></pre></td></tr></table></figure>
+
+<p>​	<strong>3.系统表空间与独立表空间的设置</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[server]</span><br><span class="line">innodb_file_per_table=0		#0:使用系统表空间； 1：使用独立表空间</span><br></pre></td></tr></table></figure>
+
+<p>​	<strong>4.其他类型表空间</strong></p>
+<p>​		通用表空间（general tablespace），临时表空间（temporary tablespace）等</p>
+<h3 id="1-3-2-MyISAM存储引擎"><a href="#1-3-2-MyISAM存储引擎" class="headerlink" title="1.3.2 MyISAM存储引擎"></a>1.3.2 MyISAM存储引擎</h3><p>​	<strong>1.表结构</strong></p>
+<p>​		表结构与InnoDB一样，数据目录下对应的数据库子目录下创建一个专门描述表结构的文件<strong>XX.frm</strong></p>
+<p>​	<strong>2.表中数据与索引</strong></p>
+<p>​		MyISAM的索引全部是二级索引，该存储引擎的数据与索引分开存放。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">test.frm	#存储表结构</span><br><span class="line">test.MYD	#存储数据（MYData）</span><br><span class="line">test.MYI	#存储索引（MYIndex）</span><br></pre></td></tr></table></figure>
+
+<p>​	<strong>3.显式指定引擎</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE &#x27;sid&#x27;(</span><br><span class="line">······</span><br><span class="line">)ENGINE=MYISAM AUTO_INCREMENT=0 DEFAULT CHARSET = utf8mb4</span><br></pre></td></tr></table></figure>
+
+
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhuozhuo233.github.io/2021/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zaomiao2.jpg">
-      <meta itemprop="name" content="倬倬吃三碗">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="倬倬吃三碗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">数据结构笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-07-06 02:10:46" itemprop="dateCreated datePublished" datetime="2021-07-06T02:10:46+08:00">2021-07-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-07-27 17:54:44" itemprop="dateModified" datetime="2022-07-27T17:54:44+08:00">2022-07-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p>数据结构是计算机存储、组织<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE">数据</a>的方式。数据结构是指相互之间存在一种或多种特定关系的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE%E5%85%83%E7%B4%A0/715313">数据元素</a>的集合。通常情况下，精心选择的数据结构可以带来更高的运行或者存储<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%88%E7%8E%87/868847">效率</a>。数据结构往往同高效的检索<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%AE%97%E6%B3%95/209025">算法</a>和<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%B4%A2%E5%BC%95/5716853">索引</a>技术有关。</p>
-<p>常见的数据结构有如下：</p>
-<p><img src="/2021/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/%E6%80%BB%E4%BD%93.png" alt="总体"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/02/15/%E9%97%AE%E9%A2%98%E6%89%8B%E5%86%8C/" rel="prev" title="问题手册">
+      <i class="fa fa-chevron-left"></i> 问题手册
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
+    
   </article>
   
   
   
-
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
-  </nav>
 
 
 
@@ -383,6 +329,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-MySQL%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95"><span class="nav-text">1.MySQL数据目录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-MySQL8%E4%B8%BB%E8%A6%81%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95"><span class="nav-text">1.1 MySQL8主要数据目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-text">1.2 数据库与文件系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E8%A1%A8%E4%B8%8E%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-text">1.3 表与文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-InnoDB%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-text">1.3.1 InnoDB存储引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-MyISAM%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-text">1.3.2 MyISAM存储引擎</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
