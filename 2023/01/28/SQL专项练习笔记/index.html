@@ -28,7 +28,7 @@
 <meta property="og:description" content="1.选择595.大的国家">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-01-27T18:32:42.952Z">
-<meta property="article:modified_time" content="2023-02-06T04:31:05.412Z">
+<meta property="article:modified_time" content="2023-03-27T19:19:13.828Z">
 <meta property="article:author" content="倬倬吃三碗">
 <meta name="twitter:card" content="summary">
 
@@ -185,7 +185,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-02-06 12:31:05" itemprop="dateModified" datetime="2023-02-06T12:31:05+08:00">2023-02-06</time>
+                <time title="修改时间：2023-03-28 03:19:13" itemprop="dateModified" datetime="2023-03-28T03:19:13+08:00">2023-03-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -221,6 +221,8 @@
 </li>
 </ul>
 <p>编写一个 SQL 查询以报告 <strong>大国</strong> 的国家名称、人口和面积。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">大国 =&gt;where满足相关条件即可</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT name, population, area</span><br><span class="line">FROM World</span><br><span class="line">WHERE area &gt;= 3000000 or population &gt;= 25000000;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">| name        | population | area    |</span><br><span class="line">| ----------- | ---------- | ------- |</span><br><span class="line">| Afghanistan | 25500100   | 652230  |</span><br><span class="line">| Algeria     | 37100000   | 2381741 |</span><br></pre></td></tr></table></figure>
@@ -231,6 +233,8 @@
 <ul>
 <li>查找既是低脂又是可回收的产品编号</li>
 </ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">既是...又是...</span><br><span class="line">AND</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT product_id</span><br><span class="line">FROM products</span><br><span class="line">WHERE low_fats = &#x27;Y&#x27; AND recyclable = &#x27;y&#x27;;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">| product_id |</span><br><span class="line">| ---------- |</span><br><span class="line">| 1          |</span><br><span class="line">| 3          |</span><br></pre></td></tr></table></figure>
@@ -241,6 +245,8 @@
 <ul>
 <li>返回一个客户列表，列表中客户的推荐人的编号都 <strong>不是</strong> 2</li>
 </ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">推荐编号!=2，注意这里加or处理NULL</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT name</span><br><span class="line">FROM customer</span><br><span class="line">WHERE referee_id != 2 OR referee_id is NULL;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">| name |</span><br><span class="line">| ---- |</span><br><span class="line">| Will |</span><br><span class="line">| Jane |</span><br><span class="line">| Bill |</span><br><span class="line">| Zack |</span><br></pre></td></tr></table></figure>
@@ -254,6 +260,8 @@
 <ul>
 <li>找出所有从不订购任何东西的客户</li>
 </ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1.子查询</span><br><span class="line">客户id not in (order表中购物id)</span><br><span class="line"></span><br><span class="line">2.左连接</span><br><span class="line">Customer拼Order， customerid为空的就是没有订购的</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT C.name Customers</span><br><span class="line">FROM Customers C</span><br><span class="line">WHERE C.id not in(</span><br><span class="line">	SELECT CustomerId</span><br><span class="line">    FROM Orders</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT name Customers</span><br><span class="line">FROM Customers C</span><br><span class="line">LEFT JOIN Orders O</span><br><span class="line">ON C.id = O.CustomerId</span><br><span class="line">WHERE O.CustomerId is NULL;</span><br></pre></td></tr></table></figure>
